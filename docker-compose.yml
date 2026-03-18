@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  imgproxy:
+    image: darthsim/imgproxy:latest
+    container_name: imgproxy
+    ports:
+      - "8081:8080"
+    environment:
+      # Security: gera chaves com: echo $(xxd -g 2 -l 64 -p /dev/random | tr -d '\n')
+      IMGPROXY_KEY: "sua_key_hex_aqui"
+      IMGPROXY_SALT: "sua_salt_hex_aqui"
+      # Para dev local sem assinatura:
+      IMGPROXY_KEY: ""
+      IMGPROXY_SALT: ""
+      # Qualidade padrao
+      IMGPROXY_QUALITY: 80
+      IMGPROXY_AVIF_SPEED: 5
+      # Formatos automaticos (webp/avif baseado no Accept header)
+      IMGPROXY_AUTO_ROTATE: "true"
+      IMGPROXY_ENFORCE_WEBP: "true"
+      IMGPROXY_ENABLE_AVIF_DETECTION: "true"
+      IMGPROXY_PREFERRED_FORMATS: "avif,webp"
+      # Cache
+      IMGPROXY_CACHE_CONTROL_PASSTHROUGH: "false"
+      IMGPROXY_SET_CANONICAL_HEADER: "true"
+      # Max tamanho (4000x4000)
+      IMGPROXY_MAX_SRC_RESOLUTION: 16
+      # Permitir acesso local
+      IMGPROXY_ALLOW_ORIGIN: "*"
+      IMGPROXY_LOCAL_FILESYSTEM_ROOT: "/images"
+      # Timeout
+      IMGPROXY_READ_TIMEOUT: 10
+      IMGPROXY_WRITE_TIMEOUT: 10
+      IMGPROXY_DOWNLOAD_TIMEOUT: 10
+    volumes:
+      # Monta a pasta public/static do Astro como /images no container
+      - ./public/static:/images:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

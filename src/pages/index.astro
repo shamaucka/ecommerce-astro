@@ -1,0 +1,37 @@
+---
+import "@/styles/global.css"
+---
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sua Loja | E-commerce</title>
+</head>
+<body class="bg-white text-zinc-900">
+  <header class="bg-zinc-900 text-white py-4 px-6">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="/" class="text-xl font-bold">Sua Loja</a>
+      <nav class="flex gap-6 text-sm">
+        <a href="/" class="hover:text-zinc-300">Inicio</a>
+        <a href="/busca" class="hover:text-zinc-300">Buscar</a>
+        <a href="/blog" class="hover:text-zinc-300">Blog</a>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-6xl mx-auto py-12 px-6">
+    <h1 class="text-4xl font-bold mb-4">Bem-vindo a Sua Loja</h1>
+    <p class="text-zinc-600 text-lg mb-8">Storefront em construcao — backend Astro operacional.</p>
+    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+      <h2 class="text-lg font-bold text-green-800 mb-2">Status do Backend</h2>
+      <p class="text-green-700 text-sm">API rodando em <code class="bg-green-100 px-2 py-1 rounded">localhost:4000/api/</code></p>
+      <ul class="mt-3 text-sm text-green-700 space-y-1">
+        <li>/api/auth/user/emailpass — Autenticacao</li>
+        <li>/api/admin/products — Produtos</li>
+        <li>/api/admin/fulfillment-ops — Expedicao</li>
+        <li>/api/admin/fiscal-br — Fiscal</li>
+        <li>/api/admin/estoque-ops — Estoque</li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>
