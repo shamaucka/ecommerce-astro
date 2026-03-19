@@ -35,7 +35,10 @@ async function getFiscalConfig() {
  */
 async function initWizard() {
   try {
-    const { default: NFeWizard } = await import("nfewizard-io")
+    // Dynamic require to avoid Vite build resolution
+    const { createRequire } = await import("module")
+    const require = createRequire(import.meta.url)
+    const NFeWizard = require("nfewizard-io")
 
     const wizard = new NFeWizard({
       dfe: {
