@@ -11,5 +11,10 @@ export default defineConfig({
     css: {
       postcss: "./postcss.config.mjs",
     },
+    build: {
+      rollupOptions: {
+        external: ["nfewizard-io"],
+      },
+    },
   },
 })
