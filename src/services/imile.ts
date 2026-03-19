@@ -14,17 +14,19 @@ const BASE_URL =
 // ========== TOKEN CACHE ==========
 let _tokenCache: { token: string; expiresAt: number } | null = null
 
+// Sign = MD5(secretKey + JSON.stringify(param)) => UPPERCASE
 function generateSign(param: Record<string, any>): string {
-  const json = JSON.stringify(param)
-  return crypto.createHash("md5").update(IMILE_SECRET_KEY + json).digest("hex")
-}
-
-function buildHeaders() {
-  return { "Content-Type": "application/json" }
+  const paramJson = JSON.stringify(param)
+  return crypto
+    .createHash("md5")
+    .update(IMILE_SECRET_KEY + paramJson)
+    .digest("hex")
+    .toUpperCase()
 }
 
 async function imileRequest(path: string, param: Record<string, any>, accessToken?: string) {
   const token = accessToken || (await getAccessToken())
+
   const body = {
     accessToken: token,
     customerId: IMILE_CUSTOMER_ID,
@@ -32,24 +34,20 @@ async function imileRequest(path: string, param: Record<string, any>, accessToke
     signMethod: "MD5",
     format: "json",
     version: "1.0.0",
-    timestamp: Date.now().toString(),
+    timestamp: Date.now(),
     timeZone: "-3",
     param,
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(BASE_URL + path, {
     method: "POST",
-    headers: buildHeaders(),
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
 
-  if (!res.ok) {
-    throw new Error(`iMile API error: ${res.status} ${res.statusText}`)
-  }
-
   const data = await res.json()
   if (data.code !== "200" && data.code !== 200) {
-    throw new Error(`iMile API error: ${data.code} - ${data.message || JSON.stringify(data)}`)
+    throw new Error("iMile error " + data.code + ": " + (data.message || JSON.stringify(data)))
   }
 
   return data
@@ -62,42 +60,55 @@ export async function getAccessToken(): Promise<string> {
     return _tokenCache.token
   }
 
-  const param = {
-    grantType: "clientCredential",
-    customerId: IMILE_CUSTOMER_ID,
-  }
-
+  const param = { grantType: "clientCredential" }
   const sign = generateSign(param)
 
   const body = {
     customerId: IMILE_CUSTOMER_ID,
-    sign,
+    sign: sign,
     signMethod: "MD5",
     format: "json",
     version: "1.0.0",
-    timestamp: Date.now().toString(),
+    timestamp: Date.now(),
     timeZone: "-3",
-    param,
+    param: param,
   }
 
-  const res = await fetch(`${BASE_URL}/auth/accessToken/grant`, {
+  const res = await fetch(BASE_URL + "/auth/accessToken/grant", {
     method: "POST",
-    headers: buildHeaders(),
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
 
-  if (!res.ok) {
-    throw new Error(`iMile auth error: ${res.status} ${res.statusText}`)
-  }
-
   const data = await res.json()
+
   if (data.code !== "200" && data.code !== 200) {
-    throw new Error(`iMile auth error: ${data.code} - ${data.message || "falha ao obter token"}`)
+    // Try alternative sign: MD5(param_json + secretKey) instead of MD5(secretKey + param_json)
+    const altSign = crypto
+      .createHash("md5")
+      .update(JSON.stringify(param) + IMILE_SECRET_KEY)
+      .digest("hex")
+      .toUpperCase()
+
+    const body2 = { ...body, sign: altSign, timestamp: Date.now() }
+    const res2 = await fetch(BASE_URL + "/auth/accessToken/grant", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body2),
+    })
+
+    const data2 = await res2.json()
+    if (data2.code !== "200" && data2.code !== 200) {
+      throw new Error("iMile auth failed. Code: " + data.code + " / " + data2.code + " Msg: " + (data.message || "") + " / " + (data2.message || ""))
+    }
+
+    const token2 = data2.data?.accessToken || data2.data
+    _tokenCache = { token: token2, expiresAt: Date.now() + 7000000 }
+    return token2
   }
 
   const token = data.data?.accessToken || data.data
-  // Cache for 2 hours
-  _tokenCache = { token, expiresAt: Date.now() + 2 * 60 * 60 * 1000 }
+  _tokenCache = { token, expiresAt: Date.now() + 7000000 }
   return token
 }
 
@@ -107,9 +118,9 @@ export async function createOrder(orderData: {
   orderNo: string
   consigneeName: string
   consigneePhone: string
+  consigneeCpf?: string
   consigneeAddress: string
   consigneeCity: string
-  consigneeState: string
   consigneeZipCode: string
   consigneeCountry?: string
   weight: number
@@ -117,89 +128,93 @@ export async function createOrder(orderData: {
   width?: number
   height?: number
   declaredValue?: number
-  productCode?: string
+  productValue?: number
   items: Array<{
     skuName: string
-    skuCode: string
-    quantity: number
-    declaredValue: number
-    weight: number
+    skuNo?: string
+    skuQty: number
+    skuDeclaredValue: number
+    skuWeight?: number
   }>
 }) {
   const param = {
     orderNo: orderData.orderNo,
-    orderType: 100,
+    orderType: "100",
     senderInfo: {
-      senderName: process.env.STORE_NAME || "Loja",
-      senderPhone: process.env.STORE_PHONE || "",
-      senderAddress: process.env.STORE_ADDRESS || "",
-      senderCity: process.env.STORE_CITY || "",
-      senderState: process.env.STORE_STATE || "",
-      senderZipCode: process.env.STORE_ZIPCODE || "",
-      senderCountry: "BR",
+      addressType: "seller",
+      contacts: process.env.STORE_NAME || "Tess Quadros",
+      phone: process.env.STORE_PHONE || "",
+      country: "BRA",
+      city: process.env.STORE_CITY || "",
+      address: process.env.STORE_ADDRESS || "",
+      zipCode: process.env.STORE_ZIPCODE || "",
+      taxID: process.env.STORE_CNPJ || "",
+      taxIDType: "2",
     },
     consigneeInfo: {
-      consigneeName: orderData.consigneeName,
-      consigneePhone: orderData.consigneePhone,
-      consigneeAddress: orderData.consigneeAddress,
-      consigneeCity: orderData.consigneeCity,
-      consigneeState: orderData.consigneeState,
-      consigneeZipCode: orderData.consigneeZipCode,
-      consigneeCountry: orderData.consigneeCountry || "BR",
+      addressType: "customer",
+      contacts: orderData.consigneeName,
+      phone: orderData.consigneePhone,
+      country: "BRA",
+      city: orderData.consigneeCity,
+      address: orderData.consigneeAddress,
+      zipCode: orderData.consigneeZipCode,
+      taxID: orderData.consigneeCpf || "",
+      taxIDType: "1",
     },
     packageInfo: {
-      weight: orderData.weight,
-      length: orderData.length || 0,
-      width: orderData.width || 0,
-      height: orderData.height || 0,
-      declaredValue: orderData.declaredValue || 0,
+      goodsType: "Normal",
+      paymentMethod: "PPD",
+      collectingMoney: "0",
+      clientDeclaredValue: String(orderData.declaredValue || 0),
+      clientDeclaredCurrency: "Local",
+      productValue: String(orderData.productValue || orderData.declaredValue || 0),
+      productValueCurrency: "Local",
+      grossWeight: String(orderData.weight),
+      length: String(orderData.length || 0),
+      width: String(orderData.width || 0),
+      high: String(orderData.height || 0),
     },
     skuInfos: orderData.items.map((item) => ({
       skuName: item.skuName,
-      skuCode: item.skuCode,
-      skuQuantity: item.quantity,
-      declaredValue: item.declaredValue,
-      weight: item.weight,
+      skuNo: item.skuNo || "",
+      skuQty: String(item.skuQty),
+      skuDeclaredValue: String(item.skuDeclaredValue),
+      skuWeight: String(item.skuWeight || 0),
     })),
-    productCode: orderData.productCode || process.env.IMILE_PRODUCT_CODE || "",
   }
 
   return imileRequest("/client/order/v2/createOrder", param)
 }
 
-// ========== TRACK ORDER ==========
+// ========== TRACK ==========
 
-export async function trackOrder(waybillNo: string) {
+export async function trackOrder(orderNo: string) {
   const param = {
-    orderNo: waybillNo,
-    orderType: 1,
+    orderType: "1",
+    language: "2",
+    orderNo: orderNo,
   }
-
   return imileRequest("/client/track/getOne", param)
 }
 
-// ========== TRACK BATCH ==========
-
-export async function trackBatch(waybillNos: string[]) {
-  if (waybillNos.length > 100) {
-    throw new Error("iMile trackBatch aceita no maximo 100 waybills por chamada")
-  }
-
+export async function trackBatch(orderNos: string[]) {
+  if (orderNos.length > 100) throw new Error("Max 100 orders per batch")
   const param = {
-    orderNoList: waybillNos,
-    orderType: 1,
+    orderType: "1",
+    language: "2",
+    orderNo: orderNos,
   }
-
   return imileRequest("/client/track/list", param)
 }
 
-// ========== GET SHIPPING LABEL ==========
+// ========== SHIPPING LABEL ==========
 
-export async function getShippingLabel(orderNo: string) {
+export async function getShippingLabel(orderCode: string) {
   const param = {
-    orderNo,
+    orderCode: orderCode,
+    orderCodeType: 1,
   }
-
   return imileRequest("/client/order/getOrderLabel", param)
 }
 
@@ -207,16 +222,24 @@ export async function getShippingLabel(orderNo: string) {
 
 export async function uploadInvoice(
   waybillNo: string,
-  invoiceXml: string,
+  invoiceBase64: string,
   invoiceType: string,
-  accessKey: string
+  accesskey: string,
+  invoiceNo?: string,
+  invoiceAmount?: string
 ) {
   const param = {
-    waybillNo,
-    invoiceXml,
-    invoiceType,
-    accessKey,
+    waybillNo: waybillNo,
+    invoiceList: [
+      {
+        contentBase64: invoiceBase64,
+        fileSuffix: "xml",
+        invoiceType: invoiceType,
+        accesskey: accesskey,
+        invoiceNo: invoiceNo || "",
+        invoiceAmount: invoiceAmount || "0",
+      },
+    ],
   }
-
   return imileRequest("/order/attachment/batchUploadInvoice", param)
 }
