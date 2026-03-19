@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm"
+import { eq, desc, inArray } from "drizzle-orm"
 import { db } from "../db/index.js"
 import {
   astroProduct,
@@ -16,26 +16,44 @@ export async function listProducts(limit = 100) {
     .orderBy(desc(astroProduct.created_at))
     .limit(limit)
 
-  const result = []
-  for (const product of products) {
-    const variants = await db
-      .select()
-      .from(astroProductVariant)
-      .where(eq(astroProductVariant.product_id, product.id))
+  if (products.length === 0) return []
 
-    const variantsWithPrices = []
-    for (const variant of variants) {
-      const prices = await db
+  const productIds = products.map((p) => p.id)
+
+  const allVariants = await db
+    .select()
+    .from(astroProductVariant)
+    .where(inArray(astroProductVariant.product_id, productIds))
+
+  const variantIds = allVariants.map((v) => v.id)
+
+  const allPrices = variantIds.length > 0
+    ? await db
         .select()
         .from(astroVariantPrice)
-        .where(eq(astroVariantPrice.variant_id, variant.id))
-      variantsWithPrices.push({ ...variant, prices })
-    }
+        .where(inArray(astroVariantPrice.variant_id, variantIds))
+    : []
 
-    result.push({ ...product, variants: variantsWithPrices })
+  // Group prices by variant_id
+  const pricesByVariant = new Map<string, typeof allPrices>()
+  for (const price of allPrices) {
+    const list = pricesByVariant.get(price.variant_id) || []
+    list.push(price)
+    pricesByVariant.set(price.variant_id, list)
   }
 
-  return result
+  // Group variants by product_id
+  const variantsByProduct = new Map<string, Array<typeof allVariants[number] & { prices: typeof allPrices }>>()
+  for (const variant of allVariants) {
+    const list = variantsByProduct.get(variant.product_id) || []
+    list.push({ ...variant, prices: pricesByVariant.get(variant.id) || [] })
+    variantsByProduct.set(variant.product_id, list)
+  }
+
+  return products.map((product) => ({
+    ...product,
+    variants: variantsByProduct.get(product.id) || [],
+  }))
 }
 
 export async function getProduct(id: string) {

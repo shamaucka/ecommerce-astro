@@ -5,7 +5,7 @@ import { db } from "../db/index.js"
 import { astroAdminUser } from "../db/schema/product.js"
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "astro-ecommerce-secret-change-in-production"
+  process.env.JWT_SECRET || (() => { throw new Error("JWT_SECRET env var is required") })()
 )
 
 export async function verifyPassword(email: string, password: string) {
