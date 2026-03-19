@@ -1,4 +1,5 @@
 import crypto from "crypto"
+import { createHash } from "crypto"
 
 // ========== iMILE OPEN API v1.3.1 ==========
 
@@ -14,30 +15,57 @@ const BASE_URL =
 // ========== TOKEN CACHE ==========
 let _tokenCache: { token: string; expiresAt: number } | null = null
 
-// Sign = MD5(secretKey + JSON.stringify(param)) => UPPERCASE
-function generateSign(param: Record<string, any>): string {
-  const paramJson = JSON.stringify(param)
-  return crypto
-    .createHash("md5")
-    .update(IMILE_SECRET_KEY + paramJson)
-    .digest("hex")
-    .toUpperCase()
+/**
+ * Generate iMile sign according to their documentation (pages 33-38):
+ * 1. Sort body keys (excluding 'param' and 'sign') in ASCII order
+ * 2. Concatenate: secretKey + sorted(key+value pairs) + JSON(param) + secretKey
+ * 3. MD5 hash -> UPPERCASE
+ */
+function generateSign(body: Record<string, any>): string {
+  // Get all keys except 'param' and 'sign', sort them
+  const keys = Object.keys(body)
+    .filter((k) => k !== "param" && k !== "sign")
+    .sort()
+
+  // Build concatenation: secretKey + key1value1 + key2value2 + ... + JSON(param) + secretKey
+  const parts: string[] = [IMILE_SECRET_KEY]
+
+  for (const key of keys) {
+    parts.push(key)
+    parts.push(String(body[key]))
+  }
+
+  // Add param as compact JSON (no spaces after : and ,)
+  if (body.param !== undefined) {
+    const paramJson = JSON.stringify(body.param)
+      .replace(/: /g, ":")
+      .replace(/, /g, ",")
+    parts.push(paramJson)
+  }
+
+  // Add secretKey at the end
+  parts.push(IMILE_SECRET_KEY)
+
+  const signStr = parts.join("")
+  return createHash("md5").update(signStr, "utf8").digest("hex").toUpperCase()
 }
 
 async function imileRequest(path: string, param: Record<string, any>, accessToken?: string) {
   const token = accessToken || (await getAccessToken())
 
-  const body = {
+  const body: Record<string, any> = {
     accessToken: token,
     customerId: IMILE_CUSTOMER_ID,
-    sign: generateSign(param),
     signMethod: "MD5",
     format: "json",
     version: "1.0.0",
-    timestamp: Date.now(),
+    timestamp: String(Date.now()),
     timeZone: "-3",
-    param,
+    param: param,
   }
+
+  // Generate sign from body
+  body.sign = generateSign(body)
 
   const res = await fetch(BASE_URL + path, {
     method: "POST",
@@ -61,18 +89,19 @@ export async function getAccessToken(): Promise<string> {
   }
 
   const param = { grantType: "clientCredential" }
-  const sign = generateSign(param)
 
-  const body = {
+  const body: Record<string, any> = {
     customerId: IMILE_CUSTOMER_ID,
-    sign: sign,
     signMethod: "MD5",
     format: "json",
     version: "1.0.0",
-    timestamp: Date.now(),
+    timestamp: String(Date.now()),
     timeZone: "-3",
     param: param,
   }
+
+  // Generate sign
+  body.sign = generateSign(body)
 
   const res = await fetch(BASE_URL + "/auth/accessToken/grant", {
     method: "POST",
@@ -83,32 +112,11 @@ export async function getAccessToken(): Promise<string> {
   const data = await res.json()
 
   if (data.code !== "200" && data.code !== 200) {
-    // Try alternative sign: MD5(param_json + secretKey) instead of MD5(secretKey + param_json)
-    const altSign = crypto
-      .createHash("md5")
-      .update(JSON.stringify(param) + IMILE_SECRET_KEY)
-      .digest("hex")
-      .toUpperCase()
-
-    const body2 = { ...body, sign: altSign, timestamp: Date.now() }
-    const res2 = await fetch(BASE_URL + "/auth/accessToken/grant", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body2),
-    })
-
-    const data2 = await res2.json()
-    if (data2.code !== "200" && data2.code !== 200) {
-      throw new Error("iMile auth failed. Code: " + data.code + " / " + data2.code + " Msg: " + (data.message || "") + " / " + (data2.message || ""))
-    }
-
-    const token2 = data2.data?.accessToken || data2.data
-    _tokenCache = { token: token2, expiresAt: Date.now() + 7000000 }
-    return token2
+    throw new Error("iMile auth failed: " + data.code + " - " + (data.message || JSON.stringify(data)))
   }
 
   const token = data.data?.accessToken || data.data
-  _tokenCache = { token, expiresAt: Date.now() + 7000000 }
+  _tokenCache = { token, expiresAt: Date.now() + 7000000 } // ~2hrs
   return token
 }
 
@@ -122,7 +130,6 @@ export async function createOrder(orderData: {
   consigneeAddress: string
   consigneeCity: string
   consigneeZipCode: string
-  consigneeCountry?: string
   weight: number
   length?: number
   width?: number
@@ -190,32 +197,29 @@ export async function createOrder(orderData: {
 // ========== TRACK ==========
 
 export async function trackOrder(orderNo: string) {
-  const param = {
+  return imileRequest("/client/track/getOne", {
     orderType: "1",
     language: "2",
     orderNo: orderNo,
-  }
-  return imileRequest("/client/track/getOne", param)
+  })
 }
 
 export async function trackBatch(orderNos: string[]) {
   if (orderNos.length > 100) throw new Error("Max 100 orders per batch")
-  const param = {
+  return imileRequest("/client/track/list", {
     orderType: "1",
     language: "2",
     orderNo: orderNos,
-  }
-  return imileRequest("/client/track/list", param)
+  })
 }
 
 // ========== SHIPPING LABEL ==========
 
 export async function getShippingLabel(orderCode: string) {
-  const param = {
+  return imileRequest("/client/order/reprintOrder", {
     orderCode: orderCode,
     orderCodeType: 1,
-  }
-  return imileRequest("/client/order/getOrderLabel", param)
+  })
 }
 
 // ========== UPLOAD INVOICE ==========
@@ -228,7 +232,7 @@ export async function uploadInvoice(
   invoiceNo?: string,
   invoiceAmount?: string
 ) {
-  const param = {
+  return imileRequest("/order/attachment/batchUploadInvoice", {
     waybillNo: waybillNo,
     invoiceList: [
       {
@@ -240,6 +244,5 @@ export async function uploadInvoice(
         invoiceAmount: invoiceAmount || "0",
       },
     ],
-  }
-  return imileRequest("/order/attachment/batchUploadInvoice", param)
+  })
 }
