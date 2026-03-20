@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { corsHeaders } from "@/lib/cors";
+import { corsHeaders, getCorsHeaders } from "@/lib/cors";
 import { requireAuth } from "@/services/auth";
 import { writeFile, mkdir } from "node:fs/promises";
 import { join, extname } from "node:path";
@@ -8,7 +8,7 @@ const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/a
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export const POST: APIRoute = async ({ request }) => {
-  const headers = corsHeaders(request);
+  const headers = getCorsHeaders(request);
   try {
     await requireAuth(request);
 
@@ -61,7 +61,7 @@ export const POST: APIRoute = async ({ request }) => {
   } catch (err: any) {
     return new Response(
       JSON.stringify({ error: err.message || "Erro ao fazer upload" }),
-      { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders(request) } }
+      { status: 400, headers: { "Content-Type": "application/json", ...getCorsHeaders(request) } }
     );
   }
 };
@@ -69,6 +69,6 @@ export const POST: APIRoute = async ({ request }) => {
 export const OPTIONS: APIRoute = async ({ request }) => {
   return new Response(null, {
     status: 204,
-    headers: corsHeaders(request),
+    headers: getCorsHeaders(request),
   });
 };

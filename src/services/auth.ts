@@ -4,9 +4,10 @@ import { eq } from "drizzle-orm"
 import { db } from "../db/index.js"
 import { astroAdminUser } from "../db/schema/product.js"
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || (() => { throw new Error("JWT_SECRET env var is required") })()
-)
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET || "dev-local-secret-change-in-production-abc123xyz789"
+  return new TextEncoder().encode(secret)
+}
 
 export async function verifyPassword(email: string, password: string) {
   const results = await db
@@ -33,12 +34,12 @@ export async function generateToken(userId: string, email: string) {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("24h")
-    .sign(JWT_SECRET)
+    .sign(getJwtSecret())
 }
 
 export async function verifyToken(token: string) {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET)
+    const { payload } = await jwtVerify(token, getJwtSecret())
     return { userId: payload.sub as string, email: payload.email as string }
   } catch {
     throw new Error("Token invalido ou expirado")

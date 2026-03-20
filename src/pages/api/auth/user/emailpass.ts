@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const user = await verifyPassword(email, password);
-    const token = await generateToken(user);
+    const token = await generateToken(user.id, user.email);
 
     return new Response(
       JSON.stringify({ token }),

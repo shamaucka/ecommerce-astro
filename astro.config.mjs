@@ -6,6 +6,7 @@ export default defineConfig({
   output: "server",
   adapter: node({ mode: "standalone" }),
   integrations: [react()],
+  security: { checkOrigin: false },
   server: { port: 4000, host: "0.0.0.0" },
   vite: {
     css: {

@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro"
-import { corsHeaders } from "@/lib/cors"
+import { corsHeaders, getCorsHeaders } from "@/lib/cors"
 import { requireAuth } from "@/services/auth"
 import * as nfeEmitter from "@/services/nfe-emitter"
 
 export const POST: APIRoute = async ({ request }) => {
-  const headers = { "Content-Type": "application/json", ...corsHeaders(request) }
+  const headers = { "Content-Type": "application/json", ...getCorsHeaders(request) }
 
   try {
     await requireAuth(request)
@@ -51,7 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
 }
 
 export const GET: APIRoute = async ({ request }) => {
-  const headers = { "Content-Type": "application/json", ...corsHeaders(request) }
+  const headers = { "Content-Type": "application/json", ...getCorsHeaders(request) }
   try {
     await requireAuth(request)
     const resultado = await nfeEmitter.statusSefaz()
@@ -62,5 +62,5 @@ export const GET: APIRoute = async ({ request }) => {
 }
 
 export const OPTIONS: APIRoute = async ({ request }) => {
-  return new Response(null, { status: 204, headers: corsHeaders(request) })
+  return new Response(null, { status: 204, headers: getCorsHeaders(request) })
 }
