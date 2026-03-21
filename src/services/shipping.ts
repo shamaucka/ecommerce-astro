@@ -1,7 +1,7 @@
 import { eq, desc } from "drizzle-orm"
 import { db } from "../db/index.js"
 import { shippingConfig, shippingZone } from "../db/schema/shipping.js"
-import { getPricing as imileGetPricing } from "./imile.js"
+// iMile: usado para criar pedido/rastrear (sem API de cotacao)
 
 // ========== CEP -> UF MAPPING ==========
 
@@ -222,41 +222,62 @@ export async function calculateShipping(cep: string, cartTotal: number, _cartIte
     }
   }
 
-  // 4) Fallback: iMile API pricing
-  try {
-    const senderZip = config.sender_zipcode || process.env.STORE_ZIPCODE || ""
-    if (!senderZip) throw new Error("CEP de origem nao configurado")
+  // 4) Fallback: tabela interna por distancia (quando nao tem zona configurada)
+  //    iMile nao tem API de cotacao, so criacao de pedido/rastreio
+  if (!uf) throw new Error("CEP invalido ou nao atendido")
 
-    const pricing = await imileGetPricing({
-      senderZipCode: senderZip,
-      receiverZipCode: cep.replace(/\D/g, ""),
-      weight: 0.5, // default weight
-    })
+  // Tabela padrao por regiao (pode ser sobrescrita por zonas manuais)
+  const senderUf = cepToUF(config.sender_zipcode || process.env.STORE_ZIPCODE || "") || "SP"
+  const REGION_MAP: Record<string, { region: string; baseCost: number; baseDays: number }> = {
+    SP: { region: "Sudeste", baseCost: 1490, baseDays: 5 },
+    RJ: { region: "Sudeste", baseCost: 1690, baseDays: 6 },
+    MG: { region: "Sudeste", baseCost: 1690, baseDays: 6 },
+    ES: { region: "Sudeste", baseCost: 1890, baseDays: 7 },
+    PR: { region: "Sul", baseCost: 1890, baseDays: 7 },
+    SC: { region: "Sul", baseCost: 1990, baseDays: 8 },
+    RS: { region: "Sul", baseCost: 2190, baseDays: 9 },
+    DF: { region: "Centro-Oeste", baseCost: 2190, baseDays: 8 },
+    GO: { region: "Centro-Oeste", baseCost: 2190, baseDays: 8 },
+    MS: { region: "Centro-Oeste", baseCost: 2390, baseDays: 9 },
+    MT: { region: "Centro-Oeste", baseCost: 2590, baseDays: 10 },
+    BA: { region: "Nordeste", baseCost: 2590, baseDays: 10 },
+    PE: { region: "Nordeste", baseCost: 2790, baseDays: 11 },
+    CE: { region: "Nordeste", baseCost: 2790, baseDays: 11 },
+    SE: { region: "Nordeste", baseCost: 2590, baseDays: 10 },
+    AL: { region: "Nordeste", baseCost: 2790, baseDays: 11 },
+    PB: { region: "Nordeste", baseCost: 2790, baseDays: 11 },
+    RN: { region: "Nordeste", baseCost: 2790, baseDays: 11 },
+    PI: { region: "Nordeste", baseCost: 2990, baseDays: 12 },
+    MA: { region: "Nordeste", baseCost: 2990, baseDays: 12 },
+    PA: { region: "Norte", baseCost: 3290, baseDays: 14 },
+    AM: { region: "Norte", baseCost: 3990, baseDays: 16 },
+    AP: { region: "Norte", baseCost: 3590, baseDays: 15 },
+    TO: { region: "Norte", baseCost: 2990, baseDays: 12 },
+    RO: { region: "Norte", baseCost: 3290, baseDays: 14 },
+    RR: { region: "Norte", baseCost: 3990, baseDays: 16 },
+    AC: { region: "Norte", baseCost: 3990, baseDays: 16 },
+  }
 
-    // iMile returns pricing data - extract cost and delivery time
-    const imileFreight = pricing?.freightAmount || pricing?.freight || pricing?.totalAmount || 0
-    const imileDeliveryDays = pricing?.deliveryDays || pricing?.estimatedDeliveryDays || pricing?.maxDays || 7
+  const dest = REGION_MAP[uf]
+  if (!dest) throw new Error(`Regiao nao atendida para ${uf}`)
 
-    // Convert to cents if needed (iMile usually returns in reais)
-    const costCents = typeof imileFreight === "number"
-      ? (imileFreight < 100 ? Math.round(imileFreight * 100) : imileFreight)
-      : 0
+  // If sending from same state, reduce cost/time
+  const sameState = uf === senderUf
+  const sameRegion = dest.region === (REGION_MAP[senderUf]?.region || "Sudeste")
+  const costReduction = sameState ? 500 : sameRegion ? 200 : 0
+  const daysReduction = sameState ? 2 : sameRegion ? 1 : 0
 
-    const finalCost = costCents + extraCost
-    const finalDays = (typeof imileDeliveryDays === "number" ? imileDeliveryDays : 7) + extraDays
+  const finalCost = Math.max(dest.baseCost - costReduction, 990) + extraCost
+  const finalDaysMin = Math.max(dest.baseDays - daysReduction, 2) + extraDays
+  const finalDaysMax = finalDaysMin + 3
 
-    return {
-      free: false,
-      cost: finalCost,
-      delivery_days_min: finalDays,
-      delivery_days_max: finalDays + 2,
-      zone: null,
-      source: "imile",
-      message: `${finalDays}-${finalDays + 2} dias uteis`,
-    }
-  } catch (imileError: any) {
-    // If iMile also fails and no zone matched
-    if (!uf) throw new Error("CEP invalido ou nao atendido")
-    throw new Error(`Frete indisponivel para ${uf}: ${imileError.message}`)
+  return {
+    free: false,
+    cost: finalCost,
+    delivery_days_min: finalDaysMin,
+    delivery_days_max: finalDaysMax,
+    zone: null,
+    source: "auto",
+    message: `${finalDaysMin}-${finalDaysMax} dias uteis`,
   }
 }
