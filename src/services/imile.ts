@@ -213,6 +213,50 @@ export async function trackBatch(orderNos: string[]) {
   })
 }
 
+// ========== PRICING / FREIGHT QUOTE ==========
+
+export async function getPricing(data: {
+  senderZipCode: string
+  receiverZipCode: string
+  weight: number
+  length?: number
+  width?: number
+  height?: number
+  declaredValue?: number
+}) {
+  const param: Record<string, any> = {
+    senderInfo: {
+      zipCode: data.senderZipCode,
+      country: "BRA",
+    },
+    consigneeInfo: {
+      zipCode: data.receiverZipCode,
+      country: "BRA",
+    },
+    packageInfo: {
+      grossWeight: String(data.weight || 0.5),
+      length: String(data.length || 30),
+      width: String(data.width || 20),
+      high: String(data.height || 10),
+      clientDeclaredValue: String(data.declaredValue || 0),
+      clientDeclaredCurrency: "Local",
+    },
+  }
+
+  try {
+    const result = await imileRequest("/client/order/pricing", param)
+    return result.data
+  } catch (e: any) {
+    // Fallback: try alternative endpoint
+    try {
+      const result2 = await imileRequest("/client/order/queryFreight", param)
+      return result2.data
+    } catch {
+      throw e
+    }
+  }
+}
+
 // ========== SHIPPING LABEL ==========
 
 export async function getShippingLabel(orderCode: string) {

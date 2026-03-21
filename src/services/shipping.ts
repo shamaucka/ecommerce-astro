@@ -1,6 +1,7 @@
 import { eq, desc } from "drizzle-orm"
 import { db } from "../db/index.js"
 import { shippingConfig, shippingZone } from "../db/schema/shipping.js"
+import { getPricing as imileGetPricing } from "./imile.js"
 
 // ========== CEP -> UF MAPPING ==========
 
@@ -60,6 +61,9 @@ export async function getShippingConfig() {
     flat_rate_amount: 0,
     carrier: "imile",
     imile_product_code: null,
+    extra_days: 0,
+    extra_cost: 0,
+    sender_zipcode: null,
     active: true,
     created_at: null,
     updated_at: null,
@@ -72,6 +76,9 @@ export async function saveShippingConfig(data: {
   flat_rate_amount?: number
   carrier?: string
   imile_product_code?: string
+  extra_days?: number
+  extra_cost?: number
+  sender_zipcode?: string
   active?: boolean
 }) {
   const existing = await db.select().from(shippingConfig).limit(1)
@@ -159,8 +166,10 @@ export async function deleteZone(id: string) {
 
 export async function calculateShipping(cep: string, cartTotal: number, _cartItems?: any[]) {
   const config = await getShippingConfig()
+  const extraDays = config.extra_days || 0
+  const extraCost = config.extra_cost || 0 // in cents
 
-  // Check free shipping threshold (amounts in cents)
+  // 1) Check free shipping threshold (amounts in cents)
   if (config.free_shipping_min && config.free_shipping_min > 0 && cartTotal >= config.free_shipping_min) {
     return {
       free: true,
@@ -168,46 +177,86 @@ export async function calculateShipping(cep: string, cartTotal: number, _cartIte
       delivery_days_min: null,
       delivery_days_max: null,
       zone: null,
+      source: "free_shipping",
       message: "Frete gratis",
     }
   }
 
-  // Flat rate
+  // 2) Flat rate override
   if (config.flat_rate_enabled && config.flat_rate_amount) {
+    const cost = config.flat_rate_amount + extraCost
     return {
       free: false,
-      cost: config.flat_rate_amount,
+      cost,
       delivery_days_min: null,
       delivery_days_max: null,
       zone: null,
+      source: "flat_rate",
       message: "Frete fixo",
     }
   }
 
-  // Zone-based
+  // 3) Try zone-based pricing (if zones are configured for this CEP's UF)
   const uf = cepToUF(cep)
-  if (!uf) {
-    throw new Error("CEP invalido ou nao atendido")
+  if (uf) {
+    const zones = await listZones()
+    const activeZones = zones.filter((z) => z.active)
+    const zone = activeZones.find((z) => {
+      const states = z.states as string[]
+      return states.includes(uf)
+    })
+
+    if (zone) {
+      const cost = zone.rate + extraCost
+      const dMin = zone.delivery_days_min + extraDays
+      const dMax = zone.delivery_days_max + extraDays
+      return {
+        free: false,
+        cost,
+        delivery_days_min: dMin,
+        delivery_days_max: dMax,
+        zone: zone.name,
+        source: "zone",
+        message: `${dMin}-${dMax} dias uteis`,
+      }
+    }
   }
 
-  const zones = await listZones()
-  const activeZones = zones.filter((z) => z.active)
+  // 4) Fallback: iMile API pricing
+  try {
+    const senderZip = config.sender_zipcode || process.env.STORE_ZIPCODE || ""
+    if (!senderZip) throw new Error("CEP de origem nao configurado")
 
-  const zone = activeZones.find((z) => {
-    const states = z.states as string[]
-    return states.includes(uf)
-  })
+    const pricing = await imileGetPricing({
+      senderZipCode: senderZip,
+      receiverZipCode: cep.replace(/\D/g, ""),
+      weight: 0.5, // default weight
+    })
 
-  if (!zone) {
-    throw new Error(`Regiao nao atendida para o estado ${uf}`)
-  }
+    // iMile returns pricing data - extract cost and delivery time
+    const imileFreight = pricing?.freightAmount || pricing?.freight || pricing?.totalAmount || 0
+    const imileDeliveryDays = pricing?.deliveryDays || pricing?.estimatedDeliveryDays || pricing?.maxDays || 7
 
-  return {
-    free: false,
-    cost: zone.rate,
-    delivery_days_min: zone.delivery_days_min,
-    delivery_days_max: zone.delivery_days_max,
-    zone: zone.name,
-    message: `${zone.delivery_days_min}-${zone.delivery_days_max} dias uteis`,
+    // Convert to cents if needed (iMile usually returns in reais)
+    const costCents = typeof imileFreight === "number"
+      ? (imileFreight < 100 ? Math.round(imileFreight * 100) : imileFreight)
+      : 0
+
+    const finalCost = costCents + extraCost
+    const finalDays = (typeof imileDeliveryDays === "number" ? imileDeliveryDays : 7) + extraDays
+
+    return {
+      free: false,
+      cost: finalCost,
+      delivery_days_min: finalDays,
+      delivery_days_max: finalDays + 2,
+      zone: null,
+      source: "imile",
+      message: `${finalDays}-${finalDays + 2} dias uteis`,
+    }
+  } catch (imileError: any) {
+    // If iMile also fails and no zone matched
+    if (!uf) throw new Error("CEP invalido ou nao atendido")
+    throw new Error(`Frete indisponivel para ${uf}: ${imileError.message}`)
   }
 }
