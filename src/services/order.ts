@@ -33,25 +33,21 @@ export async function createOrder(data: {
   customer_id?: string
   customer_name?: string
   customer_email?: string
-  customer_phone?: string
-  customer_cpf?: string
   items: any[]
   subtotal: number
   shipping_cost?: number
   discount_amount?: number
   payment_method?: string
-  shipping_cep?: string
-  shipping_street?: string
-  shipping_number?: string
-  shipping_complement?: string
+  shipping_address_line1?: string
+  shipping_address_line2?: string
   shipping_neighborhood?: string
   shipping_city?: string
   shipping_state?: string
+  shipping_postal_code?: string
   coupon_code?: string
-  notes?: string
   metadata?: any
 }) {
-  const displayId = "PED-" + String(Math.floor(100000 + Math.random() * 900000))
+  const displayId = "#" + String(Math.floor(1000 + Math.random() * 9000))
   const subtotal = data.subtotal
   const shippingCost = data.shipping_cost || 0
   const discountAmount = data.discount_amount || 0
@@ -63,12 +59,24 @@ export async function createOrder(data: {
       id: crypto.randomUUID(),
       display_id: displayId,
       status: "pending",
-      ...data,
+      customer_id: data.customer_id,
+      customer_name: data.customer_name,
+      customer_email: data.customer_email,
+      items: data.items,
       subtotal,
       shipping_cost: shippingCost,
       discount_amount: discountAmount,
       total,
+      payment_method: data.payment_method,
       payment_status: "pending",
+      shipping_address_line1: data.shipping_address_line1,
+      shipping_address_line2: data.shipping_address_line2,
+      shipping_neighborhood: data.shipping_neighborhood,
+      shipping_city: data.shipping_city,
+      shipping_state: data.shipping_state,
+      shipping_postal_code: data.shipping_postal_code,
+      coupon_code: data.coupon_code,
+      metadata: data.metadata,
       created_at: new Date(),
       updated_at: new Date(),
     })
