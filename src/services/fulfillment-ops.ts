@@ -125,6 +125,15 @@ async function createTaskItem(data: Record<string, any>) {
   return result[0]
 }
 
+async function updateTaskItem(id: string, data: Record<string, any>) {
+  const result = await db
+    .update(fulfillmentTaskItem)
+    .set({ ...data, updated_at: new Date() })
+    .where(eq(fulfillmentTaskItem.id, id))
+    .returning()
+  return result[0]
+}
+
 // ========== ROMANEIO CRUD ==========
 
 async function retrieveRomaneioById(id: string) {
@@ -422,6 +431,14 @@ export async function retrieve(id: string) {
 
 export async function listFulfillmentTaskItems(filters: Record<string, any>) {
   return listTaskItems(filters, { order: { location: "ASC" } })
+}
+
+export async function markItemChecked(itemId: string) {
+  return updateTaskItem(itemId, { checked: true, checked_at: new Date() })
+}
+
+export async function updateTaskStatus(taskId: string, status: string) {
+  return updateTask(taskId, { status })
 }
 
 export async function getStats() {
