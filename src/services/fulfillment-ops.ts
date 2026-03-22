@@ -408,6 +408,22 @@ export async function removeFromRomaneio(taskId: string) {
 
 // ========== STATS ==========
 
+// ========== EXPORTS FOR API ROUTE ==========
+
+export async function list(status?: string) {
+  const filters: Record<string, any> = {}
+  if (status) filters.status = status
+  return listTasks(filters, { order: { created_at: "DESC" }, take: 200 })
+}
+
+export async function retrieve(id: string) {
+  return retrieveTask(id)
+}
+
+export async function listFulfillmentTaskItems(filters: Record<string, any>) {
+  return listTaskItems(filters, { order: { location: "ASC" } })
+}
+
 export async function getStats() {
   const all = await listTasks({}, { take: 10000 })
   const today = new Date()
