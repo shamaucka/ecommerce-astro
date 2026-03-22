@@ -1,6 +1,7 @@
 import { eq, and, isNull, asc, desc, inArray } from "drizzle-orm"
 import { db } from "../db/index.js"
 import { fulfillmentTask, fulfillmentTaskItem, romaneio } from "../db/schema/fulfillment-ops.js"
+import { astroOrder } from "../db/schema/order.js"
 
 function buildWhere(table: typeof fulfillmentTask, filters: Record<string, any>) {
   const conditions = []
@@ -374,6 +375,16 @@ export async function closeRomaneio(romaneioId: string, closedBy?: string) {
       status: "em_transporte",
       shipped_at: new Date(),
     })
+    // Atualizar status do pedido na tabela astro_order
+    if (task.order_id) {
+      try {
+        await db.update(astroOrder)
+          .set({ status: "shipped", tracking_number: task.tracking_code, updated_at: new Date() })
+          .where(eq(astroOrder.id, task.order_id))
+      } catch (e) {
+        console.warn("Erro ao atualizar pedido:", e)
+      }
+    }
   }
 
   await updateRomaneioRecord(romaneioId, {
@@ -399,6 +410,13 @@ export async function listOpenRomaneios() {
   return listRomaneios(
     { status: "aberto" },
     { order: { created_at: "DESC" } }
+  )
+}
+
+export async function listAllRomaneios() {
+  return listRomaneios(
+    {},
+    { order: { created_at: "DESC" }, take: 50 }
   )
 }
 

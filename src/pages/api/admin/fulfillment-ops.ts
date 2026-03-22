@@ -67,6 +67,14 @@ export const GET: APIRoute = async ({ request, url }) => {
         );
       }
 
+      case "romaneios_todos": {
+        const romaneios = await fulfillmentOps.listAllRomaneios();
+        return new Response(
+          JSON.stringify({ romaneios }),
+          { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+
       case "romaneio_tasks": {
         const romaneioId = url.searchParams.get("romaneio_id");
         if (!romaneioId) {
