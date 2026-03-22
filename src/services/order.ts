@@ -1,6 +1,7 @@
 import { eq, desc, sql, count } from "drizzle-orm"
 import { db } from "../db/index.js"
 import { astroOrder } from "../db/schema/order.js"
+import * as fulfillmentOps from "./fulfillment-ops.js"
 
 // ========== ORDERS ==========
 
@@ -99,6 +100,33 @@ export async function updateOrderStatus(id: string, status: string) {
     .returning()
 
   if (!result[0]) throw new Error(`Pedido ${id} nao encontrado`)
+
+  // Criar fulfillment task automaticamente quando pedido muda para processing (pago)
+  if (status === "processing") {
+    try {
+      const order = result[0]
+      const items = (order.items as any[] || []).map((item: any) => ({
+        product_id: item.product_id,
+        variant_id: item.variant_id,
+        sku: item.sku,
+        product_title: item.title,
+        variant_title: item.variant_title,
+        quantity: item.quantity || 1,
+      }))
+      await fulfillmentOps.createFromOrder({
+        order_id: order.id,
+        display_id: order.display_id || undefined,
+        customer_name: order.customer_name || order.customer_email || undefined,
+        customer_email: order.customer_email || undefined,
+        order_total: order.total || 0,
+        items,
+      })
+    } catch (e: any) {
+      // Se ja existe fulfillment task para esse pedido, ignora
+      console.warn("Fulfillment task creation skipped:", e.message)
+    }
+  }
+
   return result[0]
 }
 
