@@ -57,6 +57,23 @@ export const POST: APIRoute = async ({ request }) => {
 
     switch (action) {
       case "create": {
+        // Suporta formato do dashboard: { product_id, related_products: [{ product_id, discount_percent }] }
+        if (body.related_products && Array.isArray(body.related_products)) {
+          const bundles = [];
+          for (const rp of body.related_products) {
+            const bundle = await bundleService.createBundle({
+              product_id: body.product_id,
+              related_product_id: rp.product_id,
+              discount_percent: rp.discount_percent || 0,
+            });
+            bundles.push(bundle);
+          }
+          return new Response(
+            JSON.stringify({ bundles, bundle: bundles[0] }),
+            { status: 201, headers: { "Content-Type": "application/json", ...corsHeaders } }
+          );
+        }
+        // Formato direto: { product_id, related_product_id, discount_percent }
         const bundle = await bundleService.createBundle(body);
         return new Response(
           JSON.stringify({ bundle }),
