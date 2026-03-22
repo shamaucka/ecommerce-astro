@@ -83,6 +83,74 @@ export async function getProduct(id: string) {
   return { ...product, variants: variantsWithPrices }
 }
 
+export async function getProductByHandle(handle: string) {
+  const products = await db
+    .select()
+    .from(astroProduct)
+    .where(eq(astroProduct.handle, handle))
+    .limit(1)
+
+  const product = products[0]
+  if (!product) throw new Error(`Produto ${handle} nao encontrado`)
+
+  const variants = await db
+    .select()
+    .from(astroProductVariant)
+    .where(eq(astroProductVariant.product_id, product.id))
+
+  const variantsWithPrices = []
+  for (const variant of variants) {
+    const prices = await db
+      .select()
+      .from(astroVariantPrice)
+      .where(eq(astroVariantPrice.variant_id, variant.id))
+    variantsWithPrices.push({ ...variant, prices })
+  }
+
+  return { ...product, variants: variantsWithPrices }
+}
+
+export async function listPublishedProducts(limit = 100) {
+  const products = await db
+    .select()
+    .from(astroProduct)
+    .where(eq(astroProduct.status, "published"))
+    .orderBy(desc(astroProduct.created_at))
+    .limit(limit)
+
+  if (products.length === 0) return []
+
+  const productIds = products.map((p) => p.id)
+  const allVariants = await db
+    .select()
+    .from(astroProductVariant)
+    .where(inArray(astroProductVariant.product_id, productIds))
+
+  const variantIds = allVariants.map((v) => v.id)
+  const allPrices = variantIds.length > 0
+    ? await db.select().from(astroVariantPrice).where(inArray(astroVariantPrice.variant_id, variantIds))
+    : []
+
+  const pricesByVariant = new Map<string, typeof allPrices>()
+  for (const price of allPrices) {
+    const list = pricesByVariant.get(price.variant_id) || []
+    list.push(price)
+    pricesByVariant.set(price.variant_id, list)
+  }
+
+  const variantsByProduct = new Map<string, Array<typeof allVariants[number] & { prices: typeof allPrices }>>()
+  for (const variant of allVariants) {
+    const list = variantsByProduct.get(variant.product_id) || []
+    list.push({ ...variant, prices: pricesByVariant.get(variant.id) || [] })
+    variantsByProduct.set(variant.product_id, list)
+  }
+
+  return products.map((product) => ({
+    ...product,
+    variants: variantsByProduct.get(product.id) || [],
+  }))
+}
+
 export async function createProduct(data: {
   title: string
   handle: string
