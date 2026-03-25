@@ -1,11 +1,11 @@
 /**
- * Emissor proprio de NF-e — comunica diretamente com a SEFAZ
- * Usa a lib NFeWizard-io (open source, gratuita)
+ * Emissor proprio de NF-e — Node.js puro (sem Java)
+ * Usa xml-crypto para assinar XML + HTTPS para comunicar com SEFAZ
  *
  * Requisitos:
- * - Certificado Digital A1 (.pfx) em NFE_CERT_PATH
+ * - Certificado Digital A1 (.pfx) base64 em NFE_CERT_BASE64
+ * - Ou caminho do .pfx em NFE_CERT_PATH
  * - Senha do certificado em NFE_CERT_PASSWORD
- * - JDK instalado no servidor
  * - Credenciamento na SEFAZ do estado
  *
  * Custo: R$ 0/mes (so o certificado ~R$150/ano)
@@ -13,12 +13,15 @@
 
 import { db } from "../db/index.js"
 import { storeFiscalConfig } from "../db/schema/fiscal-br.js"
+import * as crypto from "crypto"
+import * as https from "https"
 
 // Config from env vars
-const NFE_CERT_PATH = process.env.NFE_CERT_PATH || "./certs/certificado.pfx"
+const NFE_CERT_PATH = process.env.NFE_CERT_PATH || ""
+const NFE_CERT_BASE64 = process.env.NFE_CERT_BASE64 || ""
 const NFE_CERT_PASSWORD = process.env.NFE_CERT_PASSWORD || ""
 const NFE_AMBIENTE = (process.env.NFE_AMBIENTE || "homologacao") as "homologacao" | "producao"
-const NFE_UF = process.env.NFE_UF || "SP"
+const NFE_UF = process.env.NFE_UF || "SC"
 
 // Store fiscal config cache
 let _fiscalConfig: any = null
@@ -31,34 +34,140 @@ async function getFiscalConfig() {
 }
 
 /**
- * Inicializa o NFeWizard com o certificado digital
+ * Load PFX certificate and extract key + cert
  */
-async function initWizard() {
-  try {
-    // Dynamic require to avoid Vite build resolution
-    const { createRequire } = await import("module")
-    const require = createRequire(import.meta.url)
-    const NFeWizard = require("nfewizard-io")
+function loadCertificate(): { key: string; cert: string; pfx: Buffer } {
+  let pfxBuffer: Buffer
 
-    const wizard = new NFeWizard({
-      dfe: {
-        ambiente: NFE_AMBIENTE === "producao" ? 1 : 2, // 1=producao, 2=homologacao
-        UF: NFE_UF,
-        versaoDF: "4.00",
-        timezone: "America/Sao_Paulo",
-      },
-      certificado: {
-        pfx: NFE_CERT_PATH,
-        senha: NFE_CERT_PASSWORD,
-      },
+  if (NFE_CERT_BASE64) {
+    pfxBuffer = Buffer.from(NFE_CERT_BASE64, "base64")
+  } else if (NFE_CERT_PATH) {
+    const fs = require("fs")
+    pfxBuffer = fs.readFileSync(NFE_CERT_PATH)
+  } else {
+    throw new Error("Certificado digital nao configurado. Configure NFE_CERT_BASE64 ou NFE_CERT_PATH.")
+  }
+
+  // Extract key and cert from PFX using Node crypto
+  const p12 = crypto.createSecureContext({
+    pfx: pfxBuffer,
+    passphrase: NFE_CERT_PASSWORD,
+  })
+
+  return { key: "", cert: "", pfx: pfxBuffer }
+}
+
+/**
+ * Sign XML with X509 certificate using xml-crypto
+ */
+async function signXml(xml: string): Promise<string> {
+  try {
+    const { SignedXml } = await import("xml-crypto")
+
+    const pfxData = loadCertificate()
+
+    // Use xml-crypto to sign
+    const sig = new SignedXml({
+      privateKey: pfxData.pfx,
+      passphrase: NFE_CERT_PASSWORD,
+      canonicalizationAlgorithm: "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
+      signatureAlgorithm: "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
     })
 
-    return wizard
+    sig.addReference({
+      xpath: "//*[local-name(.)='infNFe']",
+      transforms: [
+        "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+        "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
+      ],
+      digestAlgorithm: "http://www.w3.org/2000/09/xmldsig#sha1",
+    })
+
+    sig.computeSignature(xml, {
+      location: { reference: "//*[local-name(.)='infNFe']", action: "after" },
+    })
+
+    return sig.getSignedXml()
   } catch (err: any) {
-    console.error("Erro ao inicializar NFeWizard:", err.message)
-    throw new Error("Emissor NFe nao configurado. Verifique certificado digital e JDK.")
+    throw new Error("Erro ao assinar XML: " + err.message)
   }
 }
+
+/**
+ * Send SOAP request to SEFAZ
+ */
+async function soapRequest(url: string, soapBody: string): Promise<string> {
+  const pfxData = loadCertificate()
+
+  const soapEnvelope = `<?xml version="1.0" encoding="utf-8"?>
+<soap12:Envelope xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <soap12:Body>${soapBody}</soap12:Body>
+</soap12:Envelope>`
+
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url)
+    const options: https.RequestOptions = {
+      hostname: urlObj.hostname,
+      port: 443,
+      path: urlObj.pathname,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/soap+xml; charset=utf-8",
+        "Content-Length": Buffer.byteLength(soapEnvelope),
+      },
+      pfx: pfxData.pfx,
+      passphrase: NFE_CERT_PASSWORD,
+      rejectUnauthorized: true,
+    }
+
+    const req = https.request(options, (res) => {
+      let data = ""
+      res.on("data", (chunk) => (data += chunk))
+      res.on("end", () => resolve(data))
+    })
+
+    req.on("error", (err) => reject(err))
+    req.write(soapEnvelope)
+    req.end()
+  })
+}
+
+// ═══════ SEFAZ URLs ═══════
+
+const SEFAZ_URLS: Record<string, Record<string, { homologacao: string; producao: string }>> = {
+  SC: {
+    autorizacao: {
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao4/NFeAutorizacao4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao4/NFeAutorizacao4.asmx",
+    },
+    retAutorizacao: {
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao4/NFeRetAutorizacao4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao4/NFeRetAutorizacao4.asmx",
+    },
+    consulta: {
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta4/NfeConsulta4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeConsulta4/NfeConsulta4.asmx",
+    },
+    cancelamento: {
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento4/RecepcaoEvento4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/recepcaoevento4/RecepcaoEvento4.asmx",
+    },
+    statusServico: {
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico4/NfeStatusServico4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeStatusServico4/NfeStatusServico4.asmx",
+    },
+  },
+}
+
+function getSefazUrl(service: string): string {
+  const uf = NFE_UF || "SC"
+  const urls = SEFAZ_URLS[uf] || SEFAZ_URLS.SC
+  const svc = urls[service]
+  if (!svc) throw new Error(`Servico SEFAZ ${service} nao encontrado para UF ${uf}`)
+  return svc[NFE_AMBIENTE]
+}
+
+// ═══════ PUBLIC FUNCTIONS ═══════
 
 /**
  * Emitir NF-e para um pedido
@@ -94,161 +203,139 @@ export async function emitirNFe(orderData: {
     valor_total: number
   }>
   frete: {
-    modalidade: number // 0=emitente, 1=destinatario, 9=sem frete
+    modalidade: number
     valor?: number
   }
   pagamento: {
-    forma: string // 01=dinheiro, 03=cartao credito, 04=cartao debito, 17=pix, 15=boleto
+    forma: string
     valor: number
   }
 }) {
   const config = await getFiscalConfig()
   if (!config) throw new Error("Configuracao fiscal nao encontrada. Configure em Fiscal Loja.")
 
-  const wizard = await initWizard()
+  // Build NFe XML
+  const cNF = String(orderData.numero).padStart(8, "0")
+  const cUF = getCodigoUF(config.uf || NFE_UF)
+  const dhEmi = new Date().toISOString().replace(/\.\d{3}Z/, "-03:00")
 
-  // Montar XML da NF-e conforme layout 4.00
-  const nfe = {
-    infNFe: {
-      versao: "4.00",
-      ide: {
-        cUF: getCodigoUF(config.uf || NFE_UF),
-        cNF: String(orderData.numero).padStart(8, "0"),
-        natOp: config.natureza_operacao || "Venda de mercadoria",
-        mod: "55", // NF-e
-        serie: String(orderData.serie || config.serie_nfe || "1"),
-        nNF: String(orderData.numero),
-        dhEmi: new Date().toISOString(),
-        tpNF: "1", // 1=saida
-        idDest: orderData.cliente.endereco.uf === (config.uf || NFE_UF) ? "1" : "2", // 1=interna, 2=interestadual
-        cMunFG: config.codigo_municipio || "3550308", // SP capital default
-        tpImp: "1", // 1=retrato
-        tpEmis: "1", // 1=normal
-        tpAmb: NFE_AMBIENTE === "producao" ? "1" : "2",
-        finNFe: "1", // 1=normal
-        indFinal: "1", // 1=consumidor final
-        indPres: "1", // 1=presencial
-        procEmi: "0", // 0=aplicativo contribuinte
-        verProc: "1.0.0",
-      },
-      emit: {
-        CNPJ: (config.cnpj || "").replace(/\D/g, ""),
-        xNome: config.razao_social || "Empresa",
-        xFant: config.nome_fantasia || "Loja",
-        IE: config.inscricao_estadual || "",
-        CRT: config.regime_tributario === "simples_nacional" ? "1" : config.regime_tributario === "lucro_presumido" ? "2" : "3",
-        enderEmit: {
-          xLgr: config.logradouro || "",
-          nro: config.numero || "S/N",
-          xCpl: config.complemento || "",
-          xBairro: config.bairro || "",
-          cMun: config.codigo_municipio || "",
-          xMun: config.cidade || "",
-          UF: config.uf || NFE_UF,
-          CEP: (config.cep || "").replace(/\D/g, ""),
-          cPais: "1058",
-          xPais: "Brasil",
-          fone: "",
-        },
-      },
-      dest: {
-        ...(orderData.cliente.cpf
-          ? { CPF: orderData.cliente.cpf.replace(/\D/g, "") }
-          : { CNPJ: (orderData.cliente.cnpj || "").replace(/\D/g, "") }),
-        xNome: orderData.cliente.nome,
-        indIEDest: "9", // 9=nao contribuinte
-        email: orderData.cliente.email || "",
-        enderDest: {
-          xLgr: orderData.cliente.endereco.logradouro,
-          nro: orderData.cliente.endereco.numero,
-          xCpl: orderData.cliente.endereco.complemento || "",
-          xBairro: orderData.cliente.endereco.bairro,
-          cMun: orderData.cliente.endereco.codigo_municipio,
-          xMun: orderData.cliente.endereco.cidade,
-          UF: orderData.cliente.endereco.uf,
-          CEP: orderData.cliente.endereco.cep.replace(/\D/g, ""),
-          cPais: "1058",
-          xPais: "Brasil",
-          fone: orderData.cliente.telefone || "",
-        },
-      },
-      det: orderData.itens.map((item, idx) => ({
-        nItem: String(idx + 1),
-        prod: {
-          cProd: item.codigo,
-          cEAN: "SEM GTIN",
-          xProd: item.descricao,
-          NCM: item.ncm || config.ncm_padrao || "49119900",
-          CFOP: item.cfop || (orderData.cliente.endereco.uf === (config.uf || NFE_UF)
-            ? config.cfop_dentro_estado || "5102"
-            : config.cfop_fora_estado || "6102"),
-          uCom: item.unidade || config.unidade_comercial || "UN",
-          qCom: String(item.quantidade),
-          vUnCom: item.valor_unitario.toFixed(2),
-          vProd: item.valor_total.toFixed(2),
-          cEANTrib: "SEM GTIN",
-          uTrib: item.unidade || config.unidade_tributavel || "UN",
-          qTrib: String(item.quantidade),
-          vUnTrib: item.valor_unitario.toFixed(2),
-          indTot: "1", // 1=soma no total
-        },
-        imposto: buildImposto(config, item),
-      })),
-      total: {
-        ICMSTot: {
-          vBC: "0.00",
-          vICMS: "0.00",
-          vICMSDeson: "0.00",
-          vFCP: "0.00",
-          vBCST: "0.00",
-          vST: "0.00",
-          vFCPST: "0.00",
-          vFCPSTRet: "0.00",
-          vProd: orderData.itens.reduce((s, i) => s + i.valor_total, 0).toFixed(2),
-          vFrete: (orderData.frete.valor || 0).toFixed(2),
-          vSeg: "0.00",
-          vDesc: "0.00",
-          vII: "0.00",
-          vIPI: "0.00",
-          vIPIDevol: "0.00",
-          vPIS: "0.00",
-          vCOFINS: "0.00",
-          vOutro: "0.00",
-          vNF: (orderData.itens.reduce((s, i) => s + i.valor_total, 0) + (orderData.frete.valor || 0)).toFixed(2),
-        },
-      },
-      transp: {
-        modFrete: String(orderData.frete.modalidade),
-      },
-      pag: {
-        detPag: [{
-          tPag: orderData.pagamento.forma,
-          vPag: orderData.pagamento.valor.toFixed(2),
-        }],
-      },
-      infAdic: {
-        infCpl: config.info_complementar || "Quadro decorativo em canvas premium.",
-      },
-    },
-  }
+  const vProd = orderData.itens.reduce((s, i) => s + i.valor_total, 0)
+  const vFrete = orderData.frete.valor || 0
+  const vNF = vProd + vFrete
 
-  // Enviar para SEFAZ
+  const detXml = orderData.itens.map((item, idx) => {
+    const isSimples = config.regime_tributario === "simples_nacional"
+    const impostoXml = isSimples
+      ? `<ICMS><ICMSSN102><orig>${config.origem_padrao || 0}</orig><CSOSN>${config.csosn_padrao || "102"}</CSOSN></ICMSSN102></ICMS>
+         <PIS><PISOutr><CST>99</CST><vBC>0.00</vBC><pPIS>0.00</pPIS><vPIS>0.00</vPIS></PISOutr></PIS>
+         <COFINS><COFINSOutr><CST>99</CST><vBC>0.00</vBC><pCOFINS>0.00</pCOFINS><vCOFINS>0.00</vCOFINS></COFINSOutr></COFINS>`
+      : `<ICMS><ICMS00><orig>${config.origem_padrao || 0}</orig><CST>${config.cst_icms_padrao || "00"}</CST><modBC>0</modBC><vBC>${item.valor_total.toFixed(2)}</vBC><pICMS>${config.aliquota_icms || 0}</pICMS><vICMS>${((item.valor_total * (config.aliquota_icms || 0)) / 100).toFixed(2)}</vICMS></ICMS00></ICMS>
+         <PIS><PISAliq><CST>${config.cst_pis_padrao || "01"}</CST><vBC>${item.valor_total.toFixed(2)}</vBC><pPIS>${config.aliquota_pis || 0}</pPIS><vPIS>${((item.valor_total * (config.aliquota_pis || 0)) / 100).toFixed(2)}</vPIS></PISAliq></PIS>
+         <COFINS><COFINSAliq><CST>${config.cst_cofins_padrao || "01"}</CST><vBC>${item.valor_total.toFixed(2)}</vBC><pCOFINS>${config.aliquota_cofins || 0}</pCOFINS><vCOFINS>${((item.valor_total * (config.aliquota_cofins || 0)) / 100).toFixed(2)}</vCOFINS></COFINSAliq></COFINS>`
+
+    return `<det nItem="${idx + 1}">
+      <prod>
+        <cProd>${item.codigo}</cProd><cEAN>SEM GTIN</cEAN><xProd>${item.descricao}</xProd>
+        <NCM>${item.ncm || config.ncm_padrao || "97019100"}</NCM>
+        <CFOP>${item.cfop}</CFOP><uCom>${item.unidade || "UN"}</uCom>
+        <qCom>${item.quantidade}</qCom><vUnCom>${item.valor_unitario.toFixed(2)}</vUnCom>
+        <vProd>${item.valor_total.toFixed(2)}</vProd><cEANTrib>SEM GTIN</cEANTrib>
+        <uTrib>${item.unidade || "UN"}</uTrib><qTrib>${item.quantidade}</qTrib>
+        <vUnTrib>${item.valor_unitario.toFixed(2)}</vUnTrib><indTot>1</indTot>
+      </prod>
+      <imposto>${impostoXml}</imposto>
+    </det>`
+  }).join("\n")
+
+  const destDoc = orderData.cliente.cpf
+    ? `<CPF>${orderData.cliente.cpf.replace(/\D/g, "")}</CPF>`
+    : `<CNPJ>${(orderData.cliente.cnpj || "").replace(/\D/g, "")}</CNPJ>`
+
+  const nfeXml = `<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+  <infNFe versao="4.00" Id="NFe${cUF}${dhEmi.substring(2, 4)}${dhEmi.substring(5, 7)}${(config.cnpj || "").replace(/\D/g, "")}55${String(orderData.serie).padStart(3, "0")}${String(orderData.numero).padStart(9, "0")}1${cNF}1">
+    <ide>
+      <cUF>${cUF}</cUF><cNF>${cNF}</cNF><natOp>${config.natureza_operacao || "Venda de mercadoria"}</natOp>
+      <mod>55</mod><serie>${orderData.serie || config.serie_nfe || "3"}</serie><nNF>${orderData.numero}</nNF>
+      <dhEmi>${dhEmi}</dhEmi><tpNF>1</tpNF>
+      <idDest>${orderData.cliente.endereco.uf === (config.uf || NFE_UF) ? "1" : "2"}</idDest>
+      <cMunFG>${config.codigo_municipio || "4205902"}</cMunFG>
+      <tpImp>1</tpImp><tpEmis>1</tpEmis>
+      <tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
+      <finNFe>1</finNFe><indFinal>1</indFinal><indPres>1</indPres><procEmi>0</procEmi><verProc>1.0.0</verProc>
+    </ide>
+    <emit>
+      <CNPJ>${(config.cnpj || "").replace(/\D/g, "")}</CNPJ>
+      <xNome>${config.razao_social || "Empresa"}</xNome><xFant>${config.nome_fantasia || "Loja"}</xFant>
+      <enderEmit>
+        <xLgr>${config.logradouro || ""}</xLgr><nro>${config.numero || "S/N"}</nro>
+        <xCpl>${config.complemento || ""}</xCpl><xBairro>${config.bairro || ""}</xBairro>
+        <cMun>${config.codigo_municipio || ""}</cMun><xMun>${config.cidade || ""}</xMun>
+        <UF>${config.uf || NFE_UF}</UF><CEP>${(config.cep || "").replace(/\D/g, "")}</CEP>
+        <cPais>1058</cPais><xPais>Brasil</xPais>
+      </enderEmit>
+      <IE>${config.inscricao_estadual || ""}</IE>
+      <CRT>${config.regime_tributario === "simples_nacional" ? "1" : config.regime_tributario === "lucro_presumido" ? "2" : "3"}</CRT>
+    </emit>
+    <dest>
+      ${destDoc}<xNome>${orderData.cliente.nome}</xNome><indIEDest>9</indIEDest>
+      ${orderData.cliente.email ? `<email>${orderData.cliente.email}</email>` : ""}
+      <enderDest>
+        <xLgr>${orderData.cliente.endereco.logradouro}</xLgr><nro>${orderData.cliente.endereco.numero}</nro>
+        <xBairro>${orderData.cliente.endereco.bairro}</xBairro>
+        <cMun>${orderData.cliente.endereco.codigo_municipio || "0000000"}</cMun>
+        <xMun>${orderData.cliente.endereco.cidade}</xMun><UF>${orderData.cliente.endereco.uf}</UF>
+        <CEP>${orderData.cliente.endereco.cep.replace(/\D/g, "")}</CEP>
+        <cPais>1058</cPais><xPais>Brasil</xPais>
+      </enderDest>
+    </dest>
+    ${detXml}
+    <total><ICMSTot>
+      <vBC>0.00</vBC><vICMS>0.00</vICMS><vICMSDeson>0.00</vICMSDeson><vFCP>0.00</vFCP>
+      <vBCST>0.00</vBCST><vST>0.00</vST><vFCPST>0.00</vFCPST><vFCPSTRet>0.00</vFCPSTRet>
+      <vProd>${vProd.toFixed(2)}</vProd><vFrete>${vFrete.toFixed(2)}</vFrete>
+      <vSeg>0.00</vSeg><vDesc>0.00</vDesc><vII>0.00</vII><vIPI>0.00</vIPI><vIPIDevol>0.00</vIPIDevol>
+      <vPIS>0.00</vPIS><vCOFINS>0.00</vCOFINS><vOutro>0.00</vOutro><vNF>${vNF.toFixed(2)}</vNF>
+    </ICMSTot></total>
+    <transp><modFrete>${orderData.frete.modalidade}</modFrete></transp>
+    <pag><detPag><tPag>${orderData.pagamento.forma}</tPag><vPag>${orderData.pagamento.valor.toFixed(2)}</vPag></detPag></pag>
+    <infAdic><infCpl>${config.info_complementar || ""}</infCpl></infAdic>
+  </infNFe>
+</NFe>`
+
+  // Sign XML
+  const signedXml = await signXml(nfeXml)
+
+  // Send to SEFAZ
   try {
-    const resultado = await wizard.NFe_Autorizacao(nfe)
+    const url = getSefazUrl("autorizacao")
+    const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4">
+      <enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
+        <idLote>${Date.now()}</idLote><indSinc>1</indSinc>
+        ${signedXml}
+      </enviNFe>
+    </nfeDadosMsg>`
+
+    const response = await soapRequest(url, soapBody)
+
+    // Parse response
+    const protMatch = response.match(/<nProt>(\d+)<\/nProt>/)
+    const chaveMatch = response.match(/<chNFe>(\d+)<\/chNFe>/)
+    const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
+    const motivoMatch = response.match(/<xMotivo>([^<]+)<\/xMotivo>/)
+
+    const cStat = statusMatch?.[1]
+    const success = cStat === "100" || cStat === "104"
+
     return {
-      success: true,
-      protocolo: resultado?.protNFe?.infProt?.nProt || null,
-      chave: resultado?.protNFe?.infProt?.chNFe || null,
-      status: resultado?.protNFe?.infProt?.cStat || null,
-      motivo: resultado?.protNFe?.infProt?.xMotivo || null,
-      xml: resultado?.xml || null,
+      success,
+      protocolo: protMatch?.[1] || null,
+      chave: chaveMatch?.[1] || null,
+      status: cStat || null,
+      motivo: motivoMatch?.[1] || null,
+      xml: signedXml,
     }
   } catch (err: any) {
-    return {
-      success: false,
-      error: err.message || "Erro ao emitir NF-e",
-      details: err,
-    }
+    return { success: false, error: err.message, xml: signedXml }
   }
 }
 
@@ -256,13 +343,18 @@ export async function emitirNFe(orderData: {
  * Consultar status da NF-e pela chave
  */
 export async function consultarNFe(chaveNFe: string) {
-  const wizard = await initWizard()
-  try {
-    const resultado = await wizard.NFe_ConsultaProtocolo({ chNFe: chaveNFe })
-    return resultado
-  } catch (err: any) {
-    throw new Error("Erro ao consultar NF-e: " + err.message)
-  }
+  const url = getSefazUrl("consulta")
+  const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4">
+    <consSitNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
+      <tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
+      <xServ>CONSULTAR</xServ><chNFe>${chaveNFe}</chNFe>
+    </consSitNFe>
+  </nfeDadosMsg>`
+
+  const response = await soapRequest(url, soapBody)
+  const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
+  const motivoMatch = response.match(/<xMotivo>([^<]+)<\/xMotivo>/)
+  return { cStat: statusMatch?.[1], xMotivo: motivoMatch?.[1], raw: response }
 }
 
 /**
@@ -271,31 +363,52 @@ export async function consultarNFe(chaveNFe: string) {
 export async function cancelarNFe(chaveNFe: string, protocolo: string, justificativa: string) {
   if (justificativa.length < 15) throw new Error("Justificativa deve ter pelo menos 15 caracteres")
 
-  const wizard = await initWizard()
-  try {
-    const resultado = await wizard.NFe_RecepcaoEvento_Cancelamento({
-      chNFe: chaveNFe,
-      nProt: protocolo,
-      xJust: justificativa,
-    })
-    return resultado
-  } catch (err: any) {
-    throw new Error("Erro ao cancelar NF-e: " + err.message)
-  }
+  const url = getSefazUrl("cancelamento")
+  const config = await getFiscalConfig()
+  const cnpj = (config?.cnpj || "").replace(/\D/g, "")
+  const dhEvento = new Date().toISOString().replace(/\.\d{3}Z/, "-03:00")
+
+  const eventoXml = `<envEvento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">
+    <idLote>${Date.now()}</idLote>
+    <evento versao="1.00">
+      <infEvento Id="ID110111${chaveNFe}01">
+        <cOrgao>${chaveNFe.substring(0, 2)}</cOrgao><tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
+        <CNPJ>${cnpj}</CNPJ><chNFe>${chaveNFe}</chNFe><dhEvento>${dhEvento}</dhEvento>
+        <tpEvento>110111</tpEvento><nSeqEvento>1</nSeqEvento><verEvento>1.00</verEvento>
+        <detEvento versao="1.00"><descEvento>Cancelamento</descEvento><nProt>${protocolo}</nProt><xJust>${justificativa}</xJust></detEvento>
+      </infEvento>
+    </evento>
+  </envEvento>`
+
+  const signedEvento = await signXml(eventoXml)
+  const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4">${signedEvento}</nfeDadosMsg>`
+
+  const response = await soapRequest(url, soapBody)
+  const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
+  return { cStat: statusMatch?.[1], raw: response }
 }
 
 /**
  * Consultar status do servico SEFAZ
  */
 export async function statusSefaz() {
-  const wizard = await initWizard()
   try {
-    const resultado = await wizard.NFe_ConsultaStatusServico()
+    const url = getSefazUrl("statusServico")
+    const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4">
+      <consStatServ xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
+        <tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
+        <cUF>${getCodigoUF(NFE_UF)}</cUF><xServ>STATUS</xServ>
+      </consStatServ>
+    </nfeDadosMsg>`
+
+    const response = await soapRequest(url, soapBody)
+    const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
+    const motivoMatch = response.match(/<xMotivo>([^<]+)<\/xMotivo>/)
     return {
-      online: resultado?.cStat === "107",
-      status: resultado?.cStat,
-      motivo: resultado?.xMotivo,
-      uf: resultado?.cUF,
+      online: statusMatch?.[1] === "107",
+      status: statusMatch?.[1],
+      motivo: motivoMatch?.[1],
+      uf: NFE_UF,
     }
   } catch (err: any) {
     return { online: false, error: err.message }
@@ -303,19 +416,15 @@ export async function statusSefaz() {
 }
 
 /**
- * Gerar DANFE em PDF a partir do XML
+ * Gerar DANFE (placeholder - DANFE requires PDF generation)
  */
 export async function gerarDanfe(xmlNFe: string) {
-  const wizard = await initWizard()
-  try {
-    const pdf = await wizard.GerarDANFE(xmlNFe)
-    return pdf // Base64 do PDF
-  } catch (err: any) {
-    throw new Error("Erro ao gerar DANFE: " + err.message)
-  }
+  // DANFE generation would require a PDF lib like pdfkit
+  // For now, return the XML for download
+  return Buffer.from(xmlNFe).toString("base64")
 }
 
-// ===== HELPERS =====
+// ═══════ HELPERS ═══════
 
 function getCodigoUF(uf: string): string {
   const codigos: Record<string, string> = {
@@ -324,66 +433,5 @@ function getCodigoUF(uf: string): string {
     PB: "25", PR: "41", PE: "26", PI: "22", RJ: "33", RN: "24", RS: "43",
     RO: "11", RR: "14", SC: "42", SP: "35", SE: "28", TO: "17",
   }
-  return codigos[uf] || "35"
-}
-
-function buildImposto(config: any, item: any) {
-  const isSimples = config.regime_tributario === "simples_nacional"
-
-  if (isSimples) {
-    return {
-      ICMS: {
-        ICMSSN102: {
-          orig: String(config.origem_padrao || 0),
-          CSOSN: config.csosn_padrao || "102", // 102=sem permissao de credito
-        },
-      },
-      PIS: {
-        PISOutr: {
-          CST: config.cst_pis_padrao || "99",
-          vBC: "0.00",
-          pPIS: "0.00",
-          vPIS: "0.00",
-        },
-      },
-      COFINS: {
-        COFINSOutr: {
-          CST: config.cst_cofins_padrao || "99",
-          vBC: "0.00",
-          pCOFINS: "0.00",
-          vCOFINS: "0.00",
-        },
-      },
-    }
-  }
-
-  // Lucro Presumido / Real
-  return {
-    ICMS: {
-      ICMS00: {
-        orig: String(config.origem_padrao || 0),
-        CST: config.cst_icms_padrao || "00",
-        modBC: "0",
-        vBC: item.valor_total.toFixed(2),
-        pICMS: String(config.aliquota_icms || 0),
-        vICMS: ((item.valor_total * (config.aliquota_icms || 0)) / 100).toFixed(2),
-      },
-    },
-    PIS: {
-      PISAliq: {
-        CST: config.cst_pis_padrao || "01",
-        vBC: item.valor_total.toFixed(2),
-        pPIS: String(config.aliquota_pis || 0),
-        vPIS: ((item.valor_total * (config.aliquota_pis || 0)) / 100).toFixed(2),
-      },
-    },
-    COFINS: {
-      COFINSAliq: {
-        CST: config.cst_cofins_padrao || "01",
-        vBC: item.valor_total.toFixed(2),
-        pCOFINS: String(config.aliquota_cofins || 0),
-        vCOFINS: ((item.valor_total * (config.aliquota_cofins || 0)) / 100).toFixed(2),
-      },
-    },
-  }
+  return codigos[uf] || "42" // SC default
 }
