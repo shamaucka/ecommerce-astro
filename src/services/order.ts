@@ -105,14 +105,31 @@ export async function updateOrderStatus(id: string, status: string) {
   if (status === "processing") {
     try {
       const order = result[0]
-      const items = (order.items as any[] || []).map((item: any) => ({
-        product_id: item.product_id,
-        variant_id: item.variant_id,
-        sku: item.sku,
-        product_title: item.title,
-        variant_title: item.variant_title,
-        quantity: item.quantity || 1,
-      }))
+      // Busca SKU real dos produtos pelo handle/slug
+      const { astroProduct } = await import("../db/schema/product.js")
+      const { or } = await import("drizzle-orm")
+
+      const orderItems = order.items as any[] || []
+      const items = []
+      for (const item of orderItems) {
+        let realSku = item.sku
+        // Se o SKU parece ser um slug (contem hifens e nao tem numeros no padrao SKU), busca o real
+        if (realSku && realSku.includes("-") && !/^[A-Z]{2,}\d+/.test(realSku)) {
+          const found = await db.select({ sku: astroProduct.sku, id: astroProduct.id })
+            .from(astroProduct)
+            .where(or(eq(astroProduct.handle, realSku), eq(astroProduct.id, item.product_id)))
+            .limit(1)
+          if (found[0]?.sku) realSku = found[0].sku
+        }
+        items.push({
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+          sku: realSku,
+          product_title: item.title,
+          variant_title: item.variant_title,
+          quantity: item.quantity || 1,
+        })
+      }
       await fulfillmentOps.createFromOrder({
         order_id: order.id,
         display_id: order.display_id || undefined,
