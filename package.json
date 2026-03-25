@@ -15,6 +15,7 @@
     "@astrojs/react": "^5.0.0",
     "astro": "^6.0.5",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.9.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
     "jose": "^6.2.1",

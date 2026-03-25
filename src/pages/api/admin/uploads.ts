@@ -1,11 +1,17 @@
 import type { APIRoute } from "astro";
 import { corsHeaders, getCorsHeaders } from "@/lib/cors";
 import { requireAuth } from "@/services/auth";
-import { writeFile, mkdir } from "node:fs/promises";
-import { join, extname } from "node:path";
+import { v2 as cloudinary } from "cloudinary";
 
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "dcwjafvah",
+  api_key: process.env.CLOUDINARY_API_KEY || "113851671851966",
+  api_secret: process.env.CLOUDINARY_API_SECRET || "",
+});
 
 export const POST: APIRoute = async ({ request }) => {
   const headers = getCorsHeaders(request);
@@ -36,26 +42,21 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const uploadDir = join(process.cwd(), "public", "static");
-    await mkdir(uploadDir, { recursive: true });
-
-    const timestamp = Date.now();
-    const ext = extname(file.name).replace(/[^a-zA-Z0-9.]/g, "").toLowerCase();
-    const baseName = file.name
-      .replace(/\.[^.]+$/, "")
-      .replace(/[^a-zA-Z0-9_-]/g, "_")
-      .replace(/_{2,}/g, "_")
-      .replace(/^_|_$/g, "")
-      .slice(0, 100);
-    const safeName = baseName ? `${baseName}${ext}` : `upload${ext}`;
-    const filename = `${timestamp}-${safeName}`;
-    const filepath = join(uploadDir, filename);
-
     const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filepath, buffer);
+    const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(base64, {
+      folder: "tessquadros",
+      resource_type: "image",
+      quality: "auto:good",
+      fetch_format: "auto",
+    });
+
+    const url = result.secure_url;
 
     return new Response(
-      JSON.stringify({ files: [{ url: `/static/${filename}` }] }),
+      JSON.stringify({ files: [{ url, public_id: result.public_id }] }),
       { status: 200, headers: { "Content-Type": "application/json", ...headers } }
     );
   } catch (err: any) {
