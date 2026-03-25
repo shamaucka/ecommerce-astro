@@ -80,7 +80,7 @@ async function createTask(data: Record<string, any>) {
   return result[0]
 }
 
-async function updateTask(id: string, data: Record<string, any>) {
+export async function updateTask(id: string, data: Record<string, any>) {
   const result = await db
     .update(fulfillmentTask)
     .set({ ...data, updated_at: new Date() })

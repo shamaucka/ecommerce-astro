@@ -197,6 +197,112 @@ export const POST: APIRoute = async ({ request }) => {
         );
       }
 
+      // ═══ FINALIZAR CONFERENCIA: NF-e + iMile + etiqueta ═══
+      case "finalize_conferencia": {
+        const { task_id } = body;
+        if (!task_id) throw new Error("task_id obrigatorio");
+
+        // 1. Buscar task e pedido
+        const task = await fulfillmentOps.retrieve(task_id);
+        if (!task) throw new Error("Task nao encontrada");
+
+        const { db } = await import("@/db/index.js");
+        const { astroOrder } = await import("@/db/schema/order.js");
+        const { eq } = await import("drizzle-orm");
+
+        const orders = await db.select().from(astroOrder).where(eq(astroOrder.id, task.order_id)).limit(1);
+        const order = orders[0];
+        if (!order) throw new Error("Pedido nao encontrado");
+
+        const result: any = { task_id, nfe: null, imile: null, errors: [] };
+
+        // 2. Emitir NF-e
+        try {
+          const nfeManager = await import("@/services/nfe-manager");
+          const nfe = await nfeManager.emitirSaida(order.id);
+          result.nfe = {
+            numero: nfe.numero,
+            serie: nfe.serie,
+            chave: nfe.chave_acesso,
+            status: nfe.status,
+          };
+          // Salvar na task
+          await fulfillmentOps.updateTask(task_id, {
+            invoice_number: String(nfe.numero),
+            invoice_key: nfe.chave_acesso,
+            invoiced_at: new Date(),
+          });
+        } catch (nfeErr: any) {
+          result.errors.push({ step: "nfe", error: nfeErr.message });
+          // Salvar numero fake para continuar o fluxo (em dev/teste)
+          await fulfillmentOps.updateTask(task_id, {
+            invoice_number: "PENDENTE",
+            invoiced_at: new Date(),
+          });
+        }
+
+        // 3. Criar pedido na iMile
+        try {
+          const imile = await import("@/services/imile");
+          const items = await fulfillmentOps.listFulfillmentTaskItems({ task_id });
+
+          const imileOrder = await imile.createOrder({
+            orderNo: order.display_id || order.id,
+            consigneeName: order.customer_name || "Cliente",
+            consigneePhone: (order.metadata as any)?.phone || "11999999999",
+            consigneeCpf: (order.metadata as any)?.cpf || "",
+            consigneeAddress: order.shipping_address_line1 || "Endereco nao informado",
+            consigneeCity: order.shipping_city || "Sao Paulo",
+            consigneeState: order.shipping_state || "SP",
+            consigneeZipCode: order.shipping_postal_code || "01001000",
+            weight: items.length * 0.8, // ~800g por quadro
+            length: 95, width: 65, height: 5,
+            declaredValue: (order.total || 0) / 100,
+            items: items.map((i: any) => ({
+              skuName: i.product_title || i.sku,
+              skuQty: i.quantity || 1,
+              skuDeclaredValue: ((order.total || 0) / 100 / items.length).toFixed(2),
+            })),
+          });
+
+          result.imile = {
+            waybillNo: imileOrder.waybillNo,
+            orderCode: imileOrder.orderCode,
+            trackingUrl: imileOrder.trackingUrl,
+          };
+
+          // Salvar tracking na task e pedido
+          await fulfillmentOps.updateTask(task_id, {
+            carrier: "iMile",
+            tracking_code: imileOrder.waybillNo || imileOrder.orderCode,
+          });
+          await db.update(astroOrder).set({
+            tracking_number: imileOrder.waybillNo || imileOrder.orderCode,
+            status: "shipped",
+            updated_at: new Date(),
+          }).where(eq(astroOrder.id, order.id));
+
+          // 4. Buscar etiqueta
+          try {
+            const labelData = await imile.getShippingLabel(imileOrder.orderCode || imileOrder.waybillNo);
+            result.imile.label = labelData;
+          } catch (labelErr: any) {
+            result.errors.push({ step: "label", error: labelErr.message });
+          }
+        } catch (imileErr: any) {
+          result.errors.push({ step: "imile", error: imileErr.message });
+        }
+
+        // 5. Marcar como impresso
+        await fulfillmentOps.markConferencePrinted(task_id);
+        result.success = result.errors.length === 0;
+
+        return new Response(
+          JSON.stringify(result),
+          { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+
       case "create_romaneio": {
         const romaneio = await fulfillmentOps.createRomaneio(body.carrier);
         return new Response(
