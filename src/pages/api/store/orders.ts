@@ -18,12 +18,23 @@ export const POST: APIRoute = async ({ request }) => {
           );
         }
 
+        // Calculate subtotal from items
+        const subtotal = items.reduce((s: number, i: any) => s + (i.unit_price || 0) * (i.quantity || 1), 0);
+
         const customer = await customerService.getOrCreateByEmail(email, { name });
         const order = await orderService.createOrder({
           customer_id: customer.id,
+          customer_name: name,
+          customer_email: email,
           items,
-          shipping,
-          payment,
+          subtotal,
+          shipping_cost: shipping?.cost || 0,
+          shipping_address_line1: shipping?.address_line1,
+          shipping_address_line2: shipping?.address_line2,
+          shipping_neighborhood: shipping?.neighborhood,
+          shipping_city: shipping?.city,
+          shipping_state: shipping?.state,
+          shipping_postal_code: shipping?.postal_code,
         });
 
         return new Response(
