@@ -48,12 +48,7 @@ function loadCertificate(): { key: string; cert: string; pfx: Buffer } {
     throw new Error("Certificado digital nao configurado. Configure NFE_CERT_BASE64 ou NFE_CERT_PATH.")
   }
 
-  // Extract key and cert from PFX using Node crypto
-  const p12 = crypto.createSecureContext({
-    pfx: pfxBuffer,
-    passphrase: NFE_CERT_PASSWORD,
-  })
-
+  // PFX buffer is used directly by xml-crypto and https
   return { key: "", cert: "", pfx: pfxBuffer }
 }
 
