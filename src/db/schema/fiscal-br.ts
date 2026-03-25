@@ -87,3 +87,27 @@ export const storeFiscalConfig = pgTable("store_fiscal_config", {
   info_complementar: text("info_complementar"),
   metadata: jsonb("metadata"),
 })
+
+export const nfeRegistro = pgTable("nfe_registro", {
+  id: text("id").primaryKey(),
+  tipo: text("tipo").notNull().default("saida"),
+  numero: integer("numero"),
+  serie: integer("serie").default(3),
+  chave_acesso: text("chave_acesso"),
+  protocolo: text("protocolo"),
+  status: text("status").default("pendente"),
+  order_id: text("order_id"),
+  customer_name: text("customer_name"),
+  customer_cpf: text("customer_cpf"),
+  valor_total: integer("valor_total").default(0),
+  xml: text("xml"),
+  danfe_base64: text("danfe_base64"),
+  motivo_rejeicao: text("motivo_rejeicao"),
+  motivo_cancelamento: text("motivo_cancelamento"),
+  cfop: text("cfop"),
+  natureza_operacao: text("natureza_operacao").default("Venda de mercadoria"),
+  nfe_referenciada: text("nfe_referenciada"),
+  metadata: jsonb("metadata"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+})
