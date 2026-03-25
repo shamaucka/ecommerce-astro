@@ -64,6 +64,31 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify(order), { status: 200, headers })
       }
 
+      // ═══ Cartão direto (PayPal card processing) ═══
+      case "card_pay": {
+        const { orderId, displayId, amount, customerEmail, card, items, shippingCost } = body
+        if (!orderId || !amount || !card) throw new Error("orderId, amount e card obrigatorios")
+
+        const result = await paypal.processCard({
+          orderId, displayId: displayId || orderId,
+          amount, customerEmail,
+          card,
+          items: items || [{ name: "Quadro Decorativo", quantity: 1, unitPrice: amount }],
+          shippingCost,
+        })
+
+        // Update order
+        await db.update(astroOrder).set({
+          payment_method: "credit_card",
+          payment_id: result.paypalOrderId,
+          payment_status: result.paid ? "paid" : "failed",
+          status: result.paid ? "processing" : "pending",
+          updated_at: new Date(),
+        }).where(eq(astroOrder.id, orderId))
+
+        return new Response(JSON.stringify(result), { status: 200, headers })
+      }
+
       case "paypal_capture": {
         const { paypalOrderId, orderId } = body
         if (!paypalOrderId) throw new Error("paypalOrderId obrigatorio")

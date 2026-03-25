@@ -126,6 +126,73 @@ export async function captureOrder(paypalOrderId: string) {
 }
 
 /**
+ * Process card payment directly (create + capture in one step)
+ * Uses PayPal Orders API with card payment source
+ */
+export async function processCard(params: {
+  orderId: string
+  displayId: string
+  amount: number // cents
+  customerEmail: string
+  card: { number: string; expiry_month: string; expiry_year: string; cvv: string; name: string }
+  items: Array<{ name: string; quantity: number; unitPrice: number }>
+  shippingCost?: number
+}) {
+  const totalBRL = (params.amount / 100).toFixed(2)
+  const shippingBRL = ((params.shippingCost || 0) / 100).toFixed(2)
+  const itemsTotal = params.items.reduce((s, i) => s + i.unitPrice * i.quantity, 0)
+  const itemsTotalBRL = (itemsTotal / 100).toFixed(2)
+
+  // Create order with card payment source - auto-captures
+  const data = await paypalRequest("/v2/checkout/orders", "POST", {
+    intent: "CAPTURE",
+    purchase_units: [{
+      reference_id: params.orderId,
+      description: `Pedido #${params.displayId} - Tess Quadros`,
+      amount: {
+        currency_code: "BRL",
+        value: totalBRL,
+        breakdown: {
+          item_total: { currency_code: "BRL", value: itemsTotalBRL },
+          shipping: { currency_code: "BRL", value: shippingBRL },
+        },
+      },
+      items: params.items.map(i => ({
+        name: i.name.substring(0, 127),
+        quantity: String(i.quantity),
+        unit_amount: { currency_code: "BRL", value: (i.unitPrice / 100).toFixed(2) },
+        category: "PHYSICAL_GOODS",
+      })),
+    }],
+    payment_source: {
+      card: {
+        number: params.card.number,
+        expiry: params.card.expiry_year + "-" + params.card.expiry_month,
+        security_code: params.card.cvv,
+        name: params.card.name,
+        billing_address: {
+          country_code: "BR",
+        },
+      },
+    },
+  })
+
+  if (data.name === "INVALID_REQUEST" || data.name === "UNPROCESSABLE_ENTITY") {
+    const detail = data.details?.[0]?.description || data.message || "Cartao recusado"
+    throw new Error(detail)
+  }
+
+  const capture = data.purchase_units?.[0]?.payments?.captures?.[0]
+  return {
+    paypalOrderId: data.id,
+    status: data.status,
+    paid: data.status === "COMPLETED",
+    captureId: capture?.id,
+    paidAmount: capture?.amount?.value,
+  }
+}
+
+/**
  * Get order details
  */
 export async function getOrder(paypalOrderId: string) {
