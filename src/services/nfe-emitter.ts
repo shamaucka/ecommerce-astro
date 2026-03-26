@@ -324,16 +324,18 @@ export async function emitirNFe(orderData: {
       <CRT>${config.regime_tributario === "simples_nacional" ? "1" : config.regime_tributario === "lucro_presumido" ? "2" : "3"}</CRT>
     </emit>
     <dest>
-      ${destDoc}<xNome>${orderData.cliente.nome}</xNome><indIEDest>9</indIEDest>
-      ${orderData.cliente.email ? `<email>${orderData.cliente.email}</email>` : ""}
+      ${destDoc}<xNome>${orderData.cliente.nome}</xNome>
       <enderDest>
-        <xLgr>${orderData.cliente.endereco.logradouro}</xLgr><nro>${orderData.cliente.endereco.numero}</nro>
-        <xBairro>${orderData.cliente.endereco.bairro}</xBairro>
+        <xLgr>${orderData.cliente.endereco.logradouro}</xLgr><nro>${orderData.cliente.endereco.numero || "S/N"}</nro>
+        ${orderData.cliente.endereco.complemento ? `<xCpl>${orderData.cliente.endereco.complemento}</xCpl>` : ""}
+        <xBairro>${orderData.cliente.endereco.bairro || "Centro"}</xBairro>
         <cMun>${orderData.cliente.endereco.codigo_municipio || "0000000"}</cMun>
         <xMun>${orderData.cliente.endereco.cidade}</xMun><UF>${orderData.cliente.endereco.uf}</UF>
-        <CEP>${orderData.cliente.endereco.cep.replace(/\D/g, "")}</CEP>
+        <CEP>${(orderData.cliente.endereco.cep || "").replace(/\D/g, "")}</CEP>
         <cPais>1058</cPais><xPais>Brasil</xPais>
       </enderDest>
+      <indIEDest>9</indIEDest>
+      ${orderData.cliente.email ? `<email>${orderData.cliente.email}</email>` : ""}
     </dest>
     ${detXml}
     <total><ICMSTot>
