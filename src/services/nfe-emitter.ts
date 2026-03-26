@@ -41,12 +41,14 @@ async function getFiscalConfig() {
 function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
   // Option 1: PEM key + cert (preferred - no format compatibility issues)
   if (NFE_KEY_BASE64 && NFE_CERT_PEM_BASE64) {
+    console.log("[NFe] Using PEM mode - key len:", NFE_KEY_BASE64.length, "cert len:", NFE_CERT_PEM_BASE64.length)
     const key = Buffer.from(NFE_KEY_BASE64, "base64").toString("utf-8")
     const cert = Buffer.from(NFE_CERT_PEM_BASE64, "base64").toString("utf-8")
     return { key, cert, pfx: null }
   }
 
   // Option 2: PFX file
+  console.log("[NFe] Using PFX mode (legacy) - key64:", NFE_KEY_BASE64.length, "cert64:", NFE_CERT_PEM_BASE64.length)
   let pfxBuffer: Buffer
   if (NFE_CERT_BASE64) {
     pfxBuffer = Buffer.from(NFE_CERT_BASE64, "base64")
