@@ -184,10 +184,10 @@ export async function createOrder(orderData: {
       goodsType: "Normal",
       paymentMethod: "PPD",
       collectingMoney: "0",
-      clientDeclaredValue: String(orderData.declaredValue || 0),
+      clientDeclaredValue: String(Math.min(orderData.declaredValue || 0, 999).toFixed(2)),
       clientDeclaredCurrency: "Local",
-      grossWeight: String(orderData.weight || 0.8),
-      totalVolume: String(Math.round((orderData.length || 95) * (orderData.width || 65) * (orderData.height || 5))),
+      grossWeight: String(Math.min(orderData.weight || 0.8, 999).toFixed(3)),
+      totalVolume: String(Math.min(Math.round((orderData.length || 95) * (orderData.width || 65) * (orderData.height || 5)), 999999).toFixed(2)),
     },
     skuInfos: orderData.items.map((item) => ({
       skuName: item.skuName,
