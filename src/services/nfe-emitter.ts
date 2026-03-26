@@ -16,14 +16,22 @@ import { storeFiscalConfig } from "../db/schema/fiscal-br.js"
 import * as crypto from "crypto"
 import * as https from "https"
 
-// Config from env vars
-const NFE_CERT_PATH = process.env.NFE_CERT_PATH || ""
-const NFE_CERT_BASE64 = process.env.NFE_CERT_BASE64 || ""
-const NFE_CERT_PASSWORD = process.env.NFE_CERT_PASSWORD || ""
-const NFE_KEY_BASE64 = process.env.NFE_KEY_BASE64 || ""
-const NFE_CERT_PEM_BASE64 = process.env.NFE_CERT_PEM_BASE64 || ""
-const NFE_AMBIENTE = (process.env.NFE_AMBIENTE || "homologacao") as "homologacao" | "producao"
-const NFE_UF = process.env.NFE_UF || "SC"
+// Config from env vars - read dynamically to support runtime injection
+function getEnv(key: string, fallback = ""): string {
+  return process.env[key] || fallback
+}
+const getNFEConfig = () => ({
+  certPath: getEnv("NFE_CERT_PATH"),
+  certBase64: getEnv("NFE_CERT_BASE64"),
+  certPassword: getEnv("NFE_CERT_PASSWORD"),
+  keyBase64: getEnv("NFE_KEY_BASE64"),
+  certPemBase64: getEnv("NFE_CERT_PEM_BASE64"),
+  ambiente: getEnv("NFE_AMBIENTE", "homologacao") as "homologacao" | "producao",
+  uf: getEnv("NFE_UF", "SC"),
+})
+// Keep backward compat
+const NFE_AMBIENTE = getEnv("NFE_AMBIENTE", "homologacao") as "homologacao" | "producao"
+const NFE_UF = getEnv("NFE_UF", "SC")
 
 // Store fiscal config cache
 let _fiscalConfig: any = null
@@ -39,16 +47,18 @@ async function getFiscalConfig() {
  * Load certificate - supports PEM (key+cert base64) or PFX
  */
 function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
+  const cfg = getNFEConfig()
+
   // Option 1: PEM key + cert (preferred - no format compatibility issues)
-  if (NFE_KEY_BASE64 && NFE_CERT_PEM_BASE64) {
-    console.log("[NFe] Using PEM mode - key len:", NFE_KEY_BASE64.length, "cert len:", NFE_CERT_PEM_BASE64.length)
-    const key = Buffer.from(NFE_KEY_BASE64, "base64").toString("utf-8")
-    const cert = Buffer.from(NFE_CERT_PEM_BASE64, "base64").toString("utf-8")
+  if (cfg.keyBase64 && cfg.certPemBase64) {
+    console.log("[NFe] Using PEM mode - key len:", cfg.keyBase64.length, "cert len:", cfg.certPemBase64.length)
+    const key = Buffer.from(cfg.keyBase64, "base64").toString("utf-8")
+    const cert = Buffer.from(cfg.certPemBase64, "base64").toString("utf-8")
     return { key, cert, pfx: null }
   }
 
   // Option 2: PFX file
-  console.log("[NFe] Using PFX mode (legacy) - key64:", NFE_KEY_BASE64.length, "cert64:", NFE_CERT_PEM_BASE64.length)
+  console.log("[NFe] Using PFX mode (legacy) - keyBase64:", cfg.keyBase64.length, "certPem:", cfg.certPemBase64.length)
   let pfxBuffer: Buffer
   if (NFE_CERT_BASE64) {
     pfxBuffer = Buffer.from(NFE_CERT_BASE64, "base64")
@@ -81,7 +91,7 @@ async function signXml(xml: string): Promise<string> {
       sigOptions.publicCert = pfxData.cert
     } else {
       sigOptions.privateKey = pfxData.pfx
-      sigOptions.passphrase = NFE_CERT_PASSWORD
+      sigOptions.passphrase = getEnv("NFE_CERT_PASSWORD")
     }
     const sig = new SignedXml(sigOptions)
       canonicalizationAlgorithm: "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
@@ -129,7 +139,7 @@ async function soapRequest(url: string, soapBody: string): Promise<string> {
         "Content-Type": "application/soap+xml; charset=utf-8",
         "Content-Length": Buffer.byteLength(soapEnvelope),
       },
-      ...(pfxData.key ? { key: pfxData.key, cert: pfxData.cert } : { pfx: pfxData.pfx, passphrase: NFE_CERT_PASSWORD }),
+      ...(pfxData.key ? { key: pfxData.key, cert: pfxData.cert } : { pfx: pfxData.pfx, passphrase: getEnv("NFE_CERT_PASSWORD") }),
       rejectUnauthorized: true,
     }
 
