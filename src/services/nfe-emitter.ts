@@ -325,7 +325,7 @@ export async function emitirNFe(orderData: {
       <CRT>${config.regime_tributario === "simples_nacional" ? "1" : config.regime_tributario === "lucro_presumido" ? "2" : "3"}</CRT>
     </emit>
     <dest>
-      ${destDoc}<xNome>${orderData.cliente.nome}</xNome>
+      ${destDoc}<xNome>${getNFEConfig().ambiente === "homologacao" ? "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL" : orderData.cliente.nome}</xNome>
       <enderDest>
         <xLgr>${orderData.cliente.endereco.logradouro}</xLgr><nro>${orderData.cliente.endereco.numero || "S/N"}</nro>
         ${orderData.cliente.endereco.complemento ? `<xCpl>${orderData.cliente.endereco.complemento}</xCpl>` : ""}
