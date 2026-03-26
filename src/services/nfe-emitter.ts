@@ -272,9 +272,16 @@ export async function emitirNFe(orderData: {
   const cDV = resto < 2 ? "0" : String(11 - resto)
   const chaveAcesso = chaveBase + cDV
 
+  const isSimples = config.regime_tributario === "simples_nacional"
+  const aliqICMS = config.aliquota_icms || 0
+  const aliqPIS = config.aliquota_pis || 0
+  const aliqCOFINS = config.aliquota_cofins || 0
   const vProd = orderData.itens.reduce((s, i) => s + i.valor_total, 0)
   const vFrete = orderData.frete.valor || 0
   const vNF = vProd + vFrete
+  const totalICMS = isSimples ? 0 : orderData.itens.reduce((s, i) => s + (i.valor_total * aliqICMS / 100), 0)
+  const totalPIS = isSimples ? 0 : orderData.itens.reduce((s, i) => s + (i.valor_total * aliqPIS / 100), 0)
+  const totalCOFINS = isSimples ? 0 : orderData.itens.reduce((s, i) => s + (i.valor_total * aliqCOFINS / 100), 0)
 
   const detXml = orderData.itens.map((item, idx) => {
     const isSimples = config.regime_tributario === "simples_nacional"
@@ -345,11 +352,11 @@ export async function emitirNFe(orderData: {
     </dest>
     ${detXml}
     <total><ICMSTot>
-      <vBC>0.00</vBC><vICMS>0.00</vICMS><vICMSDeson>0.00</vICMSDeson><vFCP>0.00</vFCP>
+      <vBC>${isSimples ? "0.00" : vProd.toFixed(2)}</vBC><vICMS>${isSimples ? "0.00" : totalICMS.toFixed(2)}</vICMS><vICMSDeson>0.00</vICMSDeson><vFCP>0.00</vFCP>
       <vBCST>0.00</vBCST><vST>0.00</vST><vFCPST>0.00</vFCPST><vFCPSTRet>0.00</vFCPSTRet>
       <vProd>${vProd.toFixed(2)}</vProd><vFrete>${vFrete.toFixed(2)}</vFrete>
       <vSeg>0.00</vSeg><vDesc>0.00</vDesc><vII>0.00</vII><vIPI>0.00</vIPI><vIPIDevol>0.00</vIPIDevol>
-      <vPIS>0.00</vPIS><vCOFINS>0.00</vCOFINS><vOutro>0.00</vOutro><vNF>${vNF.toFixed(2)}</vNF>
+      <vPIS>${isSimples ? "0.00" : totalPIS.toFixed(2)}</vPIS><vCOFINS>${isSimples ? "0.00" : totalCOFINS.toFixed(2)}</vCOFINS><vOutro>0.00</vOutro><vNF>${vNF.toFixed(2)}</vNF>
     </ICMSTot></total>
     <transp><modFrete>${orderData.frete.modalidade}</modFrete></transp>
     <pag><detPag><tPag>${orderData.pagamento.forma}</tPag><vPag>${orderData.pagamento.valor.toFixed(2)}</vPag></detPag></pag>
