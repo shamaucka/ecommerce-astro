@@ -51,6 +51,17 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ result }), { status: 200, headers })
       }
 
+      case "emit_estorno": {
+        if (!body.nfe_referenciada) throw new Error("nfe_referenciada (chave da nota original) obrigatorio")
+        const result = await nfeManager.emitirEstorno({
+          nfe_referenciada: body.nfe_referenciada,
+          order_id: body.order_id,
+          valor_total: body.valor_total,
+          motivo: body.motivo || "Devolucao de mercadoria pelo cliente",
+        })
+        return new Response(JSON.stringify({ result }), { status: 200, headers })
+      }
+
       case "cancel": {
         if (!body.id || !body.justificativa) throw new Error("id e justificativa obrigatorios")
         const result = await nfeManager.cancelar(body.id, body.justificativa)

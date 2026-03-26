@@ -176,6 +176,33 @@ export async function emitirEntrada(data: { nfe_referenciada: string; motivo: st
   return registro[0]
 }
 
+// ========== ESTORNO / DEVOLUCAO ==========
+
+export async function emitirEstorno(data: { nfe_referenciada: string; order_id?: string; valor_total?: number; motivo?: string }) {
+  const configs = await db.select().from(storeFiscalConfig).limit(1)
+  const config = configs[0]
+  if (!config) throw new Error("Configuracao fiscal nao encontrada")
+
+  const SERIE_ESTORNO = 4 // Serie 4 para saida
+  const nextNumber = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, SERIE_ESTORNO)))[0]?.max + 1 || 1
+
+  const registro = await db.insert(nfeRegistro).values({
+    id: `nfe_est_${Date.now()}`,
+    tipo: "estorno",
+    numero: nextNumber,
+    serie: SERIE_ESTORNO,
+    status: "pendente",
+    order_id: data.order_id || null,
+    valor_total: data.valor_total || 0,
+    cfop: "1202",
+    natureza_operacao: "Devolucao de mercadoria adquirida para comercializacao",
+    nfe_referenciada: data.nfe_referenciada,
+    metadata: { motivo: data.motivo || "Devolucao de mercadoria pelo cliente" },
+  }).returning()
+
+  return registro[0]
+}
+
 // ========== CANCEL ==========
 
 export async function cancelar(id: string, justificativa: string) {
