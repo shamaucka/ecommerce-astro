@@ -343,22 +343,30 @@ export async function emitirNFe(orderData: {
     </nfeDadosMsg>`
 
     const response = await soapRequest(url, soapBody)
+    console.log("[NFe] SEFAZ response (first 500):", response.substring(0, 500))
 
-    // Parse response
+    // Parse response - try multiple patterns
     const protMatch = response.match(/<nProt>(\d+)<\/nProt>/)
-    const chaveMatch = response.match(/<chNFe>(\d+)<\/chNFe>/)
-    const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
-    const motivoMatch = response.match(/<xMotivo>([^<]+)<\/xMotivo>/)
+    const chaveMatch = response.match(/<chNFe>([0-9]+)<\/chNFe>/)
+    const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/g)
+    const motivoMatch = response.match(/<xMotivo>([^<]+)<\/xMotivo>/g)
 
-    const cStat = statusMatch?.[1]
+    // Get the last cStat (the one from infProt, not from cStatLote)
+    const allStats = (response.match(/<cStat>(\d+)<\/cStat>/g) || []).map((m: string) => m.replace(/<\/?cStat>/g, ""))
+    const allMotivos = (response.match(/<xMotivo>([^<]+)<\/xMotivo>/g) || []).map((m: string) => m.replace(/<\/?xMotivo>/g, ""))
+
+    console.log("[NFe] cStats:", allStats.join(","), "| motivos:", allMotivos.join(" | "))
+
+    const cStat = allStats[allStats.length - 1] || null
+    const motivo = allMotivos[allMotivos.length - 1] || null
     const success = cStat === "100" || cStat === "104"
 
     return {
       success,
       protocolo: protMatch?.[1] || null,
       chave: chaveMatch?.[1] || null,
-      status: cStat || null,
-      motivo: motivoMatch?.[1] || null,
+      status: cStat,
+      motivo: motivo,
       xml: signedXml,
     }
   } catch (err: any) {
