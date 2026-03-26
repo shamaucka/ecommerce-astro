@@ -55,7 +55,9 @@ export async function emitirSaida(orderId: string) {
   const config = configs[0]
   if (!config) throw new Error("Configuracao fiscal nao encontrada")
 
-  const nextNumber = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, 3)))[0]?.max + 1 || 1
+  // Start from 20 to avoid conflicts with homologation NFes (1-19 used in testing)
+  const dbMax = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, 3)))[0]?.max || 0
+  const nextNumber = Math.max(dbMax + 1, 20)
 
   const items = (order.items as any[]) || []
 
