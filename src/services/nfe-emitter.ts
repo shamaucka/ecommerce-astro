@@ -334,18 +334,18 @@ export async function emitirNFe(orderData: {
   </infNFe>
 </NFe>`
 
+  // Compact XML - remove whitespace between tags (SEFAZ requirement)
+  const compactNfeXml = nfeXml.replace(/>\s+</g, "><").trim()
+
   // Sign XML
-  const signedXml = await signXml(nfeXml)
+  const signedXml = await signXml(compactNfeXml)
 
   // Send to SEFAZ
   try {
     const url = getSefazUrl("autorizacao")
-    const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4">
-      <enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
-        <idLote>${Date.now()}</idLote><indSinc>1</indSinc>
-        ${signedXml}
-      </enviNFe>
-    </nfeDadosMsg>`
+    // SEFAZ rejects whitespace between tags - must be compact XML
+    const compactSignedXml = signedXml.replace(/>\s+</g, "><").trim()
+    const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4"><enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00"><idLote>${Date.now()}</idLote><indSinc>1</indSinc>${compactSignedXml}</enviNFe></nfeDadosMsg>`
 
     const response = await soapRequest(url, soapBody)
     console.log("[NFe] SEFAZ response (first 500):", response.substring(0, 500))
