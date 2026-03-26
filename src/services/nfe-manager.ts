@@ -55,9 +55,9 @@ export async function emitirSaida(orderId: string) {
   const config = configs[0]
   if (!config) throw new Error("Configuracao fiscal nao encontrada")
 
-  // Start from 100 to avoid conflicts with previous NFes (1-20 used in homologation/testing)
-  const dbMax = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, 3)))[0]?.max || 0
-  const nextNumber = Math.max(dbMax + 1, 100)
+  const SERIE_SAIDA = 4
+  const dbMax = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, SERIE_SAIDA)))[0]?.max || 0
+  const nextNumber = dbMax + 1
 
   const items = (order.items as any[]) || []
 
@@ -75,7 +75,7 @@ export async function emitirSaida(orderId: string) {
   // Monta dados para emissao
   const nfeData = {
     numero: nextNumber,
-    serie: 3,
+    serie: SERIE_SAIDA,
     cliente: {
       nome: order.customer_name || "Consumidor",
       cpf: customerCpf.replace(/\D/g, "") || undefined,
@@ -115,7 +115,7 @@ export async function emitirSaida(orderId: string) {
     id: `nfe_${Date.now()}`,
     tipo: "saida",
     numero: nextNumber,
-    serie: 3,
+    serie: SERIE_SAIDA,
     status: "pendente",
     order_id: orderId,
     customer_name: order.customer_name || "",
@@ -157,13 +157,14 @@ export async function emitirEntrada(data: { nfe_referenciada: string; motivo: st
   const config = configs[0]
   if (!config) throw new Error("Configuracao fiscal nao encontrada")
 
-  const nextNumber = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, 4)))[0]?.max + 1 || 1
+  const SERIE_ENTRADA = 5
+  const nextNumber = (await db.select({ max: sql<number>`COALESCE(MAX(numero), 0)` }).from(nfeRegistro).where(eq(nfeRegistro.serie, SERIE_ENTRADA)))[0]?.max + 1 || 1
 
   const registro = await db.insert(nfeRegistro).values({
     id: `nfe_ent_${Date.now()}`,
     tipo: "entrada",
     numero: nextNumber,
-    serie: 4,
+    serie: SERIE_ENTRADA,
     status: "pendente",
     valor_total: data.valor_total,
     cfop: "1202",
