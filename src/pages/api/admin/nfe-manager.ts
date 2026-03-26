@@ -69,6 +69,33 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ pdf }), { status: 200, headers })
       }
 
+      case "get_imile_label": {
+        if (!body.id) throw new Error("id obrigatorio")
+        // Busca a nota fiscal e o fulfillment task associado
+        const { db } = await import("@/db/index.js")
+        const { nfeRegistro } = await import("@/db/schema/fiscal-br.js")
+        const { eq } = await import("drizzle-orm")
+        const notas = await db.select().from(nfeRegistro).where(eq(nfeRegistro.id, body.id)).limit(1)
+        const nota = notas[0]
+        if (!nota?.order_id) throw new Error("Nota sem pedido associado")
+
+        // Buscar fulfillment task pelo order_id para pegar o tracking_code
+        const fulfillmentOps = await import("@/services/fulfillment-ops")
+        const tasks = await fulfillmentOps.list()
+        const task = tasks.find((t: any) => t.order_id === nota.order_id)
+        if (!task?.tracking_code) throw new Error("Etiqueta iMile nao disponivel - pedido sem rastreio")
+
+        // Buscar etiqueta da iMile
+        try {
+          const imile = await import("@/services/imile")
+          const label = await imile.getShippingLabel(task.tracking_code)
+          const labelPdf = label?.data?.imileAwb || null
+          return new Response(JSON.stringify({ labelBase64: labelPdf, trackingCode: task.tracking_code }), { status: 200, headers })
+        } catch (e: any) {
+          return new Response(JSON.stringify({ error: "Erro ao buscar etiqueta: " + e.message }), { status: 200, headers })
+        }
+      }
+
       case "retry": {
         if (!body.id) throw new Error("id obrigatorio")
         const result = await nfeManager.retentar(body.id)

@@ -223,7 +223,8 @@ export const POST: APIRoute = async ({ request }) => {
           result.nfe = {
             numero: nfe.numero,
             serie: nfe.serie,
-            chave: nfe.chave_acesso,
+            chave: nfe.chave_acesso || nfe.chave || null,
+            protocolo: nfe.protocolo || null,
             status: nfe.status,
           };
           // Salvar na task
