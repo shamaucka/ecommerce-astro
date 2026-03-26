@@ -258,7 +258,7 @@ export async function emitirNFe(orderData: {
   // Chave sem DV: UF + AAMM + CNPJ + mod + serie + nNF + tpEmis + cNF
   const chaveBase = `${cUF}${aamm}${cnpjClean}55${serieStr}${nNFStr}${tpEmis}${cNF}`
   // Calcular DV (modulo 11)
-  const pesos = [2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3]
+  const pesos = [2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4]
   let soma = 0
   const digits = chaveBase.split("").reverse()
   for (let i = 0; i < digits.length; i++) { soma += parseInt(digits[i]) * pesos[i] }
@@ -363,7 +363,7 @@ export async function emitirNFe(orderData: {
     const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeAutorizacao4"><enviNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00"><idLote>${Date.now()}</idLote><indSinc>1</indSinc>${compactSignedXml}</enviNFe></nfeDadosMsg>`
 
     const response = await soapRequest(url, soapBody)
-    console.log("[NFe] SEFAZ response (first 500):", response.substring(0, 500))
+    console.log("[NFe] SEFAZ response (first 1500):", response.substring(0, 1500))
 
     // Parse response - try multiple patterns
     const protMatch = response.match(/<nProt>(\d+)<\/nProt>/)
