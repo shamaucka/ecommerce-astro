@@ -20,6 +20,8 @@ import * as https from "https"
 const NFE_CERT_PATH = process.env.NFE_CERT_PATH || ""
 const NFE_CERT_BASE64 = process.env.NFE_CERT_BASE64 || ""
 const NFE_CERT_PASSWORD = process.env.NFE_CERT_PASSWORD || ""
+const NFE_KEY_BASE64 = process.env.NFE_KEY_BASE64 || ""
+const NFE_CERT_PEM_BASE64 = process.env.NFE_CERT_PEM_BASE64 || ""
 const NFE_AMBIENTE = (process.env.NFE_AMBIENTE || "homologacao") as "homologacao" | "producao"
 const NFE_UF = process.env.NFE_UF || "SC"
 
@@ -34,21 +36,27 @@ async function getFiscalConfig() {
 }
 
 /**
- * Load PFX certificate and extract key + cert
+ * Load certificate - supports PEM (key+cert base64) or PFX
  */
-function loadCertificate(): { key: string; cert: string; pfx: Buffer } {
-  let pfxBuffer: Buffer
+function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
+  // Option 1: PEM key + cert (preferred - no format compatibility issues)
+  if (NFE_KEY_BASE64 && NFE_CERT_PEM_BASE64) {
+    const key = Buffer.from(NFE_KEY_BASE64, "base64").toString("utf-8")
+    const cert = Buffer.from(NFE_CERT_PEM_BASE64, "base64").toString("utf-8")
+    return { key, cert, pfx: null }
+  }
 
+  // Option 2: PFX file
+  let pfxBuffer: Buffer
   if (NFE_CERT_BASE64) {
     pfxBuffer = Buffer.from(NFE_CERT_BASE64, "base64")
   } else if (NFE_CERT_PATH) {
     const fs = require("fs")
     pfxBuffer = fs.readFileSync(NFE_CERT_PATH)
   } else {
-    throw new Error("Certificado digital nao configurado. Configure NFE_CERT_BASE64 ou NFE_CERT_PATH.")
+    throw new Error("Certificado digital nao configurado. Configure NFE_KEY_BASE64+NFE_CERT_PEM_BASE64 ou NFE_CERT_BASE64.")
   }
 
-  // PFX buffer is used directly by xml-crypto and https
   return { key: "", cert: "", pfx: pfxBuffer }
 }
 
@@ -61,10 +69,19 @@ async function signXml(xml: string): Promise<string> {
 
     const pfxData = loadCertificate()
 
-    // Use xml-crypto to sign
-    const sig = new SignedXml({
-      privateKey: pfxData.pfx,
-      passphrase: NFE_CERT_PASSWORD,
+    // Use xml-crypto to sign - prefer PEM key, fallback to PFX
+    const sigOptions: any = {
+      canonicalizationAlgorithm: "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
+      signatureAlgorithm: "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
+    }
+    if (pfxData.key) {
+      sigOptions.privateKey = pfxData.key
+      sigOptions.publicCert = pfxData.cert
+    } else {
+      sigOptions.privateKey = pfxData.pfx
+      sigOptions.passphrase = NFE_CERT_PASSWORD
+    }
+    const sig = new SignedXml(sigOptions)
       canonicalizationAlgorithm: "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
       signatureAlgorithm: "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
     })
@@ -110,8 +127,7 @@ async function soapRequest(url: string, soapBody: string): Promise<string> {
         "Content-Type": "application/soap+xml; charset=utf-8",
         "Content-Length": Buffer.byteLength(soapEnvelope),
       },
-      pfx: pfxData.pfx,
-      passphrase: NFE_CERT_PASSWORD,
+      ...(pfxData.key ? { key: pfxData.key, cert: pfxData.cert } : { pfx: pfxData.pfx, passphrase: NFE_CERT_PASSWORD }),
       rejectUnauthorized: true,
     }
 
