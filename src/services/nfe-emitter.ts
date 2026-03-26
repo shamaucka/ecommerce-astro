@@ -361,6 +361,12 @@ export async function emitirNFe(orderData: {
     <transp><modFrete>${orderData.frete.modalidade}</modFrete></transp>
     <pag><detPag><tPag>${orderData.pagamento.forma}</tPag><vPag>${orderData.pagamento.valor.toFixed(2)}</vPag></detPag></pag>
     ${config.info_complementar ? `<infAdic><infCpl>${config.info_complementar}</infCpl></infAdic>` : ""}
+    <infRespTec>
+      <CNPJ>${cnpjClean}</CNPJ>
+      <xContato>Suporte Tecnico</xContato>
+      <email>suporte@tessquadros.com.br</email>
+      <fone>47999887766</fone>
+    </infRespTec>
   </infNFe>
 </NFe>`
 
