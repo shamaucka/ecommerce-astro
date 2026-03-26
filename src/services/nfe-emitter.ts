@@ -141,8 +141,10 @@ async function soapRequest(url: string, soapBody: string): Promise<string> {
         "Content-Type": "application/soap+xml; charset=utf-8",
         "Content-Length": Buffer.byteLength(soapEnvelope),
       },
-      ...(pfxData.key ? { key: pfxData.key, cert: pfxData.cert } : { pfx: pfxData.pfx, passphrase: getEnv("NFE_CERT_PASSWORD") }),
-      rejectUnauthorized: true,
+      ...(pfxData.key
+        ? { key: pfxData.key, cert: pfxData.cert, ca: getEnv("NFE_CA_BASE64") ? Buffer.from(getEnv("NFE_CA_BASE64"), "base64").toString("utf-8") : undefined }
+        : { pfx: pfxData.pfx, passphrase: getEnv("NFE_CERT_PASSWORD") }),
+      rejectUnauthorized: false, // ICP-Brasil CAs not in Node default trust store
     }
 
     const req = https.request(options, (res) => {
