@@ -185,7 +185,7 @@ export async function createOrder(orderData: {
     skuInfos: orderData.items.map((item) => ({
       skuName: item.skuName,
       skuNo: item.skuNo || "",
-      chained: String(item.skuQty),
+      skuQty: String(item.skuQty),
       skuDeclaredValue: String(item.skuDeclaredValue),
       skuWeight: String(item.skuWeight || 0),
     })),
