@@ -266,10 +266,10 @@ export async function getPricing(data: {
 
 // ========== SHIPPING LABEL ==========
 
-export async function getShippingLabel(orderCode: string) {
+export async function getShippingLabel(expressNo: string) {
   return imileRequest("/client/order/reprintOrder", {
-    orderCode: orderCode,
-    orderCodeType: 1,
+    orderCode: expressNo,
+    orderCodeType: 2,
   })
 }
 
