@@ -71,28 +71,33 @@ export const POST: APIRoute = async ({ request }) => {
 
       case "get_imile_label": {
         if (!body.id) throw new Error("id obrigatorio")
-        // Busca a nota fiscal e o fulfillment task associado
         const { db } = await import("@/db/index.js")
         const { nfeRegistro } = await import("@/db/schema/fiscal-br.js")
+        const { fulfillmentTask } = await import("@/db/schema/fulfillment.js")
         const { eq } = await import("drizzle-orm")
+
+        // Busca nota fiscal
         const notas = await db.select().from(nfeRegistro).where(eq(nfeRegistro.id, body.id)).limit(1)
         const nota = notas[0]
         if (!nota?.order_id) throw new Error("Nota sem pedido associado")
 
-        // Buscar fulfillment task pelo order_id para pegar o tracking_code
-        const fulfillmentOps = await import("@/services/fulfillment-ops")
-        const tasks = await fulfillmentOps.list()
-        const task = tasks.find((t: any) => t.order_id === nota.order_id)
-        if (!task?.tracking_code) throw new Error("Etiqueta iMile nao disponivel - pedido sem rastreio")
+        // Busca fulfillment task direto no banco pelo order_id
+        const tasks = await db.select().from(fulfillmentTask).where(eq(fulfillmentTask.order_id, nota.order_id)).limit(1)
+        const task = tasks[0]
+        if (!task?.tracking_code) throw new Error("Pedido sem codigo de rastreio iMile")
 
-        // Buscar etiqueta da iMile
+        // Buscar etiqueta real da iMile via reprintOrder
         try {
           const imile = await import("@/services/imile")
           const label = await imile.getShippingLabel(task.tracking_code)
-          const labelPdf = label?.data?.imileAwb || null
+          // iMile retorna { data: { imileAwb: "base64pdf" } }
+          const labelPdf = label?.data?.imileAwb || label?.imileAwb || null
+          if (!labelPdf) {
+            return new Response(JSON.stringify({ error: "iMile nao retornou PDF da etiqueta", raw: JSON.stringify(label).slice(0, 200) }), { status: 200, headers })
+          }
           return new Response(JSON.stringify({ labelBase64: labelPdf, trackingCode: task.tracking_code }), { status: 200, headers })
         } catch (e: any) {
-          return new Response(JSON.stringify({ error: "Erro ao buscar etiqueta: " + e.message }), { status: 200, headers })
+          return new Response(JSON.stringify({ error: "Erro iMile: " + e.message }), { status: 200, headers })
         }
       }
 
