@@ -47,7 +47,10 @@ function generateSign(body: Record<string, any>): string {
   parts.push(IMILE_SECRET_KEY)
 
   const signStr = parts.join("")
-  return createHash("md5").update(signStr, "utf8").digest("hex").toUpperCase()
+  const sign = createHash("md5").update(signStr, "utf8").digest("hex").toUpperCase()
+  // Debug: log sign details to help troubleshoot 401
+  console.log("[iMile] sign keys:", keys.join(","), "| secretKey len:", IMILE_SECRET_KEY.length, "| signStr len:", signStr.length, "| sign:", sign)
+  return sign
 }
 
 async function imileRequest(path: string, param: Record<string, any>, accessToken?: string) {
@@ -67,13 +70,17 @@ async function imileRequest(path: string, param: Record<string, any>, accessToke
   // Generate sign from body
   body.sign = generateSign(body)
 
+  const jsonBody = JSON.stringify(body)
+  console.log("[iMile] Request", path, "| body length:", jsonBody.length, "| token:", String(token).substring(0, 15))
+
   const res = await fetch(BASE_URL + path, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    body: jsonBody,
   })
 
   const data = await res.json()
+  console.log("[iMile] Response", path, "| code:", data.code, "| message:", data.message)
   if (data.code !== "200" && data.code !== 200) {
     throw new Error("iMile error " + data.code + ": " + (data.message || JSON.stringify(data)))
   }
@@ -116,6 +123,7 @@ export async function getAccessToken(): Promise<string> {
   }
 
   const token = data.data?.accessToken || data.data
+  console.log("[iMile] Auth OK, token:", String(token).substring(0, 20) + "...")
   _tokenCache = { token, expiresAt: Date.now() + 7000000 } // ~2hrs
   return token
 }
