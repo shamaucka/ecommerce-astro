@@ -99,9 +99,6 @@ async function signXml(xml: string): Promise<string> {
       sigOptions.passphrase = getEnv("NFE_CERT_PASSWORD")
     }
     const sig = new SignedXml(sigOptions)
-      canonicalizationAlgorithm: "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
-      signatureAlgorithm: "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
-    })
 
     sig.addReference({
       xpath: "//*[local-name(.)='infNFe']",
