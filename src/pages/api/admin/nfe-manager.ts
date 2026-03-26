@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
         if (!body.id) throw new Error("id obrigatorio")
         const { db } = await import("@/db/index.js")
         const { nfeRegistro } = await import("@/db/schema/fiscal-br.js")
-        const { fulfillmentTask } = await import("@/db/schema/fulfillment.js")
+        const { fulfillmentTask } = await import("@/db/schema/fulfillment-ops.js")
         const { eq } = await import("drizzle-orm")
 
         // Busca nota fiscal
