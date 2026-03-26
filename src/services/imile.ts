@@ -13,6 +13,7 @@ const BASE_URL =
     : "https://openapi.52imile.cn"
 
 // ========== TOKEN CACHE ==========
+// Cache per-process - resets on deploy/restart
 let _tokenCache: { token: string; expiresAt: number } | null = null
 
 /**
@@ -35,11 +36,9 @@ function generateSign(body: Record<string, any>): string {
     parts.push(String(body[key]))
   }
 
-  // Add param as compact JSON (no spaces after : and ,)
+  // Add param as compact JSON - use exact same serialization as what gets sent
   if (body.param !== undefined) {
     const paramJson = JSON.stringify(body.param)
-      .replace(/: /g, ":")
-      .replace(/, /g, ",")
     parts.push(paramJson)
   }
 
@@ -71,7 +70,7 @@ async function imileRequest(path: string, param: Record<string, any>, accessToke
   body.sign = generateSign(body)
 
   const jsonBody = JSON.stringify(body)
-  console.log("[iMile] Request", path, "| body length:", jsonBody.length, "| token:", String(token).substring(0, 15))
+  console.log("[iMile] Request", path, "| body length:", jsonBody.length, "| param JSON:", JSON.stringify(body.param).substring(0, 300))
 
   const res = await fetch(BASE_URL + path, {
     method: "POST",
@@ -123,7 +122,7 @@ export async function getAccessToken(): Promise<string> {
   }
 
   const token = data.data?.accessToken || data.data
-  console.log("[iMile] Auth OK, token:", String(token).substring(0, 20) + "...")
+  console.log("[iMile] Auth response code:", data.code, "| token type:", typeof token, "| token:", String(token).substring(0, 30) + "...")
   _tokenCache = { token, expiresAt: Date.now() + 7000000 } // ~2hrs
   return token
 }
