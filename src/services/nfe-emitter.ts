@@ -56,9 +56,14 @@ function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
 
   // Option 1: PEM key + cert (preferred - no format compatibility issues)
   if (cfg.keyBase64 && cfg.certPemBase64) {
-    console.log("[NFe] Using PEM mode - key len:", cfg.keyBase64.length, "cert len:", cfg.certPemBase64.length)
+    const caBase64 = getEnv("NFE_CA_BASE64")
+    console.log("[NFe] Using PEM mode - key len:", cfg.keyBase64.length, "cert len:", cfg.certPemBase64.length, "ca:", caBase64 ? caBase64.length : "none")
     const key = Buffer.from(cfg.keyBase64, "base64").toString("utf-8")
-    const cert = Buffer.from(cfg.certPemBase64, "base64").toString("utf-8")
+    let cert = Buffer.from(cfg.certPemBase64, "base64").toString("utf-8")
+    // Append CA chain to cert for mTLS (SEFAZ requires full chain)
+    if (caBase64) {
+      cert += "\n" + Buffer.from(caBase64, "base64").toString("utf-8")
+    }
     return { key, cert, pfx: null }
   }
 
@@ -164,24 +169,24 @@ async function soapRequest(url: string, soapBody: string): Promise<string> {
 const SEFAZ_URLS: Record<string, Record<string, { homologacao: string; producao: string }>> = {
   SC: {
     autorizacao: {
-      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao4/NFeAutorizacao4.asmx",
-      producao: "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao4/NFeAutorizacao4.asmx",
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeAutorizacao/NFeAutorizacao4.asmx",
     },
     retAutorizacao: {
-      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao4/NFeRetAutorizacao4.asmx",
-      producao: "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao4/NFeRetAutorizacao4.asmx",
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeRetAutorizacao/NFeRetAutorizacao4.asmx",
     },
     consulta: {
-      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta4/NfeConsulta4.asmx",
-      producao: "https://nfe.svrs.rs.gov.br/ws/NfeConsulta4/NfeConsulta4.asmx",
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeConsulta/NfeConsulta4.asmx",
     },
     cancelamento: {
-      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento4/RecepcaoEvento4.asmx",
-      producao: "https://nfe.svrs.rs.gov.br/ws/recepcaoevento4/RecepcaoEvento4.asmx",
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/RecepcaoEvento/RecepcaoEvento4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/RecepcaoEvento/RecepcaoEvento4.asmx",
     },
     statusServico: {
-      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico4/NfeStatusServico4.asmx",
-      producao: "https://nfe.svrs.rs.gov.br/ws/NfeStatusServico4/NfeStatusServico4.asmx",
+      homologacao: "https://nfe-homologacao.svrs.rs.gov.br/ws/NfeStatusServico/NFeStatusServico4.asmx",
+      producao: "https://nfe.svrs.rs.gov.br/ws/NfeStatusServico/NFeStatusServico4.asmx",
     },
   },
 }
