@@ -16,9 +16,11 @@ import { storeFiscalConfig } from "../db/schema/fiscal-br.js"
 import * as crypto from "crypto"
 import * as https from "https"
 
-// Config from env vars - read dynamically to support runtime injection
+// Config from env vars - read dynamically at RUNTIME (not build time)
+// Using indirect access to prevent Vite/Astro from inlining env vars
+const _env = process.env
 function getEnv(key: string, fallback = ""): string {
-  return process.env[key] || fallback
+  return _env[key] || fallback
 }
 const getNFEConfig = () => ({
   certPath: getEnv("NFE_CERT_PATH"),
@@ -48,6 +50,9 @@ async function getFiscalConfig() {
  */
 function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
   const cfg = getNFEConfig()
+  // Debug: list all NFE_ env vars to diagnose
+  const allNfeVars = Object.keys(_env).filter(k => k.startsWith("NFE_")).map(k => k + "=" + String(_env[k] || "").length + "chars")
+  console.log("[NFe] Available env vars:", allNfeVars.join(", ") || "NONE")
 
   // Option 1: PEM key + cert (preferred - no format compatibility issues)
   if (cfg.keyBase64 && cfg.certPemBase64) {
