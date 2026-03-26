@@ -59,29 +59,40 @@ export async function emitirSaida(orderId: string) {
 
   const items = (order.items as any[]) || []
 
+  // Busca CPF/CNPJ do cliente nos metadata ou campos do pedido
+  const metadata = (order.metadata || {}) as any
+  const customerCpf = metadata.cpf || (order as any).customer_cpf || ""
+  const customerPhone = metadata.phone || ""
+
+  // Busca codigo municipio IBGE pelo CEP (primeiros 5 digitos indicam a regiao)
+  // Fallback: usar o mesmo do emitente se for mesmo estado
+  const destCodMun = order.shipping_state === config.uf
+    ? (config.codigo_municipio || "4205902")
+    : "0000000" // TODO: buscar via API ViaCEP
+
   // Monta dados para emissao
   const nfeData = {
     numero: nextNumber,
     serie: 3,
     cliente: {
       nome: order.customer_name || "Consumidor",
-      cpf: (order as any).customer_cpf || undefined,
+      cpf: customerCpf.replace(/\D/g, "") || undefined,
       email: order.customer_email || undefined,
       endereco: {
         logradouro: order.shipping_address_line1 || "",
         numero: "S/N",
         complemento: order.shipping_address_line2 || "",
-        bairro: order.shipping_neighborhood || "",
+        bairro: order.shipping_neighborhood || "Centro",
         cidade: order.shipping_city || "",
         uf: order.shipping_state || "",
         cep: order.shipping_postal_code || "",
-        codigo_municipio: "",
+        codigo_municipio: destCodMun,
       },
     },
     itens: items.map((item: any) => ({
       codigo: item.sku || item.product_id || "QUADRO",
       descricao: item.title || "Quadro Decorativo",
-      ncm: config.ncm_padrao || "9701.91.00",
+      ncm: (config.ncm_padrao || "97019100").replace(/\./g, ""),
       cfop: order.shipping_state === config.uf
         ? (config.cfop_dentro_estado || "5102")
         : (config.cfop_fora_estado || "6102"),

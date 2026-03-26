@@ -10,7 +10,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     switch (action) {
       case "create": {
-        const { email, name, items, shipping, payment } = body;
+        const { email, name, cpf, phone, items, shipping, payment } = body;
         if (!email || !items) {
           return new Response(
             JSON.stringify({ error: "email e items são obrigatórios" }),
@@ -35,6 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
           shipping_city: shipping?.city,
           shipping_state: shipping?.state,
           shipping_postal_code: shipping?.postal_code,
+          metadata: { cpf: cpf || "", phone: phone || "" },
         });
 
         return new Response(
