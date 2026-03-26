@@ -347,7 +347,7 @@ export async function emitirNFe(orderData: {
     </ICMSTot></total>
     <transp><modFrete>${orderData.frete.modalidade}</modFrete></transp>
     <pag><detPag><tPag>${orderData.pagamento.forma}</tPag><vPag>${orderData.pagamento.valor.toFixed(2)}</vPag></detPag></pag>
-    <infAdic><infCpl>${config.info_complementar || ""}</infCpl></infAdic>
+    ${config.info_complementar ? `<infAdic><infCpl>${config.info_complementar}</infCpl></infAdic>` : ""}
   </infNFe>
 </NFe>`
 
