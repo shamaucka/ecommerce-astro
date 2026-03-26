@@ -265,30 +265,27 @@ export const POST: APIRoute = async ({ request }) => {
             })),
           });
 
+          const imileData = imileOrder.data || imileOrder;
+          const expressNo = imileData.expressNo || imileData.waybillNo || "";
+          const labelPdf = imileData.imileAwb || null; // PDF base64 da etiqueta
+
           result.imile = {
-            waybillNo: imileOrder.waybillNo,
-            orderCode: imileOrder.orderCode,
-            trackingUrl: imileOrder.trackingUrl,
+            expressNo,
+            trackingCode: expressNo,
+            hasLabel: !!labelPdf,
+            labelBase64: labelPdf, // PDF base64 para impressao
           };
 
           // Salvar tracking na task e pedido
           await fulfillmentOps.updateTask(task_id, {
             carrier: "iMile",
-            tracking_code: imileOrder.waybillNo || imileOrder.orderCode,
+            tracking_code: expressNo,
           });
           await db.update(astroOrder).set({
-            tracking_number: imileOrder.waybillNo || imileOrder.orderCode,
+            tracking_number: expressNo,
             status: "shipped",
             updated_at: new Date(),
           }).where(eq(astroOrder.id, order.id));
-
-          // 4. Buscar etiqueta
-          try {
-            const labelData = await imile.getShippingLabel(imileOrder.orderCode || imileOrder.waybillNo);
-            result.imile.label = labelData;
-          } catch (labelErr: any) {
-            result.errors.push({ step: "label", error: labelErr.message });
-          }
         } catch (imileErr: any) {
           result.errors.push({ step: "imile", error: imileErr.message });
         }
