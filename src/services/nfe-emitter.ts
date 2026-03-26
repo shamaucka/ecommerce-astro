@@ -248,7 +248,8 @@ export async function emitirNFe(orderData: {
   if (!config) throw new Error("Configuracao fiscal nao encontrada. Configure em Fiscal Loja.")
 
   // Build NFe XML
-  const cNF = String(orderData.numero).padStart(8, "0")
+  // cNF: 8-digit random numeric code (cannot be sequential or equal to nNF)
+  const cNF = String(Math.floor(10000000 + Math.random() * 89999999))
   const cUF = getCodigoUF(config.uf || NFE_UF)
   // Format date in Brasilia timezone (UTC-3)
   const now = new Date()
