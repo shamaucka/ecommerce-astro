@@ -48,7 +48,7 @@ async function getFiscalConfig() {
 /**
  * Load certificate - supports PEM (key+cert base64) or PFX
  */
-function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
+function loadCertificate(): { key: string; cert: string; certOnly: string; pfx: Buffer | null } {
   const cfg = getNFEConfig()
   // Debug: list all NFE_ env vars to diagnose
   const allNfeVars = Object.keys(_env).filter(k => k.startsWith("NFE_")).map(k => k + "=" + String(_env[k] || "").length + "chars")
@@ -59,12 +59,13 @@ function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
     const caBase64 = getEnv("NFE_CA_BASE64")
     console.log("[NFe] Using PEM mode - key len:", cfg.keyBase64.length, "cert len:", cfg.certPemBase64.length, "ca:", caBase64 ? caBase64.length : "none")
     const key = Buffer.from(cfg.keyBase64, "base64").toString("utf-8")
-    let cert = Buffer.from(cfg.certPemBase64, "base64").toString("utf-8")
-    // Append CA chain to cert for mTLS (SEFAZ requires full chain)
+    const certOnly = Buffer.from(cfg.certPemBase64, "base64").toString("utf-8")
+    // For TLS: cert + CA chain. For XML signing: cert only
+    let cert = certOnly
     if (caBase64) {
       cert += "\n" + Buffer.from(caBase64, "base64").toString("utf-8")
     }
-    return { key, cert, pfx: null }
+    return { key, cert, certOnly, pfx: null }
   }
 
   // Option 2: PFX file
@@ -79,7 +80,7 @@ function loadCertificate(): { key: string; cert: string; pfx: Buffer | null } {
     throw new Error("Certificado digital nao configurado. Configure NFE_KEY_BASE64+NFE_CERT_PEM_BASE64 ou NFE_CERT_BASE64.")
   }
 
-  return { key: "", cert: "", pfx: pfxBuffer }
+  return { key: "", cert: "", certOnly: "", pfx: pfxBuffer }
 }
 
 /**
@@ -98,7 +99,7 @@ async function signXml(xml: string): Promise<string> {
     }
     if (pfxData.key) {
       sigOptions.privateKey = pfxData.key
-      sigOptions.publicCert = pfxData.cert
+      sigOptions.publicCert = pfxData.certOnly || pfxData.cert
     } else {
       sigOptions.privateKey = pfxData.pfx
       sigOptions.passphrase = getEnv("NFE_CERT_PASSWORD")
