@@ -86,7 +86,7 @@ function loadCertificate(): { key: string; cert: string; certOnly: string; pfx: 
 /**
  * Sign XML with X509 certificate using xml-crypto
  */
-async function signXml(xml: string): Promise<string> {
+async function signXml(xml: string, elementName = "infNFe"): Promise<string> {
   try {
     const { SignedXml } = await import("xml-crypto")
 
@@ -107,7 +107,7 @@ async function signXml(xml: string): Promise<string> {
     const sig = new SignedXml(sigOptions)
 
     sig.addReference({
-      xpath: "//*[local-name(.)='infNFe']",
+      xpath: `//*[local-name(.)='${elementName}']`,
       transforms: [
         "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
         "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
@@ -116,7 +116,7 @@ async function signXml(xml: string): Promise<string> {
     })
 
     sig.computeSignature(xml, {
-      location: { reference: "//*[local-name(.)='infNFe']", action: "after" },
+      location: { reference: `//*[local-name(.)='${elementName}']`, action: "after" },
     })
 
     return sig.getSignedXml()
@@ -448,7 +448,7 @@ export async function cancelarNFe(chaveNFe: string, protocolo: string, justifica
 
   const eventoXml = `<envEvento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00"><idLote>${Date.now()}</idLote><evento versao="1.00"><infEvento Id="ID110111${chaveNFe}01"><cOrgao>${chaveNFe.substring(0, 2)}</cOrgao><tpAmb>${ambiente === "producao" ? "1" : "2"}</tpAmb><CNPJ>${cnpj}</CNPJ><chNFe>${chaveNFe}</chNFe><dhEvento>${dhEvento}</dhEvento><tpEvento>110111</tpEvento><nSeqEvento>1</nSeqEvento><verEvento>1.00</verEvento><detEvento versao="1.00"><descEvento>Cancelamento</descEvento><nProt>${protocolo}</nProt><xJust>${justificativa}</xJust></detEvento></infEvento></evento></envEvento>`
 
-  const signedEvento = await signXml(eventoXml)
+  const signedEvento = await signXml(eventoXml, "infEvento")
   const compactSigned = signedEvento.replace(/>\s+</g, "><").trim()
   const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4">${compactSigned}</nfeDadosMsg>`
 
