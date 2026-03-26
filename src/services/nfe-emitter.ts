@@ -359,7 +359,7 @@ export async function emitirNFe(orderData: {
       <vPIS>${isSimples ? "0.00" : totalPIS.toFixed(2)}</vPIS><vCOFINS>${isSimples ? "0.00" : totalCOFINS.toFixed(2)}</vCOFINS><vOutro>0.00</vOutro><vNF>${vProd.toFixed(2)}</vNF>
     </ICMSTot></total>
     <transp><modFrete>${orderData.frete.modalidade}</modFrete></transp>
-    <pag><detPag><tPag>${orderData.pagamento.forma}</tPag><vPag>${orderData.pagamento.valor.toFixed(2)}</vPag></detPag></pag>
+    <pag><detPag><tPag>${orderData.pagamento.forma}</tPag><vPag>${vProd.toFixed(2)}</vPag></detPag></pag>
     ${config.info_complementar ? `<infAdic><infCpl>${config.info_complementar}</infCpl></infAdic>` : ""}
     <infRespTec>
       <CNPJ>${cnpjClean}</CNPJ>
