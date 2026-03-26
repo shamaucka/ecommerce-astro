@@ -250,6 +250,21 @@ export async function emitirNFe(orderData: {
   const cNF = String(orderData.numero).padStart(8, "0")
   const cUF = getCodigoUF(config.uf || NFE_UF)
   const dhEmi = new Date().toISOString().replace(/\.\d{3}Z/, "-03:00")
+  const cnpjClean = (config.cnpj || "").replace(/\D/g, "")
+  const aamm = dhEmi.substring(2, 4) + dhEmi.substring(5, 7)
+  const serieStr = String(orderData.serie || 3).padStart(3, "0")
+  const nNFStr = String(orderData.numero).padStart(9, "0")
+  const tpEmis = "1"
+  // Chave sem DV: UF + AAMM + CNPJ + mod + serie + nNF + tpEmis + cNF
+  const chaveBase = `${cUF}${aamm}${cnpjClean}55${serieStr}${nNFStr}${tpEmis}${cNF}`
+  // Calcular DV (modulo 11)
+  const pesos = [2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,2,3]
+  let soma = 0
+  const digits = chaveBase.split("").reverse()
+  for (let i = 0; i < digits.length; i++) { soma += parseInt(digits[i]) * pesos[i] }
+  const resto = soma % 11
+  const cDV = resto < 2 ? "0" : String(11 - resto)
+  const chaveAcesso = chaveBase + cDV
 
   const vProd = orderData.itens.reduce((s, i) => s + i.valor_total, 0)
   const vFrete = orderData.frete.valor || 0
@@ -284,14 +299,14 @@ export async function emitirNFe(orderData: {
     : `<CNPJ>${(orderData.cliente.cnpj || "").replace(/\D/g, "")}</CNPJ>`
 
   const nfeXml = `<NFe xmlns="http://www.portalfiscal.inf.br/nfe">
-  <infNFe versao="4.00" Id="NFe${cUF}${dhEmi.substring(2, 4)}${dhEmi.substring(5, 7)}${(config.cnpj || "").replace(/\D/g, "")}55${String(orderData.serie).padStart(3, "0")}${String(orderData.numero).padStart(9, "0")}1${cNF}1">
+  <infNFe versao="4.00" Id="NFe${chaveAcesso}">
     <ide>
       <cUF>${cUF}</cUF><cNF>${cNF}</cNF><natOp>${config.natureza_operacao || "Venda de mercadoria"}</natOp>
       <mod>55</mod><serie>${orderData.serie || config.serie_nfe || "3"}</serie><nNF>${orderData.numero}</nNF>
       <dhEmi>${dhEmi}</dhEmi><tpNF>1</tpNF>
       <idDest>${orderData.cliente.endereco.uf === (config.uf || NFE_UF) ? "1" : "2"}</idDest>
       <cMunFG>${config.codigo_municipio || "4205902"}</cMunFG>
-      <tpImp>1</tpImp><tpEmis>1</tpEmis>
+      <tpImp>1</tpImp><tpEmis>${tpEmis}</tpEmis><cDV>${cDV}</cDV>
       <tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
       <finNFe>1</finNFe><indFinal>1</indFinal><indPres>1</indPres><procEmi>0</procEmi><verProc>1.0.0</verProc>
     </ide>
