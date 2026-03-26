@@ -250,8 +250,8 @@ export async function emitirNFe(orderData: {
   // Build NFe XML
   const cNF = String(orderData.numero).padStart(8, "0")
   const cUF = getCodigoUF(config.uf || NFE_UF)
-  // Subtract 2 minutes to avoid "Data-Hora posterior ao horario de recebimento" (clock skew)
-  const emiDate = new Date(Date.now() - 120000)
+  // Subtract 5 minutes to avoid "Data-Hora posterior ao horario de recebimento" (Railway clock skew)
+  const emiDate = new Date(Date.now() - 300000)
   const dhEmi = emiDate.toISOString().replace(/\.\d{3}Z/, "-03:00")
   const cnpjClean = (config.cnpj || "").replace(/\D/g, "")
   const aamm = dhEmi.substring(2, 4) + dhEmi.substring(5, 7)
