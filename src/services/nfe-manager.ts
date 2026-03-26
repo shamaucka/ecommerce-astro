@@ -186,13 +186,17 @@ export async function cancelar(id: string, justificativa: string) {
 
   try {
     const resultado = await nfeEmitter.cancelarNFe(nota.chave_acesso, nota.protocolo, justificativa)
-    await db.update(nfeRegistro).set({
-      status: "cancelada",
-      motivo_cancelamento: justificativa,
-      updated_at: new Date(),
-    }).where(eq(nfeRegistro.id, id))
 
-    return { success: true, resultado }
+    if (resultado.success) {
+      await db.update(nfeRegistro).set({
+        status: "cancelada",
+        motivo_cancelamento: justificativa,
+        updated_at: new Date(),
+      }).where(eq(nfeRegistro.id, id))
+      return { success: true, resultado }
+    } else {
+      return { success: false, error: "SEFAZ rejeitou cancelamento: " + (resultado.motivo || resultado.cStat || "Erro desconhecido"), resultado }
+    }
   } catch (err: any) {
     return { success: false, error: err.message }
   }

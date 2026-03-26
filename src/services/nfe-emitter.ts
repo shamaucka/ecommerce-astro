@@ -420,17 +420,13 @@ export async function emitirNFe(orderData: {
  */
 export async function consultarNFe(chaveNFe: string) {
   const url = getSefazUrl("consulta")
-  const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4">
-    <consSitNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
-      <tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
-      <xServ>CONSULTAR</xServ><chNFe>${chaveNFe}</chNFe>
-    </consSitNFe>
-  </nfeDadosMsg>`
+  const ambiente = getNFEConfig().ambiente
+  const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeConsultaProtocolo4"><consSitNFe xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00"><tpAmb>${ambiente === "producao" ? "1" : "2"}</tpAmb><xServ>CONSULTAR</xServ><chNFe>${chaveNFe}</chNFe></consSitNFe></nfeDadosMsg>`
 
   const response = await soapRequest(url, soapBody)
-  const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
-  const motivoMatch = response.match(/<xMotivo>([^<]+)<\/xMotivo>/)
-  return { cStat: statusMatch?.[1], xMotivo: motivoMatch?.[1], raw: response }
+  const allStats = (response.match(/<cStat>(\d+)<\/cStat>/g) || []).map((m: string) => m.replace(/<\/?cStat>/g, ""))
+  const allMotivos = (response.match(/<xMotivo>([^<]+)<\/xMotivo>/g) || []).map((m: string) => m.replace(/<\/?xMotivo>/g, ""))
+  return { cStat: allStats[allStats.length - 1], xMotivo: allMotivos[allMotivos.length - 1], raw: response }
 }
 
 /**
@@ -442,26 +438,30 @@ export async function cancelarNFe(chaveNFe: string, protocolo: string, justifica
   const url = getSefazUrl("cancelamento")
   const config = await getFiscalConfig()
   const cnpj = (config?.cnpj || "").replace(/\D/g, "")
-  const dhEvento = new Date().toISOString().replace(/\.\d{3}Z/, "-03:00")
 
-  const eventoXml = `<envEvento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00">
-    <idLote>${Date.now()}</idLote>
-    <evento versao="1.00">
-      <infEvento Id="ID110111${chaveNFe}01">
-        <cOrgao>${chaveNFe.substring(0, 2)}</cOrgao><tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
-        <CNPJ>${cnpj}</CNPJ><chNFe>${chaveNFe}</chNFe><dhEvento>${dhEvento}</dhEvento>
-        <tpEvento>110111</tpEvento><nSeqEvento>1</nSeqEvento><verEvento>1.00</verEvento>
-        <detEvento versao="1.00"><descEvento>Cancelamento</descEvento><nProt>${protocolo}</nProt><xJust>${justificativa}</xJust></detEvento>
-      </infEvento>
-    </evento>
-  </envEvento>`
+  // Horario Brasilia (UTC-3)
+  const now = new Date()
+  const brt = new Date(now.getTime() - 3 * 60 * 60 * 1000)
+  const pad = (n: number) => String(n).padStart(2, "0")
+  const dhEvento = `${brt.getUTCFullYear()}-${pad(brt.getUTCMonth() + 1)}-${pad(brt.getUTCDate())}T${pad(brt.getUTCHours())}:${pad(brt.getUTCMinutes())}:${pad(brt.getUTCSeconds())}-03:00`
+  const ambiente = getNFEConfig().ambiente
+
+  const eventoXml = `<envEvento xmlns="http://www.portalfiscal.inf.br/nfe" versao="1.00"><idLote>${Date.now()}</idLote><evento versao="1.00"><infEvento Id="ID110111${chaveNFe}01"><cOrgao>${chaveNFe.substring(0, 2)}</cOrgao><tpAmb>${ambiente === "producao" ? "1" : "2"}</tpAmb><CNPJ>${cnpj}</CNPJ><chNFe>${chaveNFe}</chNFe><dhEvento>${dhEvento}</dhEvento><tpEvento>110111</tpEvento><nSeqEvento>1</nSeqEvento><verEvento>1.00</verEvento><detEvento versao="1.00"><descEvento>Cancelamento</descEvento><nProt>${protocolo}</nProt><xJust>${justificativa}</xJust></detEvento></infEvento></evento></envEvento>`
 
   const signedEvento = await signXml(eventoXml)
-  const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4">${signedEvento}</nfeDadosMsg>`
+  const compactSigned = signedEvento.replace(/>\s+</g, "><").trim()
+  const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeRecepcaoEvento4">${compactSigned}</nfeDadosMsg>`
 
   const response = await soapRequest(url, soapBody)
-  const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
-  return { cStat: statusMatch?.[1], raw: response }
+  console.log("[NFe] Cancel SEFAZ response:", response.substring(0, 500))
+
+  const allStats = (response.match(/<cStat>(\d+)<\/cStat>/g) || []).map((m: string) => m.replace(/<\/?cStat>/g, ""))
+  const allMotivos = (response.match(/<xMotivo>([^<]+)<\/xMotivo>/g) || []).map((m: string) => m.replace(/<\/?xMotivo>/g, ""))
+  const cStat = allStats[allStats.length - 1] || null
+  const motivo = allMotivos[allMotivos.length - 1] || null
+  const success = cStat === "135" || cStat === "155"
+
+  return { cStat, motivo, success, raw: response }
 }
 
 /**
@@ -470,12 +470,8 @@ export async function cancelarNFe(chaveNFe: string, protocolo: string, justifica
 export async function statusSefaz() {
   try {
     const url = getSefazUrl("statusServico")
-    const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4">
-      <consStatServ xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">
-        <tpAmb>${NFE_AMBIENTE === "producao" ? "1" : "2"}</tpAmb>
-        <cUF>${getCodigoUF(NFE_UF)}</cUF><xServ>STATUS</xServ>
-      </consStatServ>
-    </nfeDadosMsg>`
+    const ambiente = getNFEConfig().ambiente
+    const soapBody = `<nfeDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NFeStatusServico4"><consStatServ xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00"><tpAmb>${ambiente === "producao" ? "1" : "2"}</tpAmb><cUF>${getCodigoUF(NFE_UF)}</cUF><xServ>STATUS</xServ></consStatServ></nfeDadosMsg>`
 
     const response = await soapRequest(url, soapBody)
     const statusMatch = response.match(/<cStat>(\d+)<\/cStat>/)
