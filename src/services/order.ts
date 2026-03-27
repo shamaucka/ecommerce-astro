@@ -34,6 +34,8 @@ export async function createOrder(data: {
   customer_id?: string
   customer_name?: string
   customer_email?: string
+  customer_phone?: string
+  customer_cpf?: string
   items: any[]
   subtotal: number
   shipping_cost?: number
@@ -63,6 +65,8 @@ export async function createOrder(data: {
       customer_id: data.customer_id,
       customer_name: data.customer_name,
       customer_email: data.customer_email,
+      customer_phone: data.customer_phone,
+      customer_cpf: data.customer_cpf,
       items: data.items,
       subtotal,
       shipping_cost: shippingCost,

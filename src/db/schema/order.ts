@@ -7,6 +7,8 @@ export const astroOrder = pgTable("astro_order", {
   customer_id: text("customer_id"),
   customer_name: text("customer_name"),
   customer_email: text("customer_email"),
+  customer_phone: text("customer_phone"),
+  customer_cpf: text("customer_cpf"),
   items: jsonb("items").default([]),
   subtotal: integer("subtotal").default(0),
   shipping_cost: integer("shipping_cost").default(0),

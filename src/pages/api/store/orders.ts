@@ -21,11 +21,13 @@ export const POST: APIRoute = async ({ request }) => {
         // Calculate subtotal from items
         const subtotal = items.reduce((s: number, i: any) => s + (i.unit_price || 0) * (i.quantity || 1), 0);
 
-        const customer = await customerService.getOrCreateByEmail(email, { name });
+        const customer = await customerService.getOrCreateByEmail(email, { name, phone });
         const order = await orderService.createOrder({
           customer_id: customer.id,
           customer_name: name,
           customer_email: email,
+          customer_phone: phone || "",
+          customer_cpf: cpf ? cpf.replace(/\D/g, "") : "",
           items,
           subtotal,
           shipping_cost: shipping?.cost || 0,
