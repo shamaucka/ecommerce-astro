@@ -15,6 +15,17 @@ export const GET: APIRoute = async ({ request, url }) => {
         const approved = url.searchParams.get("approved") !== null
           ? url.searchParams.get("approved") === "true"
           : undefined;
+        const page = parseInt(url.searchParams.get("page") || "0");
+        const limit = parseInt(url.searchParams.get("limit") || "0");
+
+        if (page > 0 && limit > 0) {
+          const result = await reviewService.listAllReviews(approved, page, limit);
+          return new Response(
+            JSON.stringify({ reviews: result }),
+            { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+          );
+        }
+
         const reviews = await reviewService.listReviews(product_id, approved);
         return new Response(
           JSON.stringify({ reviews }),
