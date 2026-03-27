@@ -10,6 +10,8 @@ export const productReview = pgTable("product_review", {
   comment: text("comment"),
   verified_purchase: boolean("verified_purchase").default(false),
   approved: boolean("approved").default(false),
+  city: text("city"),
+  state: text("state"),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 })

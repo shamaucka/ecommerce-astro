@@ -37,6 +37,55 @@ export async function getProductReviewStats(product_id: string) {
   }
 }
 
+export async function listAllReviews(approved?: boolean, page = 1, limit = 10) {
+  const offset = (page - 1) * limit
+  const conditions = []
+  if (approved !== undefined) conditions.push(eq(productReview.approved, approved))
+
+  const reviews = await db
+    .select()
+    .from(productReview)
+    .where(conditions.length > 0 ? and(...conditions) : undefined)
+    .orderBy(desc(productReview.created_at))
+    .limit(limit)
+    .offset(offset)
+
+  const countResult = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(productReview)
+    .where(conditions.length > 0 ? and(...conditions) : undefined)
+
+  return { reviews, total: Number(countResult[0]?.count || 0), page, limit }
+}
+
+export async function getGlobalReviewStats() {
+  const result = await db
+    .select({
+      avg_rating: sql<number>`avg(${productReview.rating})`,
+      count: sql<number>`count(*)`,
+      stars5: sql<number>`count(*) filter (where ${productReview.rating} = 5)`,
+      stars4: sql<number>`count(*) filter (where ${productReview.rating} = 4)`,
+      stars3: sql<number>`count(*) filter (where ${productReview.rating} = 3)`,
+      stars2: sql<number>`count(*) filter (where ${productReview.rating} = 2)`,
+      stars1: sql<number>`count(*) filter (where ${productReview.rating} = 1)`,
+    })
+    .from(productReview)
+    .where(eq(productReview.approved, true))
+
+  const row = result[0]
+  return {
+    avg_rating: row?.avg_rating ? Number(Number(row.avg_rating).toFixed(1)) : 0,
+    count: Number(row?.count || 0),
+    distribution: {
+      5: Number(row?.stars5 || 0),
+      4: Number(row?.stars4 || 0),
+      3: Number(row?.stars3 || 0),
+      2: Number(row?.stars2 || 0),
+      1: Number(row?.stars1 || 0),
+    }
+  }
+}
+
 export async function submitReview(data: {
   product_id: string
   customer_name: string

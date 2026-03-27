@@ -5,15 +5,20 @@ import * as reviewService from "@/services/review";
 export const GET: APIRoute = async ({ url }) => {
   try {
     const product_id = url.searchParams.get("product_id");
-    if (!product_id) {
-      return new Response(
-        JSON.stringify({ error: "product_id é obrigatório" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
-    }
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const limit = parseInt(url.searchParams.get("limit") || "10");
+    const all = url.searchParams.get("all") === "true";
 
-    const reviews = await reviewService.listReviews(product_id, true);
-    const stats = await reviewService.getProductReviewStats(product_id);
+    // Se all=true, retorna todas as reviews (para exibir em todas as paginas de produto)
+    const reviews = all
+      ? await reviewService.listAllReviews(true, page, limit)
+      : product_id
+        ? await reviewService.listReviews(product_id, true)
+        : await reviewService.listAllReviews(true, page, limit);
+
+    const stats = product_id
+      ? await reviewService.getProductReviewStats(product_id)
+      : await reviewService.getGlobalReviewStats();
 
     return new Response(
       JSON.stringify({ reviews, stats }),
