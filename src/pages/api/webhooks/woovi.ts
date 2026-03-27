@@ -4,6 +4,8 @@ import { db } from "@/db/index.js"
 import { astroOrder } from "@/db/schema/order.js"
 import { eq } from "drizzle-orm"
 import * as woovi from "@/services/payment-woovi"
+import { capiPurchase } from "@/services/tracking-meta"
+import { tiktokPurchase } from "@/services/tracking-tiktok"
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -33,6 +35,31 @@ export const POST: APIRoute = async ({ request }) => {
         }).where(eq(astroOrder.id, orderId))
 
         console.log(`[Woovi Webhook] Order ${orderId} marked as paid (PIX)`)
+
+        // Server-side conversion tracking
+        const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, orderId)).limit(1)
+        if (order) {
+          const contentIds = (Array.isArray(order.items) ? order.items : []).map((i: any) => i.product_id || i.sku || "")
+
+          capiPurchase({
+            orderId: order.id,
+            value: order.total ?? 0,
+            email: order.customer_email || undefined,
+            phone: order.customer_phone || undefined,
+            name: order.customer_name || undefined,
+            zip: order.shipping_postal_code || undefined,
+            city: order.shipping_city || undefined,
+            state: order.shipping_state || undefined,
+            contentIds,
+          }).catch(err => console.error("[CAPI Woovi webhook]", err))
+
+          tiktokPurchase({
+            orderId: order.id,
+            value: order.total ?? 0,
+            email: order.customer_email || undefined,
+            phone: order.customer_phone || undefined,
+          }).catch(err => console.error("[TikTok Woovi webhook]", err))
+        }
       }
     }
 
