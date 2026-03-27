@@ -31,13 +31,14 @@ async function getAccessToken(): Promise<string> {
   return data.access_token
 }
 
-async function paypalRequest(path: string, method = "GET", body?: any) {
+async function paypalRequest(path: string, method = "GET", body?: any, extraHeaders?: Record<string, string>) {
   const token = await getAccessToken()
   const res = await fetch(PAYPAL_BASE + path, {
     method,
     headers: {
       "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json",
+      ...extraHeaders,
     },
     body: body ? JSON.stringify(body) : undefined,
   })
@@ -144,6 +145,8 @@ export async function processCard(params: {
   const itemsTotalBRL = (itemsTotal / 100).toFixed(2)
 
   // Create order with card payment source - auto-captures
+  // PayPal requires PayPal-Request-Id header when payment_source is specified
+  const requestId = params.orderId + "-" + Date.now()
   const data = await paypalRequest("/v2/checkout/orders", "POST", {
     intent: "CAPTURE",
     purchase_units: [{
@@ -175,7 +178,7 @@ export async function processCard(params: {
         },
       },
     },
-  })
+  }, { "PayPal-Request-Id": requestId })
 
   if (data.name === "INVALID_REQUEST" || data.name === "UNPROCESSABLE_ENTITY") {
     const detail = data.details?.[0]?.description || data.message || "Cartao recusado"
