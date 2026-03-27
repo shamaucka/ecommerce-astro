@@ -201,3 +201,89 @@ export async function processCard(params: {
 export async function getOrder(paypalOrderId: string) {
   return paypalRequest(`/v2/checkout/orders/${paypalOrderId}`)
 }
+
+/**
+ * Create PayPal Plus payment (v1 API - Brazilian iframe)
+ */
+export async function createPlusPayment(params: {
+  orderId: string
+  displayId: string
+  amount: number // cents
+  customerName: string
+  customerEmail: string
+  customerCpf: string
+}) {
+  const token = await getAccessToken()
+  const appUrl = "https://tessquadros.com.br"
+  const [firstName, ...lastParts] = params.customerName.trim().split(" ")
+  const lastName = lastParts.join(" ") || firstName
+  const totalBRL = (params.amount / 100).toFixed(2)
+
+  const res = await fetch(`${PAYPAL_BASE}/v1/payments/payment`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "PayPal-Request-Id": `pp-${params.orderId}`,
+    },
+    body: JSON.stringify({
+      intent: "sale",
+      payer: {
+        payment_method: "paypal",
+        payer_info: {
+          tax_id: params.customerCpf.replace(/\D/g, ""),
+          tax_id_type: "BR_CPF",
+          email: params.customerEmail,
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+      transactions: [{
+        amount: { total: totalBRL, currency: "BRL" },
+        description: `Pedido #${params.displayId} - Tess Quadros`,
+        custom: params.orderId,
+        payment_options: { allowed_payment_method: "IMMEDIATE_PAY" },
+      }],
+      redirect_urls: {
+        return_url: `${appUrl}/checkout?paypal=success`,
+        cancel_url: `${appUrl}/checkout?paypal=cancel`,
+      },
+    }),
+  })
+
+  const data = await res.json()
+  if (data.name === "VALIDATION_ERROR" || data.name === "INVALID_REQUEST" || data.name === "UNPROCESSABLE_ENTITY") {
+    throw new Error(data.details?.[0]?.issue || data.message || "Erro PayPal Plus ao criar payment")
+  }
+
+  const approvalLink = data.links?.find((l: any) => l.rel === "approval_url")
+  if (!approvalLink?.href) {
+    throw new Error("PayPal Plus: approval_url nao retornada. Conta pode nao ter PPPlus habilitado.")
+  }
+
+  return { paymentId: data.id as string, approvalUrl: approvalLink.href as string }
+}
+
+/**
+ * Execute PayPal Plus payment after iframe confirmation
+ */
+export async function executePlusPayment(paymentId: string, payerId: string) {
+  const token = await getAccessToken()
+  const res = await fetch(`${PAYPAL_BASE}/v1/payments/payment/${paymentId}/execute`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ payer_id: payerId }),
+  })
+
+  const data = await res.json()
+  if (data.state !== "approved") {
+    const detail = data.details?.[0]?.issue || data.message || "Pagamento nao aprovado pelo banco"
+    throw new Error(detail)
+  }
+
+  const sale = data.transactions?.[0]?.related_resources?.[0]?.sale
+  return { paid: true, saleId: sale?.id || data.id, state: data.state as string }
+}

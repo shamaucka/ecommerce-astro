@@ -106,6 +106,48 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify(capture), { status: 200, headers })
       }
 
+      // ═══ PayPal Plus (Brazil iframe) - create ═══
+      case "ppplus_create": {
+        const { orderId, displayId, amount, customerName, customerEmail, customerCpf } = body
+        if (!orderId || !amount || !customerCpf) throw new Error("orderId, amount e customerCpf obrigatorios")
+
+        const result = await paypal.createPlusPayment({
+          orderId,
+          displayId: displayId || orderId,
+          amount,
+          customerName: customerName || "",
+          customerEmail: customerEmail || "",
+          customerCpf,
+        })
+
+        await db.update(astroOrder).set({
+          payment_method: "credit_card",
+          payment_id: result.paymentId,
+          payment_status: "pending",
+          updated_at: new Date(),
+        }).where(eq(astroOrder.id, orderId))
+
+        return new Response(JSON.stringify(result), { status: 200, headers })
+      }
+
+      // ═══ PayPal Plus (Brazil iframe) - execute after payer approval ═══
+      case "ppplus_execute": {
+        const { orderId, paymentId, payerId } = body
+        if (!paymentId || !payerId) throw new Error("paymentId e payerId obrigatorios")
+
+        const result = await paypal.executePlusPayment(paymentId, payerId)
+
+        if (orderId && result.paid) {
+          await db.update(astroOrder).set({
+            payment_status: "paid",
+            status: "processing",
+            updated_at: new Date(),
+          }).where(eq(astroOrder.id, orderId))
+        }
+
+        return new Response(JSON.stringify(result), { status: 200, headers })
+      }
+
       default:
         return new Response(JSON.stringify({ error: "action invalido" }), { status: 400, headers })
     }
