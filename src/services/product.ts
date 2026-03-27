@@ -1,4 +1,4 @@
-import { eq, desc, inArray } from "drizzle-orm"
+import { eq, desc, inArray, sql, ne } from "drizzle-orm"
 import { db } from "../db/index.js"
 import {
   astroProduct,
@@ -272,6 +272,36 @@ export async function deleteProduct(id: string) {
     .where(eq(astroProduct.id, id))
 
   return { deleted: true }
+}
+
+// ========== RELATED PRODUCTS (purchase history) ==========
+
+export async function getRelatedByHistory(productId: string, limit = 4) {
+  try {
+    // Find products frequently bought together with this product
+    const result = await db.execute(sql`
+      WITH co_purchased AS (
+        SELECT item->>'product_id' AS pid, COUNT(*) AS freq
+        FROM astro_order,
+          LATERAL jsonb_array_elements(items) AS item
+        WHERE status != 'cancelled'
+          AND items @> ${JSON.stringify([{ product_id: productId }])}::jsonb
+          AND item->>'product_id' IS NOT NULL
+          AND item->>'product_id' != ${productId}
+        GROUP BY pid
+        ORDER BY freq DESC
+        LIMIT 12
+      )
+      SELECT p.* FROM astro_product p
+      JOIN co_purchased cp ON p.id = cp.pid
+      WHERE p.status = 'published'
+      ORDER BY cp.freq DESC
+      LIMIT ${limit}
+    `)
+    return result.rows as any[]
+  } catch {
+    return []
+  }
 }
 
 // ========== REGIONS ==========
