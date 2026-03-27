@@ -134,7 +134,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       // ═══ PayPal Plus (Brazil iframe) - execute after payer approval ═══
       case "ppplus_execute": {
-        const { orderId, paymentId, payerId } = body
+        const { orderId, paymentId, payerId, eventId } = body
         if (!paymentId || !payerId) throw new Error("paymentId e payerId obrigatorios")
 
         const result = await paypal.executePlusPayment(paymentId, payerId)
@@ -166,6 +166,7 @@ export const POST: APIRoute = async ({ request }) => {
               city: order.shipping_city || undefined,
               state: order.shipping_state || undefined,
               ip, userAgent, fbp, fbc,
+              eventId: eventId || undefined, // same ID the pixel used → proper dedup
               contentIds,
             }).catch(err => console.error("[CAPI ppplus_execute]", err))
 
