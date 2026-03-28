@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { corsHeaders } from "@/lib/cors";
 import { requireAuth } from "@/services/auth";
 import * as orderService from "@/services/order";
+import * as customerService from "@/services/customer";
 
 export const GET: APIRoute = async ({ request, url }) => {
   try {
@@ -91,6 +92,58 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(
           JSON.stringify({ order }),
           { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+
+      case "create": {
+        const { cliente, itens } = body;
+        if (!cliente?.nome?.trim() || !itens?.length) {
+          return new Response(
+            JSON.stringify({ error: "nome e itens são obrigatórios" }),
+            { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+          );
+        }
+
+        const email = cliente.email?.trim() || `manual+${Date.now()}@interno`;
+        const customer = await customerService.getOrCreateByEmail(email, {
+          name: cliente.nome.trim(),
+          phone: cliente.telefone || "",
+          cpf: (cliente.cpf_cnpj || "").replace(/\D/g, ""),
+        });
+
+        const subtotal = (itens as any[]).reduce(
+          (s: number, i: any) => s + (Number(i.valor) || 0) * (Number(i.qtde) || 1),
+          0
+        );
+
+        const endereco = cliente.endereco || {};
+        const order = await orderService.createOrder({
+          customer_id: customer.id,
+          customer_name: cliente.nome.trim(),
+          customer_email: email,
+          customer_phone: cliente.telefone || "",
+          customer_cpf: (cliente.cpf_cnpj || "").replace(/\D/g, ""),
+          items: (itens as any[]).map((i: any) => ({
+            sku: i.sku,
+            title: i.titulo_produto || i.sku,
+            quantity: Number(i.qtde) || 1,
+            unit_price: Number(i.valor) || 0,
+          })),
+          subtotal,
+          shipping_cost: 0,
+          payment_method: "manual",
+          shipping_address_line1: endereco.logradouro || "",
+          shipping_address_line2: endereco.complemento || "",
+          shipping_neighborhood: endereco.bairro || "",
+          shipping_city: endereco.cidade || "",
+          shipping_state: endereco.estado || "",
+          shipping_postal_code: (endereco.cep || "").replace(/\D/g, ""),
+          metadata: { source: "admin_manual" },
+        });
+
+        return new Response(
+          JSON.stringify({ ok: true, order }),
+          { status: 201, headers: { "Content-Type": "application/json", ...corsHeaders } }
         );
       }
 
