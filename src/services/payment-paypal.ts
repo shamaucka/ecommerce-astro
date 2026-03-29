@@ -228,6 +228,7 @@ export async function createPlusPayment(params: {
     },
     body: JSON.stringify({
       intent: "sale",
+      experience_profile_id: "XP-U6XE-KLTV-LPJC-3PMV",
       payer: {
         payment_method: "paypal",
         payer_info: {
