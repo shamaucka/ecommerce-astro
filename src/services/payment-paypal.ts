@@ -251,11 +251,12 @@ export async function createPlusPayment(params: {
     }),
   })
 
-  const data = await res.json()
-  if (data.name === "VALIDATION_ERROR" || data.name === "INVALID_REQUEST" || data.name === "UNPROCESSABLE_ENTITY") {
-    throw new Error(data.details?.[0]?.issue || data.message || "Erro PayPal Plus ao criar payment")
+  if (!res.ok) {
+    const errText = await res.text()
+    throw new Error(`PayPal Plus erro ao criar payment: ${res.status} — ${errText}`)
   }
 
+  const data = await res.json()
   const approvalLink = data.links?.find((l: any) => l.rel === "approval_url")
   if (!approvalLink?.href) {
     throw new Error("PayPal Plus: approval_url nao retornada. Conta pode nao ter PPPlus habilitado.")
