@@ -77,10 +77,18 @@ export async function getChargeStatus(correlationID: string) {
  * Validate webhook signature
  */
 export function validateWebhook(payload: string, signature: string): boolean {
-  const secret = process.env.WOOVI_WEBHOOK_SECRET
-  if (!secret) return true // skip validation if no secret configured
+  // Dois webhooks (charge_completed + transaction_received) com HMACs diferentes
+  const secrets = [
+    process.env.WOOVI_WEBHOOK_SECRET_CHARGE,
+    process.env.WOOVI_WEBHOOK_SECRET_TRANSACTION,
+    process.env.WOOVI_WEBHOOK_SECRET, // fallback legado
+  ].filter(Boolean)
+
+  if (secrets.length === 0) return true // skip se nenhum secret configurado
 
   const crypto = require("crypto")
-  const hmac = crypto.createHmac("sha256", secret).update(payload).digest("hex")
-  return hmac === signature
+  return secrets.some((secret) => {
+    const hmac = crypto.createHmac("sha256", secret).update(payload).digest("hex")
+    return hmac === signature
+  })
 }

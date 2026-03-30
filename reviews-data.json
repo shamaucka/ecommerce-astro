@@ -1,0 +1,4972 @@
+[
+  {
+    "name": "Rafaela B.",
+    "rating": 5,
+    "title": "Decoração perfeita",
+    "comment": "Que espetacular! Coloquei na parede da sala e ficou um charme. Já quero comprar o conjunto todo!",
+    "date": "2026-03-24",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Jéssica K.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Já é o terceiro quadro que compro aqui e a qualidade continua impecável. Já virei cliente fiel.",
+    "date": "2026-03-24",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Aline W.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "As tonalidades do quadro são lindas. O canvas tem uma textura premium que dá um toque especial. Amei!",
+    "date": "2026-03-23",
+    "verified": false,
+    "city": "Pelotas",
+    "state": "RS"
+  },
+  {
+    "name": "Bruno I.",
+    "rating": 5,
+    "title": "Presente perfeito",
+    "comment": "Comprei para o quarto do casal e ficou incrível! As cores são vibrantes e o acabamento é impecável.",
+    "date": "2026-03-23",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Lucas C.",
+    "rating": 4,
+    "title": "Produto bom",
+    "comment": "Canvas com boa impressão. Combinou perfeitamente com o sofá novo. Tirando o prazo de entrega, perfeito.",
+    "date": "2026-03-22",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Márcio E.",
+    "rating": 4,
+    "title": "Bonito, mas poderia ser melhor",
+    "comment": "Atendeu minhas expectativas. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2026-03-22",
+    "verified": true,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Diego Q.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Quadro bonito e bem feito. A parede da sala ficou mais bonita. Tirando o prazo de entrega, perfeito.",
+    "date": "2026-03-22",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Daniela N.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Produto maravilhoso! As cores são exatamente como nas fotos. Melhor loja de quadros que já comprei.",
+    "date": "2026-03-22",
+    "verified": true,
+    "city": "Sorocaba",
+    "state": "SP"
+  },
+  {
+    "name": "Thiago I.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "Já é o terceiro quadro que compro aqui e a qualidade é sempre excelente. Recomendo de olhos fechados.",
+    "date": "2026-03-21",
+    "verified": true,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Felipe C.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "As tonalidades do quadro são perfeitas. Impressão de altíssima resolução. Amei!",
+    "date": "2026-03-21",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Eduardo C.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Perfeito! Coloquei no quarto do meu filho e ele adorou. Produto premium a um preço justo.",
+    "date": "2026-03-20",
+    "verified": false,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Marcelo Q.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Show! Coloquei no quarto do meu filho e ele adorou. Tudo perfeito do início ao fim.",
+    "date": "2026-03-19",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Henrique X.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Quadro bonito e bem feito. Combinou perfeitamente com o sofá novo. Só faltou vir com os parafusos para fixação.",
+    "date": "2026-03-19",
+    "verified": false,
+    "city": "Cuiabá",
+    "state": "MT"
+  },
+  {
+    "name": "Gabriela V.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Mudou completamente meu escritório. Deu um toque sofisticado ao ambiente.",
+    "date": "2026-03-19",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Letícia K.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Comprei para o quarto e gostei do resultado. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2026-03-19",
+    "verified": true,
+    "city": "Pelotas",
+    "state": "RS"
+  },
+  {
+    "name": "Emerson O.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Impressão com boa resolução. O tamanho é bom para o que eu precisava. Bom custo-benefício.",
+    "date": "2026-03-18",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Márcia G.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Deu vida a meu escritório. Todos os visitantes perguntam onde comprei.",
+    "date": "2026-03-18",
+    "verified": true,
+    "city": "Curitiba",
+    "state": "PR"
+  },
+  {
+    "name": "Carlos V.",
+    "rating": 4,
+    "title": "Bem feito",
+    "comment": "Canvas com boa impressão. A parede da sala ficou mais bonita. ",
+    "date": "2026-03-17",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "José W.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Presenteei minha esposa no aniversário e chorou de emoção! Vou comprar mais para mim agora.",
+    "date": "2026-03-17",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Mariana Z.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Sensacional! Deu um upgrade na decoração do apartamento. Nota máxima!",
+    "date": "2026-03-16",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Márcia H.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Presenteei minha esposa de presente e ficou encantada! Qualidade top.",
+    "date": "2026-03-16",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Sérgio D.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Quadro bonito e bem feito. Ficou ótimo no meu home office. Tirando o prazo de entrega, perfeito.",
+    "date": "2026-03-15",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Lorena F.",
+    "rating": 5,
+    "title": "Cores vibrantes",
+    "comment": "Produto excelente! O acabamento é de altíssima qualidade. Comprarei mais com certeza.",
+    "date": "2026-03-14",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Natália L.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Estava com pé atrás mas superou todas expectativas! A qualidade é muito superior ao preço pago.",
+    "date": "2026-03-13",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Marcos J.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "Comprei para meu quarto e ficou sensacional! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2026-03-13",
+    "verified": false,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Lucas L.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Produto bonito e bem acabado. Único ponto é que o gancho para pendurar poderia ser melhor.",
+    "date": "2026-03-12",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Rafaela Z.",
+    "rating": 4,
+    "title": "Boa compra",
+    "comment": "Produto bonito e bem acabado. Material bom, porém o acabamento nas bordas poderia ser mais caprichado.",
+    "date": "2026-03-12",
+    "verified": true,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Rafael B.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Produto maravilhoso! As cores são exatamente como nas fotos. Recomendo sem pensar duas vezes.",
+    "date": "2026-03-11",
+    "verified": true,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Emerson A.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Veio antes do prazo! Embalagem excelente, chegou intacto. Nota 10!",
+    "date": "2026-03-10",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Débora A.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Produto maravilhoso! O tamanho é ideal. Comprarei mais com certeza.",
+    "date": "2026-03-10",
+    "verified": false,
+    "city": "Lauro de Freitas",
+    "state": "BA"
+  },
+  {
+    "name": "Lucas A.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Produto bonito e bem acabado. A qualidade é boa, mas achei que poderia ter vindo com moldura mais reforçada.",
+    "date": "2026-03-09",
+    "verified": false,
+    "city": "Piracicaba",
+    "state": "SP"
+  },
+  {
+    "name": "Fernanda B.",
+    "rating": 5,
+    "title": "Qualidade incrível",
+    "comment": "Presenteei minha mãe de presente e ficou encantada! Recomendo demais!",
+    "date": "2026-03-08",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Gabriela U.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "Veio antes do prazo! Bem protegido na embalagem. Ficou perfeito na minha parede.",
+    "date": "2026-03-08",
+    "verified": false,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Caio L.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Deu vida a minha sala de estar. Todos os visitantes perguntam onde comprei.",
+    "date": "2026-03-08",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Aline T.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Comprei para dar de presente e a pessoa adorou. O frete foi um pouco caro.",
+    "date": "2026-03-07",
+    "verified": true,
+    "city": "Campo Grande",
+    "state": "MS"
+  },
+  {
+    "name": "Wagner E.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "Que espetacular! Meu home office agora tem personalidade. Excelente custo-benefício.",
+    "date": "2026-03-05",
+    "verified": false,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Luciana G.",
+    "rating": 4,
+    "title": "Bem feito",
+    "comment": "Comprei para dar de presente e ficou legal. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2026-03-05",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Camila C.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Canvas com boa impressão. A parede da sala ficou mais bonita. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2026-03-04",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Cristina Q.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "A qualidade do canvas é boa. A tela tem uma boa textura. Compraria novamente.",
+    "date": "2026-03-04",
+    "verified": false,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Mariana V.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Comprei para o meu apartamento novo e a pessoa adorou. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2026-03-03",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Renata C.",
+    "rating": 5,
+    "title": "Produto de primeira",
+    "comment": "Já é o quarto quadro que compro aqui e a qualidade continua impecável. Já virei cliente fiel.",
+    "date": "2026-03-03",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Larissa O.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "As nuances do quadro são lindas. Impressão de altíssima resolução. Nota mil!",
+    "date": "2026-03-01",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Beatriz S.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Comprei para meu home office e ficou maravilhoso! Todos que visitam elogiam.",
+    "date": "2026-02-28",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Bianca N.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Atendeu minhas expectativas. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2026-02-27",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Thiago P.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Fiquei muito feliz com a qualidade. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2026-02-26",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Isabela L.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Atendeu minhas expectativas. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2026-02-25",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Daniel W.",
+    "rating": 5,
+    "title": "Transformou meu ambiente",
+    "comment": "Já é o terceiro quadro que compro aqui e a qualidade é sempre excelente. Sempre entrega rápida e produto perfeito.",
+    "date": "2026-02-25",
+    "verified": true,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "Stella X.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "Comprei meio desconfiada mas amei de verdade! A qualidade é muito superior ao preço pago.",
+    "date": "2026-02-23",
+    "verified": true,
+    "city": "Pelotas",
+    "state": "RS"
+  },
+  {
+    "name": "Bruna S.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Bom produto no geral. Entrega demorou um pouco mais do que o esperado, mas o produto compensou.",
+    "date": "2026-02-21",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Larissa E.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "Presenteei meu marido de casamento novo e não parava de elogiar! Já quero comprar outro.",
+    "date": "2026-02-21",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Sabrina C.",
+    "rating": 4,
+    "title": "Boa compra",
+    "comment": "A qualidade do canvas é boa. Chegou bem embalado, sem nenhum defeito. ",
+    "date": "2026-02-21",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Marina M.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "As nuances do quadro são fiéis à foto. O canvas tem uma textura premium que dá um toque especial. Perfeito!",
+    "date": "2026-02-20",
+    "verified": true,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Lucas Q.",
+    "rating": 5,
+    "title": "Decoração perfeita",
+    "comment": "Que incrível! Meu cantinho de leitura ficou perfeito. Excelente custo-benefício.",
+    "date": "2026-02-19",
+    "verified": true,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Débora V.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Veio antes do prazo! O produto veio muito bem embalado, sem nenhum amassado. Nota 10!",
+    "date": "2026-02-19",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Juliana J.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Quadro de excelente qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2026-02-18",
+    "verified": true,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Renata T.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Comprei para dar de presente e ficou legal. O frete foi um pouco caro.",
+    "date": "2026-02-18",
+    "verified": true,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Simone J.",
+    "rating": 3,
+    "title": "Tem pontos a melhorar",
+    "comment": "Não é ruim, mas esperava mais pela qualidade descrita. Pelo preço, acho que dava para ser melhor.",
+    "date": "2026-02-18",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Matheus X.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Comprei para redecorar a sala e gostei do resultado. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2026-02-18",
+    "verified": false,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Rosana Y.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "Adorei tudo com o produto. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2026-02-17",
+    "verified": true,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Isabela Z.",
+    "rating": 5,
+    "title": "Lindo demais!",
+    "comment": "Produto excelente! As cores são exatamente como nas fotos. Já estou escolhendo o próximo.",
+    "date": "2026-02-17",
+    "verified": true,
+    "city": "Ponta Grossa",
+    "state": "PR"
+  },
+  {
+    "name": "Fábio X.",
+    "rating": 2,
+    "title": "Decepcionante",
+    "comment": "O produto veio diferente do que pedi. Fiquei muito insatisfeita.",
+    "date": "2026-02-17",
+    "verified": true,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Vinícius R.",
+    "rating": 3,
+    "title": "Tem pontos a melhorar",
+    "comment": "A entrega demorou bastante para chegar. O produto em si até é bonito, mas a experiência de compra foi ruim.",
+    "date": "2026-02-16",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Paulo Z.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "As nuances do quadro são lindas. Impressão de altíssima resolução. Nota mil!",
+    "date": "2026-02-16",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Gabriel N.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Boa compra, ficou muito bem na minha sala. Embalagem poderia proteger mais.",
+    "date": "2026-02-16",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Simone G.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Tinha medo de comprar online mas não me arrependi nem um pouco! A qualidade é muito superior ao preço pago.",
+    "date": "2026-02-16",
+    "verified": true,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Cecília A.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Comprei para dar de presente e gostei do resultado. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2026-02-15",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Márcio Y.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Quadro bonito e bem feito. Combinou perfeitamente com o sofá novo. ",
+    "date": "2026-02-15",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Antônio N.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Comprei para o escritório e ficou sensacional! Entrega super rápida e bem embalado.",
+    "date": "2026-02-15",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Juliana C.",
+    "rating": 2,
+    "title": "Decepcionante",
+    "comment": "Que decepção. A cor veio completamente diferente do anúncio. Muito abaixo do esperado.",
+    "date": "2026-02-14",
+    "verified": true,
+    "city": "Maceió",
+    "state": "AL"
+  },
+  {
+    "name": "Marcelo Y.",
+    "rating": 3,
+    "title": "Razoável",
+    "comment": "Demorou quase um mês para chegar. O quadro é ok mas o frete demorado desanima.",
+    "date": "2026-02-14",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Patrícia Y.",
+    "rating": 4,
+    "title": "Bom acabamento",
+    "comment": "Acabamento satisfatório. A tela tem uma boa textura. Recomendo.",
+    "date": "2026-02-13",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Elaine Z.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Que espetacular! Coloquei na parede da sala e ficou um charme. Qualidade nota 10.",
+    "date": "2026-02-13",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Sabrina H.",
+    "rating": 4,
+    "title": "Produto bom",
+    "comment": "Acabamento satisfatório. A tela tem uma boa textura. ",
+    "date": "2026-02-12",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Daniel Q.",
+    "rating": 5,
+    "title": "Entrega rápida e produto top",
+    "comment": "Que incrível! O quarto ganhou outra cara. Qualidade nota 10.",
+    "date": "2026-02-12",
+    "verified": true,
+    "city": "Novo Hamburgo",
+    "state": "RS"
+  },
+  {
+    "name": "Leandro D.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Tinha medo de comprar online mas não me arrependi nem um pouco! A qualidade é muito superior ao preço pago.",
+    "date": "2026-02-12",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Sandra C.",
+    "rating": 5,
+    "title": "Qualidade incrível",
+    "comment": "Sensacional! Combinação perfeita com minha decoração. ",
+    "date": "2026-02-11",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Pedro F.",
+    "rating": 5,
+    "title": "Qualidade incrível",
+    "comment": "Já é o terceiro quadro que compro aqui e a qualidade nunca decepciona. Já virei cliente fiel.",
+    "date": "2026-02-11",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Elaine M.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Sensacional! Deu um upgrade na decoração do apartamento. Nota máxima!",
+    "date": "2026-02-11",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "João I.",
+    "rating": 5,
+    "title": "Top demais!",
+    "comment": "Já é o quarto quadro que compro nessa loja e a qualidade é sempre excelente. Sempre entrega rápida e produto perfeito.",
+    "date": "2026-02-10",
+    "verified": true,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Simone E.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Boa compra, decorou bem o escritório. Tirando a demora na entrega, tudo certo.",
+    "date": "2026-02-10",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Milena C.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Entrega no prazo certinho! Embalagem excelente, chegou intacto. Amei o resultado final.",
+    "date": "2026-02-10",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Sabrina F.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Que incrível! Meu cantinho de leitura ficou perfeito. Amei a qualidade do material.",
+    "date": "2026-02-09",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Fernando O.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Tinha medo de comprar online mas não me arrependi nem um pouco! O quadro é lindo e de excelente qualidade.",
+    "date": "2026-02-09",
+    "verified": true,
+    "city": "Campo Grande",
+    "state": "MS"
+  },
+  {
+    "name": "Priscila L.",
+    "rating": 5,
+    "title": "Decoração impecável",
+    "comment": "Comprei para a sala de estar e ficou maravilhoso! Minha esposa amou!",
+    "date": "2026-02-08",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Rosana M.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Comprei para o quarto e gostei do resultado. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2026-02-07",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Débora I.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Que lindo! O quarto ganhou outra cara. Amei a qualidade do material.",
+    "date": "2026-02-07",
+    "verified": false,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Adriana G.",
+    "rating": 3,
+    "title": "Mais ou menos",
+    "comment": "Demorou bastante para chegar. Quando chegou, até gostei, mas o prazo comprometeu.",
+    "date": "2026-02-06",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Clara I.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Produto fantástico! O tamanho é ideal. Melhor loja de quadros que já comprei.",
+    "date": "2026-02-05",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Rosana M.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Transformou a parede da sala. A decoração ficou completa.",
+    "date": "2026-02-05",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Cláudia L.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Tinha medo de comprar online mas fiquei encantada! O quadro é lindo e de excelente qualidade.",
+    "date": "2026-02-04",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Lívia D.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Comprei meio desconfiada mas não me arrependi nem um pouco! A qualidade é muito superior ao preço pago.",
+    "date": "2026-02-03",
+    "verified": false,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Adriana K.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Já é o quarto quadro que compro deles e a qualidade continua impecável. Melhor custo-benefício do mercado.",
+    "date": "2026-02-03",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Bianca B.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Produto de primeira! A tela tem uma textura muito bonita. Já estou escolhendo o próximo.",
+    "date": "2026-02-02",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Raquel V.",
+    "rating": 5,
+    "title": "Produto de primeira",
+    "comment": "As cores do quadro são fiéis à foto. Impressão de altíssima resolução. ",
+    "date": "2026-02-01",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Valentina Y.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Que espetacular! Meu home office agora tem personalidade. Qualidade nota 10.",
+    "date": "2026-02-01",
+    "verified": true,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Luciana E.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Comprei para dar de presente e ficou legal. O frete foi um pouco caro.",
+    "date": "2026-02-01",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Tatiane M.",
+    "rating": 4,
+    "title": "Gostei do resultado",
+    "comment": "Produto bom. Combinou perfeitamente com o sofá novo. Só faltou vir com os parafusos para fixação.",
+    "date": "2026-02-01",
+    "verified": false,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Gabriel F.",
+    "rating": 2,
+    "title": "Abaixo do esperado",
+    "comment": "Não gostei. O canvas veio com uma marca de dobra no meio. Dinheiro jogado fora quase.",
+    "date": "2026-01-31",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Elaine M.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Presenteei minha esposa no aniversário e ficou encantada! Qualidade top.",
+    "date": "2026-01-31",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Sabrina O.",
+    "rating": 5,
+    "title": "Produto de primeira",
+    "comment": "As nuances do quadro são perfeitas. O canvas tem uma textura premium que dá um toque especial. Perfeito!",
+    "date": "2026-01-30",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Marcelo I.",
+    "rating": 5,
+    "title": "Transformou meu ambiente",
+    "comment": "Transformou a parede da sala. A decoração ficou completa.",
+    "date": "2026-01-30",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Cláudia D.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Comprei para o escritório e ficou incrível! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2026-01-30",
+    "verified": true,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Cláudia M.",
+    "rating": 3,
+    "title": "Razoável",
+    "comment": "A entrega demorou muito mais que o previsto. O produto em si até é bonito, mas a experiência de compra foi ruim.",
+    "date": "2026-01-29",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Viviane T.",
+    "rating": 4,
+    "title": "Bom custo-benefício",
+    "comment": "Bonito quadro, combinou com a decoração. ",
+    "date": "2026-01-29",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Carlos U.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Deu vida a meu escritório. A decoração ficou completa.",
+    "date": "2026-01-29",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Débora M.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Tela bonita, ficou muito bem na minha sala. O preço é um pouco salgado mas vale.",
+    "date": "2026-01-28",
+    "verified": true,
+    "city": "Florianópolis",
+    "state": "SC"
+  },
+  {
+    "name": "Henrique N.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Estou muito satisfeita com a compra. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2026-01-27",
+    "verified": true,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "Rogério I.",
+    "rating": 3,
+    "title": "Não é ruim mas...",
+    "comment": "O acabamento é básico. Não vou devolver, mas fiquei na dúvida.",
+    "date": "2026-01-27",
+    "verified": false,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Matheus R.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Comprei para redecorar a sala e ficou bonito. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2026-01-26",
+    "verified": true,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Luciana W.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Comprei para minha sala e ficou maravilhoso! Minha esposa amou!",
+    "date": "2026-01-26",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Clara H.",
+    "rating": 4,
+    "title": "Bom custo-benefício",
+    "comment": "A qualidade do canvas é boa. Chegou bem embalado, sem nenhum defeito. Recomendo.",
+    "date": "2026-01-26",
+    "verified": false,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Pedro T.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Presenteei meu marido de casamento novo e foi um sucesso! Já quero comprar outro.",
+    "date": "2026-01-24",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Stella Z.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Estou muito satisfeita com o produto. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2026-01-24",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Camila N.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "As nuances do quadro são incríveis. O canvas tem uma textura premium que dá um toque especial. Super recomendo!",
+    "date": "2026-01-24",
+    "verified": false,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Patrícia K.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Canvas com boa impressão. Ficou ótimo no meu home office. Tirando o prazo de entrega, perfeito.",
+    "date": "2026-01-24",
+    "verified": false,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Wagner U.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Já é o segundo quadro que compro nessa loja e a qualidade nunca decepciona. Melhor custo-benefício do mercado.",
+    "date": "2026-01-22",
+    "verified": true,
+    "city": "Canoas",
+    "state": "RS"
+  },
+  {
+    "name": "Fernanda N.",
+    "rating": 5,
+    "title": "Simplesmente perfeito",
+    "comment": "As cores do quadro são incríveis. Acabamento impecável em cada detalhe. Perfeito!",
+    "date": "2026-01-22",
+    "verified": true,
+    "city": "Campinas",
+    "state": "SP"
+  },
+  {
+    "name": "Débora G.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Comprei para meu home office e ficou perfeito! Minha esposa amou!",
+    "date": "2026-01-20",
+    "verified": true,
+    "city": "Londrina",
+    "state": "PR"
+  },
+  {
+    "name": "Letícia G.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Já é o quarto quadro que compro nessa loja e a qualidade é sempre excelente. Recomendo de olhos fechados.",
+    "date": "2026-01-20",
+    "verified": true,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Laís O.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Deu vida a minha sala de estar. Deu um toque sofisticado ao ambiente.",
+    "date": "2026-01-18",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Tatiane T.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Show! Combinação perfeita com minha decoração. Entrega dentro do prazo.",
+    "date": "2026-01-18",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Renata R.",
+    "rating": 5,
+    "title": "Cores vibrantes",
+    "comment": "Produto maravilhoso! O acabamento é de altíssima qualidade. Recomendo sem pensar duas vezes.",
+    "date": "2026-01-17",
+    "verified": true,
+    "city": "Guarulhos",
+    "state": "SP"
+  },
+  {
+    "name": "Pietra H.",
+    "rating": 5,
+    "title": "Presente perfeito",
+    "comment": "Presenteei minha irmã no Natal e ele amou! Já quero comprar outro.",
+    "date": "2026-01-15",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Márcia Z.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Material de boa qualidade. A tela tem uma boa textura. Recomendo.",
+    "date": "2026-01-15",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Beatriz J.",
+    "rating": 5,
+    "title": "Top demais!",
+    "comment": "Não esperava muito mas amei de verdade! O quadro é lindo e de excelente qualidade.",
+    "date": "2026-01-15",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Mariana Z.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Frete rápido! O produto veio muito bem embalado, sem nenhum amassado. Ficou perfeito na minha parede.",
+    "date": "2026-01-14",
+    "verified": true,
+    "city": "Ponta Grossa",
+    "state": "PR"
+  },
+  {
+    "name": "Leandro X.",
+    "rating": 5,
+    "title": "Amei, vou comprar mais",
+    "comment": "Estava com pé atrás mas amei de verdade! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2026-01-14",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Leonardo F.",
+    "rating": 3,
+    "title": "Razoável",
+    "comment": "O tamanho pareceu menor pessoalmente. Pelo preço poderia ser melhor.",
+    "date": "2026-01-14",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Débora L.",
+    "rating": 5,
+    "title": "Produto de primeira",
+    "comment": "Comprei meio desconfiada mas amei de verdade! O quadro é lindo e de excelente qualidade.",
+    "date": "2026-01-13",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "José V.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Quadro de primeira qualidade. Veio muito bem embalado e protegido.",
+    "date": "2026-01-12",
+    "verified": true,
+    "city": "Teresina",
+    "state": "PI"
+  },
+  {
+    "name": "Fernanda Q.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "Produto maravilhoso! A tela tem uma textura muito bonita. Recomendo sem pensar duas vezes.",
+    "date": "2026-01-11",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Maria U.",
+    "rating": 5,
+    "title": "Cores vibrantes",
+    "comment": "Tinha medo de comprar online mas me surpreendi demais! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2026-01-10",
+    "verified": false,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Roberto U.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Chegou em 3 dias! O produto veio muito bem embalado, sem nenhum amassado. A qualidade é top!",
+    "date": "2026-01-10",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Rosana R.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Quadro bonito e bem feito. Ficou ótimo no meu home office. ",
+    "date": "2026-01-10",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Bruna P.",
+    "rating": 4,
+    "title": "Boa compra",
+    "comment": "Comprei para o meu apartamento novo e ficou bonito. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2026-01-10",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Mariana G.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Que espetacular! Meu home office agora tem personalidade. ",
+    "date": "2026-01-07",
+    "verified": false,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Marina E.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "A qualidade do canvas é boa. As cores ficaram um tom mais escuro que na foto do site, mas ainda assim bonito. Recomendo.",
+    "date": "2026-01-06",
+    "verified": false,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Diego G.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Já é o terceiro quadro que compro nessa loja e a qualidade é sempre a mesma: perfeita. Melhor custo-benefício do mercado.",
+    "date": "2026-01-06",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Márcia X.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "As cores do quadro são fiéis à foto. Acabamento impecável em cada detalhe. Nota mil!",
+    "date": "2026-01-06",
+    "verified": true,
+    "city": "Maceió",
+    "state": "AL"
+  },
+  {
+    "name": "Vinícius O.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Fiquei muito feliz com a compra. Superou minhas expectativas em todos os aspectos.",
+    "date": "2026-01-05",
+    "verified": false,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Karine J.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Estava com pé atrás mas fiquei encantada! O quadro é lindo e de excelente qualidade.",
+    "date": "2026-01-04",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Ana C.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Produto excelente! O tamanho é ideal. Comprarei mais com certeza.",
+    "date": "2026-01-04",
+    "verified": true,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Rafaela Y.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Comprei meio desconfiada mas não me arrependi nem um pouco! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2026-01-04",
+    "verified": true,
+    "city": "Fortaleza",
+    "state": "CE"
+  },
+  {
+    "name": "Karine H.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Já é o terceiro quadro que compro nessa loja e a qualidade nunca decepciona. Já virei cliente fiel.",
+    "date": "2026-01-03",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Emerson D.",
+    "rating": 4,
+    "title": "Gostei do resultado",
+    "comment": "Boa compra, ficou muito bem na minha sala. ",
+    "date": "2026-01-02",
+    "verified": true,
+    "city": "Contagem",
+    "state": "MG"
+  },
+  {
+    "name": "Thiago Y.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "As cores do quadro são incríveis. O canvas tem uma textura premium que dá um toque especial. Nota mil!",
+    "date": "2026-01-02",
+    "verified": false,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Natália K.",
+    "rating": 3,
+    "title": "Deu pro gasto",
+    "comment": "Não é ruim, mas achei o material meio fino demais. Pelo preço, acho que dava para ser melhor.",
+    "date": "2026-01-02",
+    "verified": true,
+    "city": "Ponta Grossa",
+    "state": "PR"
+  },
+  {
+    "name": "Márcio T.",
+    "rating": 5,
+    "title": "Transformou meu ambiente",
+    "comment": "Amei demais com o produto. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2026-01-02",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Maria B.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Entrega super rápida! Embalagem excelente, chegou intacto. Amei o resultado final.",
+    "date": "2026-01-01",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Letícia C.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Amei demais com a qualidade. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-12-30",
+    "verified": true,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Sofia M.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Presenteei meu marido de presente e ela adorou! Recomendo demais!",
+    "date": "2025-12-30",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Vitória S.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Perfeito! Combinação perfeita com minha decoração. Tudo perfeito do início ao fim.",
+    "date": "2025-12-30",
+    "verified": true,
+    "city": "Campinas",
+    "state": "SP"
+  },
+  {
+    "name": "Carolina J.",
+    "rating": 2,
+    "title": "Esperava muito mais",
+    "comment": "O quadro veio danificado. Tive que abrir reclamação para conseguir resposta.",
+    "date": "2025-12-29",
+    "verified": true,
+    "city": "Novo Hamburgo",
+    "state": "RS"
+  },
+  {
+    "name": "Lívia V.",
+    "rating": 3,
+    "title": "Não é ruim mas...",
+    "comment": "A entrega demorou quase um mês para chegar. Quando chegou, até gostei, mas o prazo comprometeu.",
+    "date": "2025-12-29",
+    "verified": true,
+    "city": "Guarulhos",
+    "state": "SP"
+  },
+  {
+    "name": "Lucas Q.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Que espetacular! O quarto ganhou outra cara. ",
+    "date": "2025-12-28",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Renan G.",
+    "rating": 5,
+    "title": "Top demais!",
+    "comment": "Fiquei muito feliz com o resultado. Superou minhas expectativas em todos os aspectos.",
+    "date": "2025-12-28",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Viviane N.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Impressão com boa resolução. Chegou bem embalado, sem nenhum defeito. Compraria novamente.",
+    "date": "2025-12-28",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "José K.",
+    "rating": 5,
+    "title": "Presente perfeito",
+    "comment": "As cores do quadro são perfeitas. Material de alta qualidade, nota-se de longe. Perfeito!",
+    "date": "2025-12-28",
+    "verified": true,
+    "city": "Ribeirão Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Paulo P.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Comprei para o quarto e ficou bonito. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2025-12-27",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Jéssica Y.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Sensacional! Combinação perfeita com minha decoração. Entrega dentro do prazo.",
+    "date": "2025-12-27",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Priscila K.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Frete rápido! O produto veio muito bem embalado, sem nenhum amassado. A qualidade é top!",
+    "date": "2025-12-26",
+    "verified": true,
+    "city": "Recife",
+    "state": "PE"
+  },
+  {
+    "name": "Vanessa A.",
+    "rating": 3,
+    "title": "Mais ou menos",
+    "comment": "A cor é um pouco diferente do anúncio. Pelo preço poderia ser melhor.",
+    "date": "2025-12-26",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Rogério X.",
+    "rating": 5,
+    "title": "Melhor compra que fiz",
+    "comment": "Estava com pé atrás mas fiquei encantada! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2025-12-26",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Letícia B.",
+    "rating": 4,
+    "title": "Bonito, mas poderia ser melhor",
+    "comment": "Acabamento satisfatório. Chegou bem embalado, sem nenhum defeito. Compraria novamente.",
+    "date": "2025-12-25",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Júlio Y.",
+    "rating": 5,
+    "title": "Produto de primeira",
+    "comment": "Produto de primeira! A tela tem uma textura muito bonita. Recomendo sem pensar duas vezes.",
+    "date": "2025-12-25",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Lucas J.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Veio antes do prazo! Embalagem excelente, chegou intacto. Nota 10!",
+    "date": "2025-12-24",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Sofia D.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Tinha medo de comprar online mas fiquei encantada! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2025-12-23",
+    "verified": true,
+    "city": "Belo Horizonte",
+    "state": "MG"
+  },
+  {
+    "name": "Isadora B.",
+    "rating": 2,
+    "title": "Não gostei muito",
+    "comment": "O produto veio diferente do que pedi. Péssima experiência de compra.",
+    "date": "2025-12-22",
+    "verified": true,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Pedro T.",
+    "rating": 5,
+    "title": "Presente perfeito",
+    "comment": "As nuances do quadro são perfeitas. Material de alta qualidade, nota-se de longe. Nota mil!",
+    "date": "2025-12-21",
+    "verified": true,
+    "city": "Teresina",
+    "state": "PI"
+  },
+  {
+    "name": "Henrique E.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Produto excelente! A tela tem uma textura muito bonita. Recomendo sem pensar duas vezes.",
+    "date": "2025-12-21",
+    "verified": true,
+    "city": "Fortaleza",
+    "state": "CE"
+  },
+  {
+    "name": "Heloísa E.",
+    "rating": 3,
+    "title": "Deu pro gasto",
+    "comment": "O produto é ok, mas as cores ficaram bem diferentes do que aparece no site. Pelo preço, acho que dava para ser melhor.",
+    "date": "2025-12-21",
+    "verified": true,
+    "city": "Bauru",
+    "state": "SP"
+  },
+  {
+    "name": "Karine D.",
+    "rating": 4,
+    "title": "Bom quadro",
+    "comment": "Produto bonito e bem acabado. Único ponto é que o gancho para pendurar poderia ser melhor.",
+    "date": "2025-12-21",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Júlio Q.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Estou muito satisfeita com o produto. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-12-20",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Milena I.",
+    "rating": 3,
+    "title": "Deu pro gasto",
+    "comment": "Esperava um material mais grosso. Não é terrível, mas também não é o que eu esperava.",
+    "date": "2025-12-19",
+    "verified": false,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Raquel G.",
+    "rating": 5,
+    "title": "Entrega rápida e produto top",
+    "comment": "Fiquei muito feliz com a compra. Superou minhas expectativas em todos os aspectos.",
+    "date": "2025-12-19",
+    "verified": false,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Cláudia M.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Presenteei minha irmã de presente e não parava de elogiar! Já quero comprar outro.",
+    "date": "2025-12-19",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Michele Z.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Quadro bonito e bem feito. Combinou perfeitamente com o sofá novo. Só faltou vir com os parafusos para fixação.",
+    "date": "2025-12-19",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Larissa K.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "Comprei para meu home office e ficou incrível! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2025-12-18",
+    "verified": false,
+    "city": "Cuiabá",
+    "state": "MT"
+  },
+  {
+    "name": "Vanessa P.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Tela bonita, minha esposa gostou muito. Só acho que poderia ter uma opção maior.",
+    "date": "2025-12-18",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Cristina H.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Produto bom. A parede da sala ficou mais bonita. Tirando o prazo de entrega, perfeito.",
+    "date": "2025-12-18",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Cecília B.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "As cores do quadro são fiéis à foto. Material de alta qualidade, nota-se de longe. Perfeito!",
+    "date": "2025-12-17",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Alexandre V.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Já é o terceiro quadro que compro aqui e a qualidade é sempre a mesma: perfeita. Melhor custo-benefício do mercado.",
+    "date": "2025-12-16",
+    "verified": true,
+    "city": "Canoas",
+    "state": "RS"
+  },
+  {
+    "name": "Renan V.",
+    "rating": 4,
+    "title": "Bom custo-benefício",
+    "comment": "Impressão com boa resolução. O tamanho é bom para o que eu precisava. Bom custo-benefício.",
+    "date": "2025-12-16",
+    "verified": false,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Michele O.",
+    "rating": 1,
+    "title": "Horrível",
+    "comment": "Terrível! O produto nunca chegou e não consigo contato. Vou abrir processo no Procon.",
+    "date": "2025-12-16",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Marcos N.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Canvas com boa impressão. A parede da sala ficou mais bonita. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2025-12-16",
+    "verified": true,
+    "city": "Teresina",
+    "state": "PI"
+  },
+  {
+    "name": "Cristina T.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Canvas com boa impressão. A parede da sala ficou mais bonita. ",
+    "date": "2025-12-15",
+    "verified": true,
+    "city": "Sorocaba",
+    "state": "SP"
+  },
+  {
+    "name": "Sabrina M.",
+    "rating": 5,
+    "title": "Decoração impecável",
+    "comment": "Que lindo! O quarto ganhou outra cara. Excelente custo-benefício.",
+    "date": "2025-12-14",
+    "verified": false,
+    "city": "Florianópolis",
+    "state": "SC"
+  },
+  {
+    "name": "Fernando S.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Produto legal, decorou bem o escritório. O preço é um pouco salgado mas vale.",
+    "date": "2025-12-14",
+    "verified": true,
+    "city": "Bauru",
+    "state": "SP"
+  },
+  {
+    "name": "Sabrina A.",
+    "rating": 5,
+    "title": "Melhor compra que fiz",
+    "comment": "Produto de ótima qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2025-12-14",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Carlos B.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Comprei para dar de presente e gostei do resultado. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2025-12-14",
+    "verified": false,
+    "city": "Campinas",
+    "state": "SP"
+  },
+  {
+    "name": "Cristina F.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Comprei para meu home office e ficou lindo! As cores são vibrantes e o acabamento é impecável.",
+    "date": "2025-12-14",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Luciana O.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Produto de primeira qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2025-12-13",
+    "verified": true,
+    "city": "Teresina",
+    "state": "PI"
+  },
+  {
+    "name": "Gabriela V.",
+    "rating": 4,
+    "title": "Produto bom",
+    "comment": "Comprei para redecorar a sala e gostei do resultado. Só desconto uma estrela pela demora na entrega.",
+    "date": "2025-12-13",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Patrícia E.",
+    "rating": 5,
+    "title": "Melhor compra que fiz",
+    "comment": "Maravilha! Ficou lindo na varanda gourmet. Entrega dentro do prazo.",
+    "date": "2025-12-13",
+    "verified": true,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Márcio B.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Produto legal, minha esposa gostou muito. ",
+    "date": "2025-12-13",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Camila I.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Perfeito! Combinação perfeita com minha decoração. Tudo perfeito do início ao fim.",
+    "date": "2025-12-10",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Alice R.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Deu vida a o ambiente. A decoração ficou completa.",
+    "date": "2025-12-10",
+    "verified": false,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "José M.",
+    "rating": 5,
+    "title": "Transformou meu ambiente",
+    "comment": "Que lindo! Coloquei na parede da sala e ficou um charme. Já quero comprar o conjunto todo!",
+    "date": "2025-12-10",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Carolina Q.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Amei demais com o resultado. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-12-10",
+    "verified": false,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Cecília T.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Estou muito satisfeita com o produto. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-12-09",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Eduardo J.",
+    "rating": 5,
+    "title": "Melhor compra que fiz",
+    "comment": "Presenteei minha esposa no aniversário e foi um sucesso! Recomendo demais!",
+    "date": "2025-12-09",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Wagner E.",
+    "rating": 5,
+    "title": "Presente perfeito",
+    "comment": "Entrega super rápida! Embalagem excelente, chegou intacto. Ficou perfeito na minha parede.",
+    "date": "2025-12-09",
+    "verified": false,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Cristina V.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Tela de boa qualidade. A parede da sala ficou mais bonita. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2025-12-09",
+    "verified": true,
+    "city": "Ponta Grossa",
+    "state": "PR"
+  },
+  {
+    "name": "Thais X.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "Amei demais com o produto. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-12-07",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Leandro S.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Comprei para minha sala e ficou maravilhoso! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2025-12-06",
+    "verified": true,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Natália N.",
+    "rating": 4,
+    "title": "Bonito, mas poderia ser melhor",
+    "comment": "Tela bonita, minha esposa gostou muito. Só acho que poderia ter uma opção maior.",
+    "date": "2025-12-05",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Cecília C.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Que incrível! Coloquei na parede da sala e ficou um charme. Amei a qualidade do material.",
+    "date": "2025-12-05",
+    "verified": true,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "Rogério J.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "As tonalidades do quadro são vibrantes. Impressão de altíssima resolução. ",
+    "date": "2025-12-05",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Matheus K.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Quadro de primeira qualidade. Material resistente e bem acabado.",
+    "date": "2025-12-04",
+    "verified": true,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Isadora V.",
+    "rating": 4,
+    "title": "Bom quadro",
+    "comment": "Material de boa qualidade. As cores ficaram um tom mais escuro que na foto do site, mas ainda assim bonito. ",
+    "date": "2025-12-04",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Wagner R.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Tela bonita, decorou bem o escritório. ",
+    "date": "2025-12-03",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Emerson C.",
+    "rating": 4,
+    "title": "Bom quadro",
+    "comment": "Produto bonito e bem acabado. Entrega demorou um pouco mais do que o esperado, mas o produto compensou.",
+    "date": "2025-12-03",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Karine T.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "As nuances do quadro são perfeitas. Impressão de altíssima resolução. Super recomendo!",
+    "date": "2025-12-03",
+    "verified": false,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Natália X.",
+    "rating": 4,
+    "title": "Satisfeita no geral",
+    "comment": "Quadro bonito e bem feito. Ficou ótimo no meu home office. Tirando o prazo de entrega, perfeito.",
+    "date": "2025-12-02",
+    "verified": false,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Helena I.",
+    "rating": 1,
+    "title": "Não comprem",
+    "comment": "Maior arrependimento de compra online. A qualidade é absurdamente ruim, parece impressão de jato de tinta caseira. Empresa sem vergonha.",
+    "date": "2025-12-01",
+    "verified": true,
+    "city": "Fortaleza",
+    "state": "CE"
+  },
+  {
+    "name": "Daniel Z.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "As nuances do quadro são fiéis à foto. Material de alta qualidade, nota-se de longe. Super recomendo!",
+    "date": "2025-12-01",
+    "verified": true,
+    "city": "Novo Hamburgo",
+    "state": "RS"
+  },
+  {
+    "name": "Diego B.",
+    "rating": 3,
+    "title": "Esperava mais",
+    "comment": "Material mais ou menos. Para o preço que paguei, esperava algo melhor.",
+    "date": "2025-11-30",
+    "verified": true,
+    "city": "Ribeirão Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Jéssica Y.",
+    "rating": 5,
+    "title": "Decoração perfeita",
+    "comment": "Presenteei minha esposa de casamento novo e não parava de elogiar! Recomendo demais!",
+    "date": "2025-11-29",
+    "verified": true,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Fernanda Z.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Comprei para o quarto do casal e ficou sensacional! As cores são vibrantes e o acabamento é impecável.",
+    "date": "2025-11-28",
+    "verified": true,
+    "city": "Rio de Janeiro",
+    "state": "RJ"
+  },
+  {
+    "name": "Amanda Y.",
+    "rating": 5,
+    "title": "Entrega rápida e produto top",
+    "comment": "Sensacional! Coloquei no quarto do meu filho e ele adorou. Produto premium a um preço justo.",
+    "date": "2025-11-27",
+    "verified": true,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Diego S.",
+    "rating": 4,
+    "title": "Bem feito",
+    "comment": "Produto legal, minha esposa gostou muito. Embalagem poderia proteger mais.",
+    "date": "2025-11-25",
+    "verified": false,
+    "city": "Maceió",
+    "state": "AL"
+  },
+  {
+    "name": "Leandro A.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Estava com pé atrás mas fiquei encantada! A qualidade é muito superior ao preço pago.",
+    "date": "2025-11-25",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Gabriel F.",
+    "rating": 4,
+    "title": "Bom custo-benefício",
+    "comment": "Material de boa qualidade. O tamanho é bom para o que eu precisava. Compraria novamente.",
+    "date": "2025-11-24",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Marcos T.",
+    "rating": 4,
+    "title": "Bom acabamento",
+    "comment": "Comprei para o quarto e ficou legal. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2025-11-23",
+    "verified": true,
+    "city": "Curitiba",
+    "state": "PR"
+  },
+  {
+    "name": "Sabrina G.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Comprei para o escritório e ficou sensacional! Entrega super rápida e bem embalado.",
+    "date": "2025-11-20",
+    "verified": false,
+    "city": "Lauro de Freitas",
+    "state": "BA"
+  },
+  {
+    "name": "Rogério A.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Comprei meio desconfiada mas me surpreendi demais! O quadro é lindo e de excelente qualidade.",
+    "date": "2025-11-20",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Sérgio D.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Material de boa qualidade. O tamanho é bom para o que eu precisava. ",
+    "date": "2025-11-17",
+    "verified": true,
+    "city": "Sorocaba",
+    "state": "SP"
+  },
+  {
+    "name": "Marcelo V.",
+    "rating": 3,
+    "title": "Não é ruim mas...",
+    "comment": "Levou muito mais que o previsto. Quando chegou, até gostei, mas o prazo comprometeu.",
+    "date": "2025-11-16",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Rosana O.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Que lindo! Coloquei na parede da sala e ficou um charme. ",
+    "date": "2025-11-16",
+    "verified": true,
+    "city": "Piracicaba",
+    "state": "SP"
+  },
+  {
+    "name": "Renan D.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Canvas de primeira qualidade. Superou todas as minhas expectativas.",
+    "date": "2025-11-16",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Gabriela B.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "As nuances do quadro são lindas. Impressão de altíssima resolução. ",
+    "date": "2025-11-14",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Leandro Q.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "Canvas de excelente qualidade. Superou todas as minhas expectativas.",
+    "date": "2025-11-14",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Cláudia V.",
+    "rating": 4,
+    "title": "Bom acabamento",
+    "comment": "Comprei para o quarto e ficou legal. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2025-11-13",
+    "verified": true,
+    "city": "Belo Horizonte",
+    "state": "MG"
+  },
+  {
+    "name": "André W.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Fiquei muito feliz com o resultado. Superou minhas expectativas em todos os aspectos.",
+    "date": "2025-11-13",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Karine S.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Produto bom. Ficou ótimo no meu home office. Tirando o prazo de entrega, perfeito.",
+    "date": "2025-11-13",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Patrícia Z.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Adorei tudo com a qualidade. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-11-13",
+    "verified": false,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Laís I.",
+    "rating": 5,
+    "title": "Cores vibrantes",
+    "comment": "Produto fantástico! O acabamento é de altíssima qualidade. Já estou escolhendo o próximo.",
+    "date": "2025-11-11",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Carolina O.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "As nuances do quadro são incríveis. Acabamento impecável em cada detalhe. ",
+    "date": "2025-11-11",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Lorena P.",
+    "rating": 3,
+    "title": "Razoável pelo preço",
+    "comment": "Canvas meio fino. Não vou devolver, mas fiquei na dúvida.",
+    "date": "2025-11-11",
+    "verified": true,
+    "city": "Florianópolis",
+    "state": "SC"
+  },
+  {
+    "name": "Cecília V.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Quadro bonito e bem feito. A parede da sala ficou mais bonita. Tirando o prazo de entrega, perfeito.",
+    "date": "2025-11-09",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Renata J.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Show! Ficou lindo na varanda gourmet. Produto premium a um preço justo.",
+    "date": "2025-11-08",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Emerson Z.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Fiquei muito feliz com a qualidade. Superou minhas expectativas em todos os aspectos.",
+    "date": "2025-11-06",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Rodrigo N.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Show! Combinação perfeita com minha decoração. Entrega dentro do prazo.",
+    "date": "2025-11-05",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Antônio K.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Comprei para o quarto do casal e ficou sensacional! Entrega super rápida e bem embalado.",
+    "date": "2025-11-05",
+    "verified": false,
+    "city": "Rio de Janeiro",
+    "state": "RJ"
+  },
+  {
+    "name": "Renata X.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Veio antes do prazo! O produto veio muito bem embalado, sem nenhum amassado. Ficou perfeito na minha parede.",
+    "date": "2025-11-05",
+    "verified": false,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Bruna O.",
+    "rating": 1,
+    "title": "Fraude total",
+    "comment": "Não comprem! O produto nunca chegou e não consigo contato. Quero meu dinheiro de volta.",
+    "date": "2025-11-05",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Adriana Y.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Tela bonita, combinou com a decoração. Embalagem poderia proteger mais.",
+    "date": "2025-11-03",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Heloísa H.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Bonito quadro, ficou muito bem na minha sala. Tirando a demora na entrega, tudo certo.",
+    "date": "2025-11-02",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Luciana D.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Comprei para minha sala e ficou incrível! As cores são vibrantes e o acabamento é impecável.",
+    "date": "2025-11-02",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Fernanda L.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "Presenteei minha mãe no aniversário e ela adorou! Já quero comprar outro.",
+    "date": "2025-11-02",
+    "verified": true,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Roberto E.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Estava com pé atrás mas amei de verdade! O quadro é lindo e de excelente qualidade.",
+    "date": "2025-10-30",
+    "verified": true,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Pietra S.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Presenteei minha sogra no Natal e não parava de elogiar! O quadro é realmente lindo.",
+    "date": "2025-10-30",
+    "verified": true,
+    "city": "Fortaleza",
+    "state": "CE"
+  },
+  {
+    "name": "Adriana K.",
+    "rating": 5,
+    "title": "Lindo demais!",
+    "comment": "As tonalidades do quadro são vibrantes. O canvas tem uma textura premium que dá um toque especial. Super recomendo!",
+    "date": "2025-10-30",
+    "verified": false,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Daniel D.",
+    "rating": 5,
+    "title": "Entrega rápida e produto top",
+    "comment": "Presenteei minha sogra de casamento novo e ele amou! Qualidade top.",
+    "date": "2025-10-29",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Felipe B.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Comprei para meu quarto e ficou perfeito! Minha esposa amou!",
+    "date": "2025-10-28",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Priscila I.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Chegou em 3 dias! Bem protegido na embalagem. A qualidade é top!",
+    "date": "2025-10-28",
+    "verified": true,
+    "city": "Cuiabá",
+    "state": "MT"
+  },
+  {
+    "name": "Sérgio I.",
+    "rating": 5,
+    "title": "Lindo demais!",
+    "comment": "Show! Ficou lindo na varanda gourmet. Entrega dentro do prazo.",
+    "date": "2025-10-27",
+    "verified": true,
+    "city": "Florianópolis",
+    "state": "SC"
+  },
+  {
+    "name": "José G.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Comprei para dar de presente e gostei do resultado. O frete foi um pouco caro.",
+    "date": "2025-10-27",
+    "verified": true,
+    "city": "Novo Hamburgo",
+    "state": "RS"
+  },
+  {
+    "name": "Felipe Z.",
+    "rating": 2,
+    "title": "Deixou a desejar",
+    "comment": "O produto veio diferente do que pedi. Tive que abrir reclamação para conseguir resposta.",
+    "date": "2025-10-27",
+    "verified": true,
+    "city": "Canoas",
+    "state": "RS"
+  },
+  {
+    "name": "Leonardo K.",
+    "rating": 5,
+    "title": "Amei, vou comprar mais",
+    "comment": "Deu vida a meu quarto. Todos os visitantes perguntam onde comprei.",
+    "date": "2025-10-25",
+    "verified": false,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Jéssica L.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Produto excelente! O tamanho é ideal. Comprarei mais com certeza.",
+    "date": "2025-10-24",
+    "verified": true,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Beatriz W.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Estou muito satisfeita com a qualidade. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-10-24",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Aline J.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Maravilha! Coloquei no quarto do meu filho e ele adorou. ",
+    "date": "2025-10-24",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Maria B.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Produto excelente! O tamanho é ideal. Melhor loja de quadros que já comprei.",
+    "date": "2025-10-24",
+    "verified": true,
+    "city": "Teresina",
+    "state": "PI"
+  },
+  {
+    "name": "Manuela X.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Chegou em 3 dias! Bem protegido na embalagem. Ficou perfeito na minha parede.",
+    "date": "2025-10-23",
+    "verified": true,
+    "city": "Campo Grande",
+    "state": "MS"
+  },
+  {
+    "name": "Diego Z.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Comprei para o quarto do casal e ficou incrível! Chegou antes do prazo.",
+    "date": "2025-10-23",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Rogério K.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Entrega super rápida! Embalagem excelente, chegou intacto. Ficou perfeito na minha parede.",
+    "date": "2025-10-23",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Camila F.",
+    "rating": 3,
+    "title": "Produto aceitável",
+    "comment": "A entrega demorou bastante para chegar. O quadro é ok mas o frete demorado desanima.",
+    "date": "2025-10-23",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Leonardo I.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Produto bom. Ficou ótimo no meu home office. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2025-10-22",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Alice T.",
+    "rating": 1,
+    "title": "Horrível",
+    "comment": "Comprei e me arrependi amargamente. Demorou 2 meses para chegar e veio todo destruído. Não comprem!",
+    "date": "2025-10-22",
+    "verified": false,
+    "city": "Bauru",
+    "state": "SP"
+  },
+  {
+    "name": "Diego K.",
+    "rating": 4,
+    "title": "Gostei do resultado",
+    "comment": "Tela de boa qualidade. Ficou ótimo no meu home office. Tirando o prazo de entrega, perfeito.",
+    "date": "2025-10-22",
+    "verified": false,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Marcos Q.",
+    "rating": 4,
+    "title": "Bem feito",
+    "comment": "Tela bonita, combinou com a decoração. O preço é um pouco salgado mas vale.",
+    "date": "2025-10-21",
+    "verified": true,
+    "city": "Rio de Janeiro",
+    "state": "RJ"
+  },
+  {
+    "name": "Rafael B.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Produto bonito e bem acabado. Único ponto é que o gancho para pendurar poderia ser melhor.",
+    "date": "2025-10-21",
+    "verified": true,
+    "city": "Piracicaba",
+    "state": "SP"
+  },
+  {
+    "name": "Luciana Y.",
+    "rating": 5,
+    "title": "Quadro lindo!",
+    "comment": "Maravilha! Deu um upgrade na decoração do apartamento. Produto premium a um preço justo.",
+    "date": "2025-10-20",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Simone S.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Que espetacular! O quarto ganhou outra cara. Qualidade nota 10.",
+    "date": "2025-10-20",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Fernando I.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Frete rápido! Embalagem excelente, chegou intacto. Amei o resultado final.",
+    "date": "2025-10-19",
+    "verified": false,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Bruno R.",
+    "rating": 3,
+    "title": "Tem pontos a melhorar",
+    "comment": "Levou bastante para chegar. Quando chegou, até gostei, mas o prazo comprometeu.",
+    "date": "2025-10-19",
+    "verified": false,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Gabriel G.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Que lindo! Coloquei na parede da sala e ficou um charme. ",
+    "date": "2025-10-19",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Marina N.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Comprei meio desconfiada mas fiquei encantada! A qualidade é muito superior ao preço pago.",
+    "date": "2025-10-18",
+    "verified": true,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Márcio E.",
+    "rating": 4,
+    "title": "Bom acabamento",
+    "comment": "Atendeu minhas expectativas. A qualidade é boa, mas achei que poderia ter vindo com moldura mais reforçada.",
+    "date": "2025-10-18",
+    "verified": true,
+    "city": "Curitiba",
+    "state": "PR"
+  },
+  {
+    "name": "Igor E.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Acabamento satisfatório. O tamanho é bom para o que eu precisava. Bom custo-benefício.",
+    "date": "2025-10-17",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Lívia P.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "Adorei tudo com a qualidade. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-10-17",
+    "verified": true,
+    "city": "Lauro de Freitas",
+    "state": "BA"
+  },
+  {
+    "name": "Rafaela G.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Frete rápido! Bem protegido na embalagem. Nota 10!",
+    "date": "2025-10-17",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Laura N.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Entrega super rápida! Embalagem excelente, chegou intacto. Ficou perfeito na minha parede.",
+    "date": "2025-10-16",
+    "verified": true,
+    "city": "Maceió",
+    "state": "AL"
+  },
+  {
+    "name": "Leandro G.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Entrega super rápida! Bem protegido na embalagem. Ficou perfeito na minha parede.",
+    "date": "2025-10-16",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "José B.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "Já é o quarto quadro que compro nessa loja e a qualidade é sempre excelente. Melhor custo-benefício do mercado.",
+    "date": "2025-10-16",
+    "verified": false,
+    "city": "Canoas",
+    "state": "RS"
+  },
+  {
+    "name": "Carlos Y.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "Comprei para o quarto do casal e ficou lindo! As cores são vibrantes e o acabamento é impecável.",
+    "date": "2025-10-14",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "André B.",
+    "rating": 4,
+    "title": "Produto bom",
+    "comment": "Comprei para o meu apartamento novo e ficou bonito. O frete foi um pouco caro.",
+    "date": "2025-10-13",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Carolina I.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Atendeu minhas expectativas. Único ponto é que o gancho para pendurar poderia ser melhor.",
+    "date": "2025-10-13",
+    "verified": true,
+    "city": "Contagem",
+    "state": "MG"
+  },
+  {
+    "name": "Marcos N.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Tela de boa qualidade. Ficou ótimo no meu home office. Só faltou vir com os parafusos para fixação.",
+    "date": "2025-10-12",
+    "verified": false,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Maria Y.",
+    "rating": 4,
+    "title": "Bom acabamento",
+    "comment": "Bom produto no geral. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-10-11",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "José P.",
+    "rating": 4,
+    "title": "Bem feito",
+    "comment": "Bonito quadro, ficou muito bem na minha sala. Embalagem poderia proteger mais.",
+    "date": "2025-10-11",
+    "verified": true,
+    "city": "Limeira",
+    "state": "SP"
+  },
+  {
+    "name": "Camila S.",
+    "rating": 4,
+    "title": "Gostei do resultado",
+    "comment": "Produto legal, decorou bem o escritório. Só acho que poderia ter uma opção maior.",
+    "date": "2025-10-11",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Leonardo C.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Que incrível! Meu cantinho de leitura ficou perfeito. Já quero comprar o conjunto todo!",
+    "date": "2025-10-10",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Bruna V.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Bom produto no geral. Material bom, porém o acabamento nas bordas poderia ser mais caprichado.",
+    "date": "2025-10-10",
+    "verified": true,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Beatriz Z.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Produto de altíssima qualidade. Superou todas as minhas expectativas.",
+    "date": "2025-10-10",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Natália L.",
+    "rating": 5,
+    "title": "Simplesmente perfeito",
+    "comment": "Comprei meio desconfiada mas fiquei encantada! A qualidade é muito superior ao preço pago.",
+    "date": "2025-10-10",
+    "verified": true,
+    "city": "Cuiabá",
+    "state": "MT"
+  },
+  {
+    "name": "Isabela Z.",
+    "rating": 5,
+    "title": "Amei, vou comprar mais",
+    "comment": "Que espetacular! Coloquei na parede da sala e ficou um charme. Amei a qualidade do material.",
+    "date": "2025-10-07",
+    "verified": true,
+    "city": "Ponta Grossa",
+    "state": "PR"
+  },
+  {
+    "name": "Sandra Q.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Não esperava muito mas fiquei encantada! A qualidade é muito superior ao preço pago.",
+    "date": "2025-10-05",
+    "verified": false,
+    "city": "Campo Grande",
+    "state": "MS"
+  },
+  {
+    "name": "Antônio K.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Que espetacular! Meu home office agora tem personalidade. ",
+    "date": "2025-10-05",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Patrícia W.",
+    "rating": 5,
+    "title": "Top demais!",
+    "comment": "Produto de primeira! As cores são exatamente como nas fotos. Já estou escolhendo o próximo.",
+    "date": "2025-10-05",
+    "verified": true,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "Márcio V.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Que espetacular! O quarto ganhou outra cara. Qualidade nota 10.",
+    "date": "2025-10-05",
+    "verified": true,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Viviane G.",
+    "rating": 5,
+    "title": "Qualidade incrível",
+    "comment": "Veio antes do prazo! Embalagem excelente, chegou intacto. Ficou perfeito na minha parede.",
+    "date": "2025-10-04",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Leonardo G.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Comprei para minha sala e ficou perfeito! Minha esposa amou!",
+    "date": "2025-10-04",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Marcelo Z.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Comprei para o meu apartamento novo e ficou bonito. Só desconto uma estrela pela demora na entrega.",
+    "date": "2025-10-02",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Márcio U.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Produto maravilhoso! O acabamento é de altíssima qualidade. Recomendo sem pensar duas vezes.",
+    "date": "2025-10-02",
+    "verified": false,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Juliana D.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Canvas de excelente qualidade. Veio muito bem embalado e protegido.",
+    "date": "2025-09-30",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Alexandre C.",
+    "rating": 5,
+    "title": "Cores vibrantes",
+    "comment": "Que lindo! Coloquei na parede da sala e ficou um charme. Excelente custo-benefício.",
+    "date": "2025-09-29",
+    "verified": true,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Cecília L.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Canvas de altíssima qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2025-09-29",
+    "verified": true,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Ricardo N.",
+    "rating": 4,
+    "title": "Gostei bastante",
+    "comment": "Atendeu minhas expectativas. Único ponto é que o gancho para pendurar poderia ser melhor.",
+    "date": "2025-09-28",
+    "verified": false,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Marcelo Q.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Produto maravilhoso! A tela tem uma textura muito bonita. Comprarei mais com certeza.",
+    "date": "2025-09-27",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Rosana N.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Tela bonita, combinou com a decoração. O preço é um pouco salgado mas vale.",
+    "date": "2025-09-26",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Camila D.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Comprei para o escritório e ficou maravilhoso! Minha esposa amou!",
+    "date": "2025-09-25",
+    "verified": false,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Sofia V.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Já é o terceiro quadro que compro nessa loja e a qualidade é sempre a mesma: perfeita. Já virei cliente fiel.",
+    "date": "2025-09-25",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Patrícia W.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Bonito quadro, decorou bem o escritório. ",
+    "date": "2025-09-24",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Gabriel S.",
+    "rating": 5,
+    "title": "Qualidade incrível",
+    "comment": "Já é mais um quadro que compro nessa loja e a qualidade nunca decepciona. Recomendo de olhos fechados.",
+    "date": "2025-09-23",
+    "verified": true,
+    "city": "Campo Grande",
+    "state": "MS"
+  },
+  {
+    "name": "Isabela A.",
+    "rating": 4,
+    "title": "Satisfeita no geral",
+    "comment": "Comprei para dar de presente e a pessoa adorou. O frete foi um pouco caro.",
+    "date": "2025-09-23",
+    "verified": true,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Fábio W.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Produto de primeira! As cores são exatamente como nas fotos. Comprarei mais com certeza.",
+    "date": "2025-09-21",
+    "verified": true,
+    "city": "Bauru",
+    "state": "SP"
+  },
+  {
+    "name": "Heloísa Q.",
+    "rating": 5,
+    "title": "Quadro lindo!",
+    "comment": "Estava com pé atrás mas superou todas expectativas! O quadro é lindo e de excelente qualidade.",
+    "date": "2025-09-19",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Rogério Q.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Boa compra, minha esposa gostou muito. Embalagem poderia proteger mais.",
+    "date": "2025-09-17",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Caio P.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Quadro de altíssima qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2025-09-17",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "João H.",
+    "rating": 4,
+    "title": "Bom acabamento",
+    "comment": "Comprei para dar de presente e ficou bonito. O frete foi um pouco caro.",
+    "date": "2025-09-17",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Natália A.",
+    "rating": 4,
+    "title": "Gostei do resultado",
+    "comment": "Tela bonita, combinou com a decoração. Tirando a demora na entrega, tudo certo.",
+    "date": "2025-09-17",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Mariana E.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Tela bonita, combinou com a decoração. ",
+    "date": "2025-09-16",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Alexandre Y.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Veio antes do prazo! Embalagem excelente, chegou intacto. Nota 10!",
+    "date": "2025-09-15",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Felipe M.",
+    "rating": 5,
+    "title": "Entrega rápida e produto top",
+    "comment": "Comprei para meu quarto e ficou maravilhoso! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2025-09-14",
+    "verified": false,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Renata N.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Presenteei minha mãe no Dia das Mães e ela adorou! Vou comprar mais para mim agora.",
+    "date": "2025-09-12",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Rodrigo B.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Show! Deu um upgrade na decoração do apartamento. ",
+    "date": "2025-09-11",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Fernando Y.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "As cores do quadro são perfeitas. Acabamento impecável em cada detalhe. ",
+    "date": "2025-09-11",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Sabrina O.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Produto bonito e bem acabado. Material bom, porém o acabamento nas bordas poderia ser mais caprichado.",
+    "date": "2025-09-11",
+    "verified": true,
+    "city": "Belo Horizonte",
+    "state": "MG"
+  },
+  {
+    "name": "Márcio R.",
+    "rating": 5,
+    "title": "Presente perfeito",
+    "comment": "Fiquei muito feliz com a compra. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-09-11",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Diego P.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "Estou muito satisfeita com o produto. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-09-09",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Vinícius G.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Produto bom. Combinou perfeitamente com o sofá novo. Só faltou vir com os parafusos para fixação.",
+    "date": "2025-09-09",
+    "verified": true,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Cecília T.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Que espetacular! Coloquei na parede da sala e ficou um charme. Excelente custo-benefício.",
+    "date": "2025-09-06",
+    "verified": true,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "João K.",
+    "rating": 5,
+    "title": "Lindo demais!",
+    "comment": "Adorei tudo com o resultado. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-09-06",
+    "verified": true,
+    "city": "Contagem",
+    "state": "MG"
+  },
+  {
+    "name": "Thais R.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "As tonalidades do quadro são incríveis. Material de alta qualidade, nota-se de longe. ",
+    "date": "2025-09-04",
+    "verified": true,
+    "city": "Piracicaba",
+    "state": "SP"
+  },
+  {
+    "name": "Ana X.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Estava com pé atrás mas amei de verdade! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2025-09-03",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Thais E.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Adorei tudo com a compra. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-09-03",
+    "verified": false,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Luana A.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "Presenteei minha mãe no aniversário e ele amou! Qualidade top.",
+    "date": "2025-09-02",
+    "verified": true,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Sérgio J.",
+    "rating": 2,
+    "title": "Produto fraco",
+    "comment": "Decepcionante. O acabamento é de péssima qualidade. Muito abaixo do esperado.",
+    "date": "2025-09-02",
+    "verified": true,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "Rafaela M.",
+    "rating": 2,
+    "title": "Não gostei muito",
+    "comment": "Decepcionante. O quadro veio torto e com defeito na moldura. Muito abaixo do esperado.",
+    "date": "2025-09-01",
+    "verified": true,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Sofia B.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "Presenteei minha mãe no Natal e foi um sucesso! O quadro é realmente lindo.",
+    "date": "2025-09-01",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Letícia F.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Renovou meu escritório. O ambiente ficou muito mais aconchegante.",
+    "date": "2025-09-01",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Márcio P.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Comprei para meu home office e ficou lindo! Todos que visitam elogiam.",
+    "date": "2025-08-31",
+    "verified": true,
+    "city": "Lauro de Freitas",
+    "state": "BA"
+  },
+  {
+    "name": "Rafaela X.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Comprei para dar de presente e a pessoa adorou. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2025-08-30",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Vinícius K.",
+    "rating": 5,
+    "title": "Transformou meu ambiente",
+    "comment": "Produto de altíssima qualidade. Superou todas as minhas expectativas.",
+    "date": "2025-08-30",
+    "verified": true,
+    "city": "Recife",
+    "state": "PE"
+  },
+  {
+    "name": "Thiago L.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Produto legal, minha esposa gostou muito. ",
+    "date": "2025-08-29",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Daniela Q.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Canvas com boa impressão. Ficou ótimo no meu home office. ",
+    "date": "2025-08-29",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Elaine Z.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Que incrível! Meu home office agora tem personalidade. Já quero comprar o conjunto todo!",
+    "date": "2025-08-28",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Fábio L.",
+    "rating": 5,
+    "title": "Top demais!",
+    "comment": "Comprei para meu quarto e ficou sensacional! Minha esposa amou!",
+    "date": "2025-08-28",
+    "verified": true,
+    "city": "Campinas",
+    "state": "SP"
+  },
+  {
+    "name": "André J.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Gostei bastante do quadro. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-08-27",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Rafael X.",
+    "rating": 3,
+    "title": "Deu pro gasto",
+    "comment": "Não é ruim, mas achei o material meio fino demais. Pelo preço, acho que dava para ser melhor.",
+    "date": "2025-08-27",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Bruno A.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Já é o terceiro quadro que compro deles e a qualidade é sempre excelente. Recomendo de olhos fechados.",
+    "date": "2025-08-26",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Antônio L.",
+    "rating": 4,
+    "title": "Bonito, mas poderia ser melhor",
+    "comment": "Atendeu minhas expectativas. Entrega demorou um pouco mais do que o esperado, mas o produto compensou.",
+    "date": "2025-08-25",
+    "verified": true,
+    "city": "Recife",
+    "state": "PE"
+  },
+  {
+    "name": "Henrique F.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Tela bonita, ficou muito bem na minha sala. ",
+    "date": "2025-08-25",
+    "verified": true,
+    "city": "Belém",
+    "state": "PA"
+  },
+  {
+    "name": "Antônio K.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Bom produto no geral. Material bom, porém o acabamento nas bordas poderia ser mais caprichado.",
+    "date": "2025-08-24",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Viviane T.",
+    "rating": 5,
+    "title": "Decoração impecável",
+    "comment": "Que maravilhoso! Meu cantinho de leitura ficou perfeito. ",
+    "date": "2025-08-24",
+    "verified": true,
+    "city": "Londrina",
+    "state": "PR"
+  },
+  {
+    "name": "Rogério M.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Chegou em 3 dias! Bem protegido na embalagem. Ficou perfeito na minha parede.",
+    "date": "2025-08-23",
+    "verified": false,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Wagner Y.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Presenteei minha mãe de casamento novo e ficou encantada! Já quero comprar outro.",
+    "date": "2025-08-22",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Carlos R.",
+    "rating": 4,
+    "title": "Boa qualidade",
+    "comment": "Produto bonito e bem acabado. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-08-20",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Priscila E.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Entrega super rápida! Bem protegido na embalagem. Amei o resultado final.",
+    "date": "2025-08-20",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Leandro M.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Produto legal, decorou bem o escritório. Só acho que poderia ter uma opção maior.",
+    "date": "2025-08-20",
+    "verified": false,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Vinícius S.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "Veio antes do prazo! Bem protegido na embalagem. Ficou perfeito na minha parede.",
+    "date": "2025-08-20",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Daniel V.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Boa compra, combinou com a decoração. O preço é um pouco salgado mas vale.",
+    "date": "2025-08-19",
+    "verified": true,
+    "city": "Santo André",
+    "state": "SP"
+  },
+  {
+    "name": "Cecília I.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "As nuances do quadro são incríveis. Impressão de altíssima resolução. Nota mil!",
+    "date": "2025-08-19",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Leandro E.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Show! Ficou lindo na varanda gourmet. Nota máxima!",
+    "date": "2025-08-17",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Márcia E.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Entrega no prazo certinho! O produto veio muito bem embalado, sem nenhum amassado. A qualidade é top!",
+    "date": "2025-08-17",
+    "verified": true,
+    "city": "Londrina",
+    "state": "PR"
+  },
+  {
+    "name": "Luciana M.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Quadro de primeira qualidade. Acabamento perfeito, sem nenhum defeito.",
+    "date": "2025-08-16",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Márcio G.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Produto legal, ficou muito bem na minha sala. ",
+    "date": "2025-08-15",
+    "verified": true,
+    "city": "Bauru",
+    "state": "SP"
+  },
+  {
+    "name": "Karine B.",
+    "rating": 2,
+    "title": "Produto fraco",
+    "comment": "Esperava muito mais. A cor veio completamente diferente do anúncio. Muito abaixo do esperado.",
+    "date": "2025-08-14",
+    "verified": true,
+    "city": "Recife",
+    "state": "PE"
+  },
+  {
+    "name": "Sandra H.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Produto de primeira qualidade. Acabamento perfeito, sem nenhum defeito.",
+    "date": "2025-08-13",
+    "verified": false,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Vanessa M.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Que lindo! Coloquei na parede da sala e ficou um charme. ",
+    "date": "2025-08-12",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Clara D.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "A qualidade do canvas é boa. Chegou bem embalado, sem nenhum defeito. Bom custo-benefício.",
+    "date": "2025-08-12",
+    "verified": true,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Bruna V.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Transformou meu quarto. O ambiente ficou muito mais aconchegante.",
+    "date": "2025-08-12",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Larissa I.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "Comprei para meu home office e ficou lindo! Chegou antes do prazo.",
+    "date": "2025-08-12",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Jéssica N.",
+    "rating": 2,
+    "title": "Abaixo do esperado",
+    "comment": "O quadro veio danificado. Fiquei muito insatisfeita.",
+    "date": "2025-08-11",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Bianca N.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Tela de boa qualidade. Ficou ótimo no meu home office. Só faltou vir com os parafusos para fixação.",
+    "date": "2025-08-11",
+    "verified": true,
+    "city": "Recife",
+    "state": "PE"
+  },
+  {
+    "name": "João C.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Gostei bastante do quadro. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-08-10",
+    "verified": true,
+    "city": "Goiânia",
+    "state": "GO"
+  },
+  {
+    "name": "Wagner E.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Tela de altíssima qualidade. Veio muito bem embalado e protegido.",
+    "date": "2025-08-10",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Daniel Y.",
+    "rating": 2,
+    "title": "Decepcionante",
+    "comment": "Esperava muito mais. O quadro veio torto e com defeito na moldura. Vou tentar devolver.",
+    "date": "2025-08-10",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Thais P.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Já é o terceiro quadro que compro deles e a qualidade é sempre excelente. Sempre entrega rápida e produto perfeito.",
+    "date": "2025-08-09",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Amanda Y.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Comprei para redecorar a sala e ficou legal. Só desconto uma estrela pela demora na entrega.",
+    "date": "2025-08-09",
+    "verified": true,
+    "city": "Pelotas",
+    "state": "RS"
+  },
+  {
+    "name": "Emerson I.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Frete rápido! Embalagem excelente, chegou intacto. Amei o resultado final.",
+    "date": "2025-08-09",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Rosana J.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Comprei para a sala de estar e ficou lindo! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2025-08-09",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Rosana Q.",
+    "rating": 4,
+    "title": "Satisfeita no geral",
+    "comment": "Gostei bastante do quadro. Único ponto é que o gancho para pendurar poderia ser melhor.",
+    "date": "2025-08-07",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Marina N.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Estava com pé atrás mas fiquei encantada! A qualidade é muito superior ao preço pago.",
+    "date": "2025-08-06",
+    "verified": true,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Isabela D.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "Quadro de altíssima qualidade. Superou todas as minhas expectativas.",
+    "date": "2025-08-06",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "João J.",
+    "rating": 4,
+    "title": "Satisfeita no geral",
+    "comment": "Gostei bastante do quadro. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-08-06",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Fernando H.",
+    "rating": 4,
+    "title": "Bonito, mas poderia ser melhor",
+    "comment": "Quadro bonito e bem feito. Combinou perfeitamente com o sofá novo. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2025-08-06",
+    "verified": true,
+    "city": "Maringá",
+    "state": "PR"
+  },
+  {
+    "name": "Patrícia T.",
+    "rating": 5,
+    "title": "Decoração impecável",
+    "comment": "As nuances do quadro são perfeitas. Impressão de altíssima resolução. Amei!",
+    "date": "2025-08-05",
+    "verified": true,
+    "city": "Rio de Janeiro",
+    "state": "RJ"
+  },
+  {
+    "name": "Luana Z.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Que espetacular! O quarto ganhou outra cara. ",
+    "date": "2025-08-05",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Paulo A.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Estava com pé atrás mas me surpreendi demais! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2025-08-05",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Leandro W.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Adorei tudo com o produto. Superou minhas expectativas em todos os aspectos.",
+    "date": "2025-08-04",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "João J.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Bonito quadro, minha esposa gostou muito. ",
+    "date": "2025-08-04",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Carolina D.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Que espetacular! O quarto ganhou outra cara. Já quero comprar o conjunto todo!",
+    "date": "2025-08-02",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Felipe Y.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Já é o segundo quadro que compro deles e a qualidade continua impecável. Sempre entrega rápida e produto perfeito.",
+    "date": "2025-08-02",
+    "verified": true,
+    "city": "Florianópolis",
+    "state": "SC"
+  },
+  {
+    "name": "Eduardo P.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Transformou a parede da sala. A decoração ficou completa.",
+    "date": "2025-07-31",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Gabriela V.",
+    "rating": 5,
+    "title": "Decoração impecável",
+    "comment": "Canvas de altíssima qualidade. Acabamento perfeito, sem nenhum defeito.",
+    "date": "2025-07-31",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Sandra H.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Que espetacular! Meu cantinho de leitura ficou perfeito. Amei a qualidade do material.",
+    "date": "2025-07-31",
+    "verified": true,
+    "city": "Contagem",
+    "state": "MG"
+  },
+  {
+    "name": "Milena K.",
+    "rating": 4,
+    "title": "Valeu a pena",
+    "comment": "Comprei para o meu apartamento novo e gostei do resultado. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2025-07-29",
+    "verified": true,
+    "city": "Campinas",
+    "state": "SP"
+  },
+  {
+    "name": "André Q.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "As nuances do quadro são vibrantes. Acabamento impecável em cada detalhe. Super recomendo!",
+    "date": "2025-07-28",
+    "verified": false,
+    "city": "Porto Alegre",
+    "state": "RS"
+  },
+  {
+    "name": "Daniel U.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Boa compra, ficou muito bem na minha sala. Embalagem poderia proteger mais.",
+    "date": "2025-07-28",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Márcia A.",
+    "rating": 4,
+    "title": "Bom quadro",
+    "comment": "Comprei para o meu apartamento novo e a pessoa adorou. Única ressalva é que veio sem as instruções de instalação.",
+    "date": "2025-07-27",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Bruna X.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Quadro de excelente qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2025-07-27",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Leonardo P.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Presenteei minha irmã no Dia das Mães e chorou de emoção! Recomendo demais!",
+    "date": "2025-07-25",
+    "verified": true,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Karine F.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Tela de boa qualidade. Ficou ótimo no meu home office. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2025-07-24",
+    "verified": false,
+    "city": "Belo Horizonte",
+    "state": "MG"
+  },
+  {
+    "name": "Rodrigo Z.",
+    "rating": 4,
+    "title": "Bom custo-benefício",
+    "comment": "Comprei para o meu apartamento novo e ficou legal. Poderia ter uma variedade maior de tamanhos.",
+    "date": "2025-07-23",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "José Q.",
+    "rating": 5,
+    "title": "Exatamente como na foto",
+    "comment": "Chegou em 3 dias! Bem protegido na embalagem. Ficou perfeito na minha parede.",
+    "date": "2025-07-23",
+    "verified": true,
+    "city": "Uberlândia",
+    "state": "MG"
+  },
+  {
+    "name": "Stella S.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Impressão com boa resolução. O tamanho é bom para o que eu precisava. Compraria novamente.",
+    "date": "2025-07-23",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Adriana P.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Tela de altíssima qualidade. A impressão é nítida e as cores são fiéis à foto do anúncio.",
+    "date": "2025-07-22",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Matheus N.",
+    "rating": 5,
+    "title": "Chegou perfeito",
+    "comment": "Show! Deu um upgrade na decoração do apartamento. ",
+    "date": "2025-07-22",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Manuela B.",
+    "rating": 4,
+    "title": "Gostei do resultado",
+    "comment": "Gostei bastante do quadro. Entrega demorou um pouco mais do que o esperado, mas o produto compensou.",
+    "date": "2025-07-19",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Lorena X.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "Maravilha! Coloquei no quarto do meu filho e ele adorou. Tudo perfeito do início ao fim.",
+    "date": "2025-07-19",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Carolina K.",
+    "rating": 5,
+    "title": "Exatamente como na foto",
+    "comment": "Que espetacular! O quarto ganhou outra cara. Qualidade nota 10.",
+    "date": "2025-07-19",
+    "verified": true,
+    "city": "Guarulhos",
+    "state": "SP"
+  },
+  {
+    "name": "Lorena O.",
+    "rating": 4,
+    "title": "Produto bom",
+    "comment": "Gostei bastante do quadro. Entrega demorou um pouco mais do que o esperado, mas o produto compensou.",
+    "date": "2025-07-17",
+    "verified": true,
+    "city": "Lauro de Freitas",
+    "state": "BA"
+  },
+  {
+    "name": "Renan K.",
+    "rating": 5,
+    "title": "Entrega rápida e produto top",
+    "comment": "Estou muito satisfeita com a compra. Superou minhas expectativas em todos os aspectos.",
+    "date": "2025-07-16",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Sabrina Y.",
+    "rating": 5,
+    "title": "Recomendo a todos",
+    "comment": "Presenteei minha mãe no Natal e chorou de emoção! O quadro é realmente lindo.",
+    "date": "2025-07-16",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Thiago E.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "Comprei para meu quarto e ficou perfeito! A qualidade do canvas é excelente, muito superior ao que eu esperava.",
+    "date": "2025-07-15",
+    "verified": true,
+    "city": "Juiz de Fora",
+    "state": "MG"
+  },
+  {
+    "name": "Larissa D.",
+    "rating": 3,
+    "title": "Regular",
+    "comment": "Levou muito mais que o previsto. O produto em si até é bonito, mas a experiência de compra foi ruim.",
+    "date": "2025-07-15",
+    "verified": true,
+    "city": "Guarulhos",
+    "state": "SP"
+  },
+  {
+    "name": "Stella G.",
+    "rating": 4,
+    "title": "Recomendo",
+    "comment": "Produto bonito e bem acabado. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-07-15",
+    "verified": true,
+    "city": "Bauru",
+    "state": "SP"
+  },
+  {
+    "name": "Patrícia Z.",
+    "rating": 5,
+    "title": "Excelente qualidade",
+    "comment": "Sensacional! Combinação perfeita com minha decoração. ",
+    "date": "2025-07-14",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Clara I.",
+    "rating": 5,
+    "title": "Impressionante!",
+    "comment": "Produto maravilhoso! O tamanho é ideal. Melhor loja de quadros que já comprei.",
+    "date": "2025-07-13",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Sandra V.",
+    "rating": 5,
+    "title": "Surpreendeu positivamente",
+    "comment": "Já é o segundo quadro que compro deles e a qualidade é sempre a mesma: perfeita. Recomendo de olhos fechados.",
+    "date": "2025-07-12",
+    "verified": true,
+    "city": "Novo Hamburgo",
+    "state": "RS"
+  },
+  {
+    "name": "Henrique W.",
+    "rating": 3,
+    "title": "Poderia ser melhor",
+    "comment": "Canvas meio fino. Não vou devolver, mas fiquei na dúvida.",
+    "date": "2025-07-11",
+    "verified": true,
+    "city": "Franca",
+    "state": "SP"
+  },
+  {
+    "name": "Stella Y.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Mudou completamente o ambiente. A decoração ficou completa.",
+    "date": "2025-07-11",
+    "verified": true,
+    "city": "Petrópolis",
+    "state": "RJ"
+  },
+  {
+    "name": "Alexandre M.",
+    "rating": 5,
+    "title": "Top demais!",
+    "comment": "Sensacional! Combinação perfeita com minha decoração. ",
+    "date": "2025-07-10",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Vinícius L.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Veio antes do prazo! Embalagem excelente, chegou intacto. Ficou perfeito na minha parede.",
+    "date": "2025-07-10",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Alice P.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Acabamento satisfatório. Chegou bem embalado, sem nenhum defeito. Bom custo-benefício.",
+    "date": "2025-07-10",
+    "verified": true,
+    "city": "Pelotas",
+    "state": "RS"
+  },
+  {
+    "name": "Sérgio Y.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "As nuances do quadro são perfeitas. O canvas tem uma textura premium que dá um toque especial. Nota mil!",
+    "date": "2025-07-09",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Fernando O.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Deu vida a meu escritório. Deu um toque sofisticado ao ambiente.",
+    "date": "2025-07-09",
+    "verified": true,
+    "city": "Belo Horizonte",
+    "state": "MG"
+  },
+  {
+    "name": "Bruno Q.",
+    "rating": 4,
+    "title": "Boa qualidade",
+    "comment": "Bom produto no geral. Entrega demorou um pouco mais do que o esperado, mas o produto compensou.",
+    "date": "2025-07-09",
+    "verified": true,
+    "city": "Chapecó",
+    "state": "SC"
+  },
+  {
+    "name": "Leandro G.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Presenteei minha sogra no aniversário e foi um sucesso! Qualidade top.",
+    "date": "2025-07-08",
+    "verified": true,
+    "city": "São Bernardo do Campo",
+    "state": "SP"
+  },
+  {
+    "name": "Wagner G.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Produto legal, combinou com a decoração. O preço é um pouco salgado mas vale.",
+    "date": "2025-07-08",
+    "verified": true,
+    "city": "João Pessoa",
+    "state": "PB"
+  },
+  {
+    "name": "Lívia P.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "Já é mais um quadro que compro aqui e a qualidade continua impecável. Sempre entrega rápida e produto perfeito.",
+    "date": "2025-07-07",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Laura G.",
+    "rating": 5,
+    "title": "Melhor que o esperado",
+    "comment": "Presenteei minha sogra no Natal e ficou encantada! O quadro é realmente lindo.",
+    "date": "2025-07-06",
+    "verified": true,
+    "city": "Curitiba",
+    "state": "PR"
+  },
+  {
+    "name": "Bruno E.",
+    "rating": 4,
+    "title": "Bonito demais",
+    "comment": "Acabamento satisfatório. O tamanho é bom para o que eu precisava. Compraria novamente.",
+    "date": "2025-07-06",
+    "verified": false,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Renan H.",
+    "rating": 5,
+    "title": "Decoração perfeita",
+    "comment": "Mudou completamente meu quarto. O ambiente ficou muito mais aconchegante.",
+    "date": "2025-07-05",
+    "verified": true,
+    "city": "Florianópolis",
+    "state": "SC"
+  },
+  {
+    "name": "Débora J.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Comprei para meu quarto e ficou lindo! Entrega super rápida e bem embalado.",
+    "date": "2025-07-05",
+    "verified": true,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Bianca E.",
+    "rating": 5,
+    "title": "Amei o quadro!",
+    "comment": "Entrega no prazo certinho! Embalagem excelente, chegou intacto. Ficou perfeito na minha parede.",
+    "date": "2025-07-05",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Diego M.",
+    "rating": 4,
+    "title": "Quase perfeito",
+    "comment": "Tela bonita, ficou muito bem na minha sala. Embalagem poderia proteger mais.",
+    "date": "2025-07-05",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Rafael C.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "As nuances do quadro são perfeitas. Impressão de altíssima resolução. Amei!",
+    "date": "2025-07-04",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Júlio J.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Adorei tudo com a qualidade. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-07-03",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Antônio G.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Presenteei minha irmã no Dia das Mães e foi um sucesso! Qualidade top.",
+    "date": "2025-07-02",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Raquel Q.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "Deu vida a a parede da sala. Todos os visitantes perguntam onde comprei.",
+    "date": "2025-07-02",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Juliana D.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Bonito quadro, decorou bem o escritório. O preço é um pouco salgado mas vale.",
+    "date": "2025-07-01",
+    "verified": false,
+    "city": "Salvador",
+    "state": "BA"
+  },
+  {
+    "name": "Gabriel F.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Adorei tudo com o resultado. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-07-01",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Camila F.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Presenteei minha irmã no Dia das Mães e ela adorou! Vou comprar mais para mim agora.",
+    "date": "2025-07-01",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Mariana A.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Deu vida a meu escritório. Todos os visitantes perguntam onde comprei.",
+    "date": "2025-07-01",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Fernanda R.",
+    "rating": 3,
+    "title": "Razoável",
+    "comment": "Canvas meio fino. Serve para decorar, mas não tem aquele 'uau'.",
+    "date": "2025-06-29",
+    "verified": false,
+    "city": "Taubaté",
+    "state": "SP"
+  },
+  {
+    "name": "Adriana Q.",
+    "rating": 3,
+    "title": "Regular",
+    "comment": "O quadro é razoável, mas esperava mais pela qualidade descrita. Poderia melhorar bastante.",
+    "date": "2025-06-29",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Leonardo G.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Produto maravilhoso! As cores são exatamente como nas fotos. Recomendo sem pensar duas vezes.",
+    "date": "2025-06-27",
+    "verified": true,
+    "city": "São José do Rio Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Fernando Q.",
+    "rating": 5,
+    "title": "Quadro lindo!",
+    "comment": "Comprei para meu quarto e ficou lindo! Minha esposa amou!",
+    "date": "2025-06-27",
+    "verified": false,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Carlos Y.",
+    "rating": 5,
+    "title": "Muito bonito",
+    "comment": "As tonalidades do quadro são incríveis. Material de alta qualidade, nota-se de longe. Nota mil!",
+    "date": "2025-06-26",
+    "verified": true,
+    "city": "Santos",
+    "state": "SP"
+  },
+  {
+    "name": "Maria D.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Comprei meio desconfiada mas superou todas expectativas! A qualidade é muito superior ao preço pago.",
+    "date": "2025-06-25",
+    "verified": true,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Laura U.",
+    "rating": 3,
+    "title": "Regular",
+    "comment": "A cor é um pouco diferente do anúncio. Serve, mas não me impressionou.",
+    "date": "2025-06-25",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Carolina D.",
+    "rating": 4,
+    "title": "Entrega ok, produto bom",
+    "comment": "Produto legal, ficou muito bem na minha sala. ",
+    "date": "2025-06-25",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Wagner T.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Canvas de excelente qualidade. Superou todas as minhas expectativas.",
+    "date": "2025-06-24",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Isadora P.",
+    "rating": 5,
+    "title": "Exatamente como na foto",
+    "comment": "As cores do quadro são lindas. O canvas tem uma textura premium que dá um toque especial. Nota mil!",
+    "date": "2025-06-24",
+    "verified": true,
+    "city": "Londrina",
+    "state": "PR"
+  },
+  {
+    "name": "Raquel N.",
+    "rating": 5,
+    "title": "Show de bola!",
+    "comment": "As nuances do quadro são lindas. Acabamento impecável em cada detalhe. Super recomendo!",
+    "date": "2025-06-22",
+    "verified": true,
+    "city": "Manaus",
+    "state": "AM"
+  },
+  {
+    "name": "Milena G.",
+    "rating": 4,
+    "title": "Boa qualidade",
+    "comment": "Comprei para o meu apartamento novo e gostei do resultado. O frete foi um pouco caro.",
+    "date": "2025-06-21",
+    "verified": true,
+    "city": "Volta Redonda",
+    "state": "RJ"
+  },
+  {
+    "name": "Lucas N.",
+    "rating": 5,
+    "title": "Superou tudo",
+    "comment": "Chegou em 3 dias! Bem protegido na embalagem. Nota 10!",
+    "date": "2025-06-21",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Rafael Z.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Show! Deu um upgrade na decoração do apartamento. Produto premium a um preço justo.",
+    "date": "2025-06-20",
+    "verified": true,
+    "city": "Fortaleza",
+    "state": "CE"
+  },
+  {
+    "name": "Elaine Y.",
+    "rating": 5,
+    "title": "Melhor compra que fiz",
+    "comment": "Comprei para minha sala e ficou lindo! Recomendo muito.",
+    "date": "2025-06-20",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Letícia Y.",
+    "rating": 5,
+    "title": "Maravilhoso!",
+    "comment": "Produto fantástico! A tela tem uma textura muito bonita. Melhor loja de quadros que já comprei.",
+    "date": "2025-06-19",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Roberto B.",
+    "rating": 5,
+    "title": "Produto de primeira",
+    "comment": "Transformou meu escritório. Todos os visitantes perguntam onde comprei.",
+    "date": "2025-06-18",
+    "verified": true,
+    "city": "Camaçari",
+    "state": "BA"
+  },
+  {
+    "name": "Thais Q.",
+    "rating": 3,
+    "title": "Deu pro gasto",
+    "comment": "Não é ruim, mas achei o material meio fino demais. Não sei se compraria de novo.",
+    "date": "2025-06-18",
+    "verified": true,
+    "city": "São José dos Campos",
+    "state": "SP"
+  },
+  {
+    "name": "Matheus I.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Presenteei uma amiga no Dia das Mães e foi um sucesso! Já quero comprar outro.",
+    "date": "2025-06-17",
+    "verified": true,
+    "city": "Natal",
+    "state": "RN"
+  },
+  {
+    "name": "Leonardo V.",
+    "rating": 3,
+    "title": "Esperava mais",
+    "comment": "Levou 20 dias além do prazo. O produto em si até é bonito, mas a experiência de compra foi ruim.",
+    "date": "2025-06-17",
+    "verified": false,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Débora W.",
+    "rating": 5,
+    "title": "Recomendo demais!",
+    "comment": "Entrega super rápida! Embalagem excelente, chegou intacto. Amei o resultado final.",
+    "date": "2025-06-17",
+    "verified": true,
+    "city": "Teresina",
+    "state": "PI"
+  },
+  {
+    "name": "Vitória G.",
+    "rating": 5,
+    "title": "Valeu cada centavo",
+    "comment": "Que lindo! O quarto ganhou outra cara. Excelente custo-benefício.",
+    "date": "2025-06-16",
+    "verified": true,
+    "city": "Pelotas",
+    "state": "RS"
+  },
+  {
+    "name": "Igor B.",
+    "rating": 4,
+    "title": "Boa qualidade",
+    "comment": "Bonito quadro, decorou bem o escritório. Só acho que poderia ter uma opção maior.",
+    "date": "2025-06-16",
+    "verified": true,
+    "city": "Jundiaí",
+    "state": "SP"
+  },
+  {
+    "name": "Emerson F.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Já é mais um quadro que compro deles e a qualidade é sempre excelente. Sempre entrega rápida e produto perfeito.",
+    "date": "2025-06-16",
+    "verified": true,
+    "city": "Vitória",
+    "state": "ES"
+  },
+  {
+    "name": "Daniel G.",
+    "rating": 5,
+    "title": "Encantada com o produto",
+    "comment": "Comprei para o quarto do casal e ficou perfeito! Entrega super rápida e bem embalado.",
+    "date": "2025-06-16",
+    "verified": true,
+    "city": "Cascavel",
+    "state": "PR"
+  },
+  {
+    "name": "Carolina Y.",
+    "rating": 5,
+    "title": "Simplesmente perfeito",
+    "comment": "Produto de primeira qualidade. Acabamento perfeito, sem nenhum defeito.",
+    "date": "2025-06-15",
+    "verified": true,
+    "city": "Rio de Janeiro",
+    "state": "RJ"
+  },
+  {
+    "name": "Lucas W.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Comprei para meu home office e ficou lindo! Recomendo muito.",
+    "date": "2025-06-15",
+    "verified": true,
+    "city": "Rio de Janeiro",
+    "state": "RJ"
+  },
+  {
+    "name": "Stella R.",
+    "rating": 5,
+    "title": "Produto premium",
+    "comment": "Canvas de ótima qualidade. Acabamento perfeito, sem nenhum defeito.",
+    "date": "2025-06-15",
+    "verified": false,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Aline J.",
+    "rating": 5,
+    "title": "Muito satisfeita!",
+    "comment": "Comprei meio desconfiada mas superou todas expectativas! Produto fiel às fotos e com ótimo acabamento.",
+    "date": "2025-06-15",
+    "verified": true,
+    "city": "Joinville",
+    "state": "SC"
+  },
+  {
+    "name": "Rafael V.",
+    "rating": 5,
+    "title": "Nota 10!",
+    "comment": "Renovou meu quarto. A decoração ficou completa.",
+    "date": "2025-06-14",
+    "verified": true,
+    "city": "Feira de Santana",
+    "state": "BA"
+  },
+  {
+    "name": "Beatriz F.",
+    "rating": 4,
+    "title": "Bom produto",
+    "comment": "Impressão com boa resolução. A tela tem uma boa textura. Compraria novamente.",
+    "date": "2025-06-13",
+    "verified": true,
+    "city": "Brasília",
+    "state": "DF"
+  },
+  {
+    "name": "Pedro D.",
+    "rating": 5,
+    "title": "Adorei o acabamento",
+    "comment": "Já é o quarto quadro que compro deles e a qualidade nunca decepciona. Já virei cliente fiel.",
+    "date": "2025-06-13",
+    "verified": true,
+    "city": "Osasco",
+    "state": "SP"
+  },
+  {
+    "name": "Viviane L.",
+    "rating": 5,
+    "title": "Ficou maravilhoso na parede",
+    "comment": "As nuances do quadro são lindas. O canvas tem uma textura premium que dá um toque especial. Nota mil!",
+    "date": "2025-06-13",
+    "verified": true,
+    "city": "Contagem",
+    "state": "MG"
+  },
+  {
+    "name": "Adriana X.",
+    "rating": 3,
+    "title": "Não é ruim mas...",
+    "comment": "O quadro é razoável, mas esperava mais pela qualidade descrita. Não sei se compraria de novo.",
+    "date": "2025-06-11",
+    "verified": true,
+    "city": "Aracaju",
+    "state": "SE"
+  },
+  {
+    "name": "Sérgio H.",
+    "rating": 4,
+    "title": "Atendeu expectativas",
+    "comment": "Gostei bastante do quadro. Cores bonitas, só achei um pouquinho diferente da foto do site.",
+    "date": "2025-06-11",
+    "verified": false,
+    "city": "Niterói",
+    "state": "RJ"
+  },
+  {
+    "name": "Juliana F.",
+    "rating": 5,
+    "title": "Qualidade excepcional",
+    "comment": "Produto fantástico! A tela tem uma textura muito bonita. Comprarei mais com certeza.",
+    "date": "2025-06-09",
+    "verified": true,
+    "city": "Cuiabá",
+    "state": "MT"
+  },
+  {
+    "name": "Vinícius R.",
+    "rating": 4,
+    "title": "Boa qualidade",
+    "comment": "Boa compra, ficou muito bem na minha sala. Embalagem poderia proteger mais.",
+    "date": "2025-06-09",
+    "verified": true,
+    "city": "Balneário Camboriú",
+    "state": "SC"
+  },
+  {
+    "name": "Diego I.",
+    "rating": 4,
+    "title": "Ficou legal",
+    "comment": "Quadro bonito e bem feito. Ficou ótimo no meu home office. Daria 5 estrelas se a entrega fosse mais rápida.",
+    "date": "2025-06-08",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  },
+  {
+    "name": "Larissa V.",
+    "rating": 5,
+    "title": "Exatamente como na foto",
+    "comment": "Produto excelente! As cores são exatamente como nas fotos. ",
+    "date": "2025-06-07",
+    "verified": true,
+    "city": "Caxias do Sul",
+    "state": "RS"
+  },
+  {
+    "name": "Caio M.",
+    "rating": 5,
+    "title": "Amei, vou comprar mais",
+    "comment": "Presenteei minha mãe no Dia das Mães e ela adorou! O quadro é realmente lindo.",
+    "date": "2025-06-07",
+    "verified": true,
+    "city": "Campo Grande",
+    "state": "MS"
+  },
+  {
+    "name": "Thiago K.",
+    "rating": 5,
+    "title": "Fiquei encantada",
+    "comment": "Adorei tudo com a qualidade. O quadro é ainda mais bonito pessoalmente do que na foto.",
+    "date": "2025-06-06",
+    "verified": true,
+    "city": "Vila Velha",
+    "state": "ES"
+  },
+  {
+    "name": "Cecília W.",
+    "rating": 5,
+    "title": "Decoração perfeita",
+    "comment": "As tonalidades do quadro são lindas. Acabamento impecável em cada detalhe. Super recomendo!",
+    "date": "2025-06-06",
+    "verified": true,
+    "city": "São Luís",
+    "state": "MA"
+  },
+  {
+    "name": "Fernanda H.",
+    "rating": 5,
+    "title": "Muito bem feito",
+    "comment": "Presenteei uma amiga no Natal e ele amou! O quadro é realmente lindo.",
+    "date": "2025-06-06",
+    "verified": true,
+    "city": "Foz do Iguaçu",
+    "state": "PR"
+  },
+  {
+    "name": "Antônio M.",
+    "rating": 5,
+    "title": "Ótima compra",
+    "comment": "Já é o terceiro quadro que compro aqui e a qualidade é sempre a mesma: perfeita. Já virei cliente fiel.",
+    "date": "2025-06-06",
+    "verified": true,
+    "city": "Lauro de Freitas",
+    "state": "BA"
+  },
+  {
+    "name": "Felipe O.",
+    "rating": 5,
+    "title": "Decoração perfeita",
+    "comment": "Já é o segundo quadro que compro aqui e a qualidade é sempre excelente. Já virei cliente fiel.",
+    "date": "2025-06-05",
+    "verified": false,
+    "city": "Ribeirão Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Cláudia R.",
+    "rating": 5,
+    "title": "Perfeito para minha sala",
+    "comment": "Estou muito satisfeita com a compra. Chegou rápido, bem embalado e exatamente como eu imaginava.",
+    "date": "2025-06-04",
+    "verified": true,
+    "city": "Ribeirão Preto",
+    "state": "SP"
+  },
+  {
+    "name": "Pietra V.",
+    "rating": 5,
+    "title": "Superou minhas expectativas",
+    "comment": "Deu vida a minha sala de estar. A decoração ficou completa.",
+    "date": "2025-06-04",
+    "verified": true,
+    "city": "Santa Maria",
+    "state": "RS"
+  },
+  {
+    "name": "Leandro Q.",
+    "rating": 4,
+    "title": "Gostei muito",
+    "comment": "Impressão com boa resolução. O tamanho é bom para o que eu precisava. Compraria novamente.",
+    "date": "2025-06-04",
+    "verified": true,
+    "city": "São Paulo",
+    "state": "SP"
+  },
+  {
+    "name": "Lorena A.",
+    "rating": 5,
+    "title": "Qualidade incrível",
+    "comment": "Frete rápido! Bem protegido na embalagem. Amei o resultado final.",
+    "date": "2025-06-03",
+    "verified": true,
+    "city": "Blumenau",
+    "state": "SC"
+  }
+]
