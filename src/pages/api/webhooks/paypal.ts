@@ -6,9 +6,79 @@ import { eq } from "drizzle-orm"
 import { capiPurchase } from "@/services/tracking-meta"
 import { tiktokPurchase } from "@/services/tracking-tiktok"
 
+const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID || ""
+
+async function verifyPayPalSignature(request: Request, rawBody: string): Promise<boolean> {
+  // If no webhook ID configured, skip validation (log warning)
+  if (!PAYPAL_WEBHOOK_ID) {
+    console.warn("[PayPal Webhook] PAYPAL_WEBHOOK_ID not set — skipping signature verification")
+    return true
+  }
+
+  const transmissionId = request.headers.get("paypal-transmission-id")
+  const transmissionTime = request.headers.get("paypal-transmission-time")
+  const certUrl = request.headers.get("paypal-cert-url")
+  const transmissionSig = request.headers.get("paypal-transmission-sig")
+  const authAlgo = request.headers.get("paypal-auth-algo")
+
+  if (!transmissionId || !transmissionTime || !certUrl || !transmissionSig || !authAlgo) {
+    console.error("[PayPal Webhook] Missing signature headers")
+    return false
+  }
+
+  // Verify via PayPal API
+  try {
+    const PAYPAL_BASE = process.env.PAYPAL_ENV === "sandbox"
+      ? "https://api-m.sandbox.paypal.com"
+      : "https://api-m.paypal.com"
+
+    const authRes = await fetch(`${PAYPAL_BASE}/v1/oauth2/token`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Basic ${Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`).toString("base64")}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: "grant_type=client_credentials",
+    })
+    const { access_token } = await authRes.json()
+
+    const verifyRes = await fetch(`${PAYPAL_BASE}/v1/notifications/verify-webhook-signature`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        transmission_id: transmissionId,
+        transmission_time: transmissionTime,
+        cert_url: certUrl,
+        auth_algo: authAlgo,
+        transmission_sig: transmissionSig,
+        webhook_id: PAYPAL_WEBHOOK_ID,
+        webhook_event: JSON.parse(rawBody),
+      }),
+    })
+
+    const result = await verifyRes.json()
+    return result.verification_status === "SUCCESS"
+  } catch (e) {
+    console.error("[PayPal Webhook] Signature verification failed:", e)
+    return false
+  }
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const data = await request.json()
+    const rawBody = await request.text()
+
+    // Verify PayPal signature
+    const valid = await verifyPayPalSignature(request, rawBody)
+    if (!valid) {
+      console.error("[PayPal Webhook] Invalid signature — rejecting")
+      return new Response(JSON.stringify({ error: "Invalid signature" }), { status: 401 })
+    }
+
+    const data = JSON.parse(rawBody)
     const eventType = data.event_type
 
     // Payment captured

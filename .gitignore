@@ -1,4 +1,24 @@
 node_modules/
-.env
 dist/
 .astro/
+
+# Env files — NEVER commit secrets
+.env
+.env.*
+!.env.example
+
+# Keys and certificates
+*.pem
+*.key
+*.pfx
+*.p12
+*.crt
+*.cer
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
