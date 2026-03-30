@@ -53,7 +53,11 @@ export const POST: APIRoute = async ({ request }) => {
       fetch_format: "auto",
     });
 
-    const url = result.secure_url;
+    // Rewrite Cloudinary URL to use our CDN domain
+    const url = result.secure_url.replace(
+      /^https:\/\/res\.cloudinary\.com\/[^/]+\//,
+      "https://cdn.tessquadros.com.br/"
+    );
 
     return new Response(
       JSON.stringify({ files: [{ url, public_id: result.public_id }] }),
