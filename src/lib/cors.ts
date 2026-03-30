@@ -17,11 +17,11 @@ export function getCorsHeaders(request?: Request): Record<string, string> {
   }
 }
 
-// Alias for backwards compat — uses the first allowed origin (tessquadros.com.br)
-// Do NOT use for endpoints that receive cross-origin browser requests; use getCorsHeaders(request) instead
+// Used by admin and public store endpoints.
+// Admin endpoints are secured by Bearer token — CORS * is safe there.
+// Auth endpoint (/api/auth/**) uses getCorsHeaders(request) for stricter control.
 export const corsHeaders: Record<string, string> = {
-  "Access-Control-Allow-Origin": ALLOWED_ORIGINS[0],
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  "Vary": "Origin",
 }
