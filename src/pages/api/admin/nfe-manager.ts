@@ -20,7 +20,8 @@ export const GET: APIRoute = async ({ request, url }) => {
       }
 
       case "stats": {
-        const stats = await nfeManager.getStats()
+        const tipo = url.searchParams.get("tipo") || undefined
+        const stats = await nfeManager.getStats(tipo)
         return new Response(JSON.stringify({ stats }), { status: 200, headers })
       }
 

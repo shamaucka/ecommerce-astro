@@ -28,11 +28,16 @@ export async function listNotas(filters: { tipo?: string; status?: string; page?
 
 // ========== STATS ==========
 
-export async function getStats() {
-  const rows = await db
+export async function getStats(tipo?: string) {
+  let query = db
     .select({ status: nfeRegistro.status, count: count() })
     .from(nfeRegistro)
-    .groupBy(nfeRegistro.status)
+
+  if (tipo) {
+    query = query.where(eq(nfeRegistro.tipo, tipo)) as any
+  }
+
+  const rows = await (query as any).groupBy(nfeRegistro.status)
 
   const stats: Record<string, number> = { total: 0, pendente: 0, autorizada: 0, rejeitada: 0, cancelada: 0 }
   for (const row of rows) {
