@@ -86,9 +86,7 @@ export function validateWebhook(payload: string, signature: string): boolean {
 
   if (secrets.length === 0) return true // skip se nenhum secret configurado
 
-  const crypto = require("crypto")
-  return secrets.some((secret) => {
-    const hmac = crypto.createHmac("sha256", secret).update(payload).digest("hex")
-    return hmac === signature
-  })
+  // OpenPix envia a assinatura como o proprio secret no header x-webhook-secret
+  // Basta comparar diretamente — não é HMAC
+  return secrets.some((secret) => secret === signature)
 }
