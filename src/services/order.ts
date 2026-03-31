@@ -50,11 +50,17 @@ export async function createOrder(data: {
   coupon_code?: string
   metadata?: any
 }) {
-  const displayId = "#" + String(Math.floor(1000 + Math.random() * 9000))
+  // Display ID sequencial: 9000001, 9000002, ...
+  const countResult = await db.select({ count: sql<number>`COUNT(*)` }).from(astroOrder)
+  const orderCount = Number(countResult[0]?.count || 0)
+  const displayId = String(9000001 + orderCount)
+
   const subtotal = data.subtotal
   const shippingCost = data.shipping_cost || 0
   const discountAmount = data.discount_amount || 0
-  const total = subtotal + shippingCost - discountAmount
+  // discount_amount é informativo — subtotal já vem com promo aplicada
+  // total = subtotal + frete (desconto já está no subtotal)
+  const total = subtotal + shippingCost
 
   const result = await db
     .insert(astroOrder)
