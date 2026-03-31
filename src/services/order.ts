@@ -137,6 +137,25 @@ export async function updateOrderStatus(id: string, status: string) {
     }
   }
 
+  // Email de despacho quando status muda para shipped
+  if (status === "shipped") {
+    try {
+      const order = result[0]
+      if (order.customer_email && order.tracking_number) {
+        const { sendShippingNotification } = await import("./email.js")
+        await sendShippingNotification({
+          display_id: order.display_id || id.slice(0, 8),
+          customer_name: order.customer_name || "Cliente",
+          customer_email: order.customer_email,
+          tracking_number: order.tracking_number,
+          carrier: "iMile",
+        })
+      }
+    } catch (e: any) {
+      console.warn("[updateOrderStatus] Shipping email skipped:", e.message)
+    }
+  }
+
   return result[0]
 }
 
@@ -181,8 +200,30 @@ export async function markAsPaid(id: string, paymentId?: string) {
     console.warn("[markAsPaid] Fulfillment task skipped:", e.message)
   }
 
-  const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
-  return order
+  // Envia email de confirmação
+  const [updatedOrder] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
+  if (updatedOrder?.customer_email) {
+    try {
+      const { sendOrderConfirmation } = await import("./email.js")
+      await sendOrderConfirmation({
+        display_id: updatedOrder.display_id || id.slice(0, 8),
+        customer_name: updatedOrder.customer_name || "Cliente",
+        customer_email: updatedOrder.customer_email,
+        items: (updatedOrder.items as any[]) || [],
+        total: updatedOrder.total || 0,
+        subtotal: updatedOrder.subtotal || 0,
+        shipping_cost: updatedOrder.shipping_cost || 0,
+        discount_amount: updatedOrder.discount_amount || 0,
+        payment_method: updatedOrder.payment_method || undefined,
+        shipping_city: updatedOrder.shipping_city || undefined,
+        shipping_state: updatedOrder.shipping_state || undefined,
+      })
+    } catch (e: any) {
+      console.warn("[markAsPaid] Email skipped:", e.message)
+    }
+  }
+
+  return updatedOrder
 }
 
 export async function getOrderStats() {
