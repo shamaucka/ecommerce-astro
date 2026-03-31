@@ -1,7 +1,78 @@
 import type { APIRoute } from "astro";
 import { corsHeaders } from "@/lib/cors";
+import { db } from "@/db/index.js";
+import { astroOrder } from "@/db/schema/order.js";
+import { fulfillmentTask } from "@/db/schema/fulfillment-ops.js";
+import { eq, and, desc } from "drizzle-orm";
 import * as customerService from "@/services/customer";
 import * as orderService from "@/services/order";
+
+// GET /api/store/orders?action=my-orders&email=x&cpf=y
+export const GET: APIRoute = async ({ url }) => {
+  const headers = { "Content-Type": "application/json", ...corsHeaders };
+  try {
+    const action = url.searchParams.get("action");
+
+    if (action === "my-orders") {
+      const email = url.searchParams.get("email")?.trim().toLowerCase();
+      const cpf = url.searchParams.get("cpf")?.replace(/\D/g, "");
+
+      if (!email || !cpf || cpf.length !== 11) {
+        return new Response(JSON.stringify({ error: "Email e CPF (11 digitos) obrigatorios" }), { status: 400, headers });
+      }
+
+      // Busca pedidos pelo email E CPF
+      const orders = await db.select().from(astroOrder)
+        .where(and(eq(astroOrder.customer_email, email), eq(astroOrder.customer_cpf, cpf)))
+        .orderBy(desc(astroOrder.created_at))
+        .limit(50);
+
+      // Busca tracking de cada pedido
+      const ordersWithTracking = await Promise.all(orders.map(async (order) => {
+        let tracking = null;
+        try {
+          const tasks = await db.select().from(fulfillmentTask)
+            .where(eq(fulfillmentTask.order_id, order.id)).limit(1);
+          if (tasks[0]) {
+            tracking = {
+              code: tasks[0].tracking_code || order.tracking_number,
+              carrier: tasks[0].carrier,
+              status: tasks[0].status,
+              shipped_at: tasks[0].shipped_at,
+            };
+          }
+        } catch {}
+
+        return {
+          id: order.id,
+          display_id: order.display_id,
+          status: order.status,
+          payment_status: order.payment_status,
+          payment_method: order.payment_method,
+          items: order.items,
+          subtotal: order.subtotal,
+          shipping_cost: order.shipping_cost,
+          discount_amount: order.discount_amount,
+          total: order.total,
+          coupon_code: order.coupon_code,
+          tracking_number: tracking?.code || order.tracking_number,
+          tracking_url: order.tracking_url,
+          tracking,
+          shipping_city: order.shipping_city,
+          shipping_state: order.shipping_state,
+          created_at: order.created_at,
+          updated_at: order.updated_at,
+        };
+      }));
+
+      return new Response(JSON.stringify({ orders: ordersWithTracking }), { status: 200, headers });
+    }
+
+    return new Response(JSON.stringify({ error: "action invalido" }), { status: 400, headers });
+  } catch (err: any) {
+    return new Response(JSON.stringify({ error: err.message }), { status: 400, headers });
+  }
+};
 
 export const POST: APIRoute = async ({ request }) => {
   try {
