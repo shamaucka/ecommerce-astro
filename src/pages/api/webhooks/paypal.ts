@@ -101,6 +101,7 @@ export const POST: APIRoute = async ({ request }) => {
           // Server-side conversion tracking
           const order = orders[0]
           const contentIds = (Array.isArray(order.items) ? order.items : []).map((i: any) => i.product_id || i.sku || "")
+          const meta = (order.metadata || {}) as any
 
           capiPurchase({
             orderId: order.id,
@@ -111,6 +112,10 @@ export const POST: APIRoute = async ({ request }) => {
             zip: order.shipping_postal_code || undefined,
             city: order.shipping_city || undefined,
             state: order.shipping_state || undefined,
+            ip: meta.client_ip || undefined,
+            userAgent: meta.client_ua || undefined,
+            fbp: meta.fbp || undefined,
+            fbc: meta.fbc || undefined,
             contentIds,
           }).catch(err => console.error("[CAPI PayPal webhook]", err))
 
@@ -119,6 +124,8 @@ export const POST: APIRoute = async ({ request }) => {
             value: order.total ?? 0,
             email: order.customer_email || undefined,
             phone: order.customer_phone || undefined,
+            ip: meta.client_ip || undefined,
+            userAgent: meta.client_ua || undefined,
           }).catch(err => console.error("[TikTok PayPal webhook]", err))
         }
       }
@@ -147,6 +154,7 @@ export const POST: APIRoute = async ({ request }) => {
           // Server-side conversion tracking
           const order = orders[0]
           const contentIds = (Array.isArray(order.items) ? order.items : []).map((i: any) => i.product_id || i.sku || "")
+          const meta2 = (order.metadata || {}) as any
 
           capiPurchase({
             orderId: order.id,
@@ -157,6 +165,10 @@ export const POST: APIRoute = async ({ request }) => {
             zip: order.shipping_postal_code || undefined,
             city: order.shipping_city || undefined,
             state: order.shipping_state || undefined,
+            ip: meta2.client_ip || undefined,
+            userAgent: meta2.client_ua || undefined,
+            fbp: meta2.fbp || undefined,
+            fbc: meta2.fbc || undefined,
             contentIds,
           }).catch(err => console.error("[CAPI PayPal Plus webhook]", err))
 

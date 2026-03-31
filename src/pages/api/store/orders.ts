@@ -81,7 +81,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     switch (action) {
       case "create": {
-        const { email, name, cpf, phone, items, shipping, payment, subtotal_override, discount_amount } = body;
+        const { email, name, cpf, phone, items, shipping, payment, subtotal_override, discount_amount, tracking_data } = body;
+        // Captura IP do cliente para CAPI
+        const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("cf-connecting-ip") || undefined;
         if (!email || !items) {
           return new Response(
             JSON.stringify({ error: "email e items são obrigatórios" }),
@@ -110,7 +112,16 @@ export const POST: APIRoute = async ({ request }) => {
           shipping_city: shipping?.city,
           shipping_state: shipping?.state,
           shipping_postal_code: shipping?.postal_code,
-          metadata: { cpf: cpf || "", phone: phone || "", promo: discount > 0 ? "2por150" : undefined },
+          metadata: {
+            cpf: cpf || "",
+            phone: phone || "",
+            promo: discount > 0 ? "2por150" : undefined,
+            // Dados para CAPI nos webhooks (fbp, fbc, ip, ua)
+            fbp: tracking_data?.fbp || undefined,
+            fbc: tracking_data?.fbc || undefined,
+            client_ip: clientIp || undefined,
+            client_ua: tracking_data?.user_agent || undefined,
+          },
         });
 
         return new Response(
