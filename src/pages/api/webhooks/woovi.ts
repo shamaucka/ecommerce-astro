@@ -4,6 +4,7 @@ import { db } from "@/db/index.js"
 import { astroOrder } from "@/db/schema/order.js"
 import { eq } from "drizzle-orm"
 import * as woovi from "@/services/payment-woovi"
+import * as orderService from "@/services/order"
 import { capiPurchase } from "@/services/tracking-meta"
 import { tiktokPurchase } from "@/services/tracking-tiktok"
 
@@ -27,17 +28,9 @@ export const POST: APIRoute = async ({ request }) => {
       const orderId = charge?.additionalInfo?.find((i: any) => i.key === "orderId")?.value
 
       if (orderId) {
-        await db.update(astroOrder).set({
-          status: "processing",
-          payment_status: "paid",
-          payment_id: correlationID,
-          updated_at: new Date(),
-        }).where(eq(astroOrder.id, orderId))
-
+        // Marca como pago + cria fulfillment task
+        const order = await orderService.markAsPaid(orderId, correlationID)
         console.log(`[Woovi Webhook] Order ${orderId} marked as paid (PIX)`)
-
-        // Server-side conversion tracking
-        const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, orderId)).limit(1)
         if (order) {
           const contentIds = (Array.isArray(order.items) ? order.items : []).map((i: any) => i.product_id || i.sku || "")
 

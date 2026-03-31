@@ -2,6 +2,7 @@ import type { APIRoute } from "astro"
 import { corsHeaders } from "@/lib/cors"
 import * as woovi from "@/services/payment-woovi"
 import * as paypal from "@/services/payment-paypal"
+import * as orderService from "@/services/order"
 import { db } from "@/db/index.js"
 import { astroOrder } from "@/db/schema/order.js"
 import { eq } from "drizzle-orm"
@@ -80,13 +81,12 @@ export const POST: APIRoute = async ({ request }) => {
         })
 
         // Update order
-        await db.update(astroOrder).set({
-          payment_method: "credit_card",
-          payment_id: result.paypalOrderId,
-          payment_status: result.paid ? "paid" : "failed",
-          status: result.paid ? "processing" : "pending",
-          updated_at: new Date(),
-        }).where(eq(astroOrder.id, orderId))
+        if (result.paid && orderId) {
+          await db.update(astroOrder).set({ payment_method: "credit_card", payment_id: result.paypalOrderId, updated_at: new Date() }).where(eq(astroOrder.id, orderId))
+          await orderService.markAsPaid(orderId, result.paypalOrderId)
+        } else if (orderId) {
+          await db.update(astroOrder).set({ payment_method: "credit_card", payment_id: result.paypalOrderId, payment_status: "failed", updated_at: new Date() }).where(eq(astroOrder.id, orderId))
+        }
 
         return new Response(JSON.stringify(result), { status: 200, headers })
       }
@@ -98,11 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
         const capture = await paypal.captureOrder(paypalOrderId)
 
         if (capture.paid && orderId) {
-          await db.update(astroOrder).set({
-            status: "processing",
-            payment_status: "paid",
-            updated_at: new Date(),
-          }).where(eq(astroOrder.id, orderId))
+          await orderService.markAsPaid(orderId, paypalOrderId)
         }
 
         return new Response(JSON.stringify(capture), { status: 200, headers })
@@ -140,14 +136,9 @@ export const POST: APIRoute = async ({ request }) => {
         const result = await paypal.executePlusPayment(paymentId, payerId)
 
         if (orderId && result.paid) {
-          await db.update(astroOrder).set({
-            payment_status: "paid",
-            status: "processing",
-            updated_at: new Date(),
-          }).where(eq(astroOrder.id, orderId))
+          // Marca como pago + cria fulfillment task
+          const order = await orderService.markAsPaid(orderId, paymentId)
 
-          // Fetch order for tracking data
-          const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, orderId)).limit(1)
           if (order) {
             const ip = request.headers.get("x-forwarded-for") || request.headers.get("cf-connecting-ip") || undefined
             const userAgent = request.headers.get("user-agent") || undefined

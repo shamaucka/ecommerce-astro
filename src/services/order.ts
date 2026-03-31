@@ -157,6 +157,64 @@ export async function updateOrderStatus(id: string, status: string) {
   return result[0]
 }
 
+/**
+ * Marca pedido como pago e cria fulfillment task.
+ * Usar em vez de db.update direto nos webhooks/payments.
+ */
+export async function markAsPaid(id: string, paymentId?: string) {
+  // Atualiza status
+  await db.update(astroOrder).set({
+    status: "processing",
+    payment_status: "paid",
+    ...(paymentId ? { payment_id: paymentId } : {}),
+    updated_at: new Date(),
+  }).where(eq(astroOrder.id, id))
+
+  // Cria fulfillment task (reusa a logica de updateOrderStatus)
+  try {
+    const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
+    if (!order) return null
+
+    const { astroProduct } = await import("../db/schema/product.js")
+    const { or } = await import("drizzle-orm")
+
+    const orderItems = order.items as any[] || []
+    const items = []
+    for (const item of orderItems) {
+      let realSku = item.sku
+      if (realSku && realSku.includes("-") && !/^[A-Z]{2,}\d+/.test(realSku)) {
+        const found = await db.select({ sku: astroProduct.sku, id: astroProduct.id })
+          .from(astroProduct)
+          .where(or(eq(astroProduct.handle, realSku), eq(astroProduct.id, item.product_id)))
+          .limit(1)
+        if (found[0]?.sku) realSku = found[0].sku
+      }
+      items.push({
+        product_id: item.product_id,
+        variant_id: item.variant_id,
+        sku: realSku,
+        product_title: item.title,
+        variant_title: item.variant_title,
+        quantity: item.quantity || 1,
+      })
+    }
+    await fulfillmentOps.createFromOrder({
+      order_id: order.id,
+      display_id: order.display_id || undefined,
+      customer_name: order.customer_name || order.customer_email || undefined,
+      customer_email: order.customer_email || undefined,
+      order_total: order.total || 0,
+      items,
+    })
+    console.log(`[markAsPaid] Fulfillment task created for order ${id}`)
+  } catch (e: any) {
+    console.warn("[markAsPaid] Fulfillment task skipped:", e.message)
+  }
+
+  const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
+  return order
+}
+
 export async function getOrderStats() {
   const rows = await db
     .select({
