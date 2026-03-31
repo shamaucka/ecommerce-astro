@@ -81,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     switch (action) {
       case "create": {
-        const { email, name, cpf, phone, items, shipping, payment } = body;
+        const { email, name, cpf, phone, items, shipping, payment, subtotal_override, discount_amount } = body;
         if (!email || !items) {
           return new Response(
             JSON.stringify({ error: "email e items são obrigatórios" }),
@@ -89,8 +89,9 @@ export const POST: APIRoute = async ({ request }) => {
           );
         }
 
-        // Calculate subtotal from items
-        const subtotal = items.reduce((s: number, i: any) => s + (i.unit_price || 0) * (i.quantity || 1), 0);
+        // subtotal: usa override do front (com promo) ou calcula dos itens
+        const subtotal = subtotal_override || items.reduce((s: number, i: any) => s + (i.unit_price || 0) * (i.quantity || 1), 0);
+        const discount = discount_amount || 0;
 
         const customer = await customerService.getOrCreateByEmail(email, { name, phone });
         const order = await orderService.createOrder({
@@ -101,6 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
           customer_cpf: cpf ? cpf.replace(/\D/g, "") : "",
           items,
           subtotal,
+          discount_amount: discount,
           shipping_cost: shipping?.cost || 0,
           shipping_address_line1: shipping?.address_line1,
           shipping_address_line2: shipping?.address_line2,
@@ -108,7 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
           shipping_city: shipping?.city,
           shipping_state: shipping?.state,
           shipping_postal_code: shipping?.postal_code,
-          metadata: { cpf: cpf || "", phone: phone || "" },
+          metadata: { cpf: cpf || "", phone: phone || "", promo: discount > 0 ? "2por150" : undefined },
         });
 
         return new Response(
