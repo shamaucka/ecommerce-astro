@@ -71,11 +71,20 @@ export async function emitirSaida(orderId: string) {
   const customerCpf = metadata.cpf || (order as any).customer_cpf || ""
   const customerPhone = metadata.phone || ""
 
-  // Busca codigo municipio IBGE pelo CEP (primeiros 5 digitos indicam a regiao)
-  // Fallback: usar o mesmo do emitente se for mesmo estado
-  const destCodMun = order.shipping_state === config.uf
-    ? (config.codigo_municipio || "4205902")
-    : "0000000" // TODO: buscar via API ViaCEP
+  // Busca codigo municipio IBGE pelo CEP via ViaCEP
+  let destCodMun = config.codigo_municipio || "4205902" // fallback emitente
+  try {
+    const cep = (order.shipping_postal_code || "").replace(/\D/g, "")
+    if (cep.length === 8) {
+      const viaCepRes = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      const viaCepData = await viaCepRes.json() as any
+      if (viaCepData.ibge) {
+        destCodMun = viaCepData.ibge
+      }
+    }
+  } catch (e: any) {
+    console.warn("[NFe] ViaCEP lookup failed, using fallback:", e.message)
+  }
 
   // Monta dados para emissao
   const nfeData = {
