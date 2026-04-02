@@ -283,6 +283,32 @@ export async function emitirNFe(orderData: {
   const totalPIS = isSimples ? 0 : orderData.itens.reduce((s, i) => s + (i.valor_total * aliqPIS / 100), 0)
   const totalCOFINS = isSimples ? 0 : orderData.itens.reduce((s, i) => s + (i.valor_total * aliqCOFINS / 100), 0)
 
+  // ========== DIFAL / ICMSUFDest ==========
+  // Tabela de aliquotas internas por UF (2026) + FCP
+  const ALIQ_INTERNA: Record<string, number> = {
+    AC: 19, AL: 19, AM: 20, AP: 18, BA: 20.5, CE: 20, DF: 20, ES: 17,
+    GO: 19, MA: 20, MG: 18, MS: 17, MT: 17, PA: 19, PB: 20, PE: 20.5,
+    PI: 21, PR: 19.5, RJ: 20, RN: 20, RO: 19.5, RR: 20, RS: 17,
+    SC: 17, SE: 19, SP: 18, TO: 20,
+  }
+  const FCP_UF: Record<string, number> = { AL: 1, RJ: 2, SE: 1 } // Fundo de Combate à Pobreza
+
+  // Aliquota interestadual de SC: 12% para Sul/Sudeste, 7% para demais
+  const sulSudeste = ["MG", "ES", "RJ", "SP", "PR", "RS", "SC"]
+  const ufDest = orderData.cliente.endereco.uf
+  const ufOrig = config.uf || NFE_UF
+  const isInterestadual = ufDest !== ufOrig
+  const pICMSInter = sulSudeste.includes(ufDest) ? 12 : 7
+  const pICMSUFDest = ALIQ_INTERNA[ufDest] || 17
+  const pFCPUFDest = FCP_UF[ufDest] || 0
+  // Partilha 2026: 100% para UF destino (desde 2019)
+  const pICMSInterPart = 100
+
+  // Totais DIFAL para ICMSTot
+  let totalVFCPUFDest = 0
+  let totalVICMSUFDest = 0
+  let totalVICMSUFRemet = 0
+
   const detXml = orderData.itens.map((item, idx) => {
     const isSimples = config.regime_tributario === "simples_nacional"
     const impostoXml = isSimples
@@ -292,6 +318,21 @@ export async function emitirNFe(orderData: {
       : `<ICMS><ICMS00><orig>${config.origem_padrao || 0}</orig><CST>${config.cst_icms_padrao || "00"}</CST><modBC>0</modBC><vBC>${item.valor_total.toFixed(2)}</vBC><pICMS>${config.aliquota_icms || 0}</pICMS><vICMS>${((item.valor_total * (config.aliquota_icms || 0)) / 100).toFixed(2)}</vICMS></ICMS00></ICMS>
          <PIS><PISAliq><CST>${config.cst_pis_padrao || "01"}</CST><vBC>${item.valor_total.toFixed(2)}</vBC><pPIS>${config.aliquota_pis || 0}</pPIS><vPIS>${((item.valor_total * (config.aliquota_pis || 0)) / 100).toFixed(2)}</vPIS></PISAliq></PIS>
          <COFINS><COFINSAliq><CST>${config.cst_cofins_padrao || "01"}</CST><vBC>${item.valor_total.toFixed(2)}</vBC><pCOFINS>${config.aliquota_cofins || 0}</pCOFINS><vCOFINS>${((item.valor_total * (config.aliquota_cofins || 0)) / 100).toFixed(2)}</vCOFINS></COFINSAliq></COFINS>`
+
+    // ICMSUFDest — obrigatorio para venda interestadual a consumidor final (indIEDest=9)
+    let icmsUFDestXml = ""
+    if (isInterestadual && !isSimples) {
+      const vBCUFDest = item.valor_total
+      const vFCPUFDest = +(vBCUFDest * pFCPUFDest / 100).toFixed(2)
+      const vICMSUFDest = +((vBCUFDest * (pICMSUFDest - pICMSInter) / 100) * (pICMSInterPart / 100)).toFixed(2)
+      const vICMSUFRemet = +((vBCUFDest * (pICMSUFDest - pICMSInter) / 100) * ((100 - pICMSInterPart) / 100)).toFixed(2)
+
+      totalVFCPUFDest += vFCPUFDest
+      totalVICMSUFDest += vICMSUFDest
+      totalVICMSUFRemet += vICMSUFRemet
+
+      icmsUFDestXml = `<ICMSUFDest><vBCUFDest>${vBCUFDest.toFixed(2)}</vBCUFDest><vBCFCPUFDest>${vBCUFDest.toFixed(2)}</vBCFCPUFDest><pFCPUFDest>${pFCPUFDest.toFixed(2)}</pFCPUFDest><pICMSUFDest>${pICMSUFDest.toFixed(2)}</pICMSUFDest><pICMSInter>${pICMSInter.toFixed(2)}</pICMSInter><pICMSInterPart>${pICMSInterPart.toFixed(2)}</pICMSInterPart><vFCPUFDest>${vFCPUFDest.toFixed(2)}</vFCPUFDest><vICMSUFDest>${vICMSUFDest.toFixed(2)}</vICMSUFDest><vICMSUFRemet>${vICMSUFRemet.toFixed(2)}</vICMSUFRemet></ICMSUFDest>`
+    }
 
     return `<det nItem="${idx + 1}">
       <prod>
@@ -303,7 +344,7 @@ export async function emitirNFe(orderData: {
         <uTrib>${item.unidade || "UN"}</uTrib><qTrib>${item.quantidade}</qTrib>
         <vUnTrib>${item.valor_unitario.toFixed(2)}</vUnTrib><indTot>1</indTot>
       </prod>
-      <imposto>${impostoXml}</imposto>
+      <imposto>${impostoXml}${icmsUFDestXml}</imposto>
     </det>`
   }).join("\n")
 
@@ -352,7 +393,7 @@ export async function emitirNFe(orderData: {
     </dest>
     ${detXml}
     <total><ICMSTot>
-      <vBC>${isSimples ? "0.00" : vProd.toFixed(2)}</vBC><vICMS>${isSimples ? "0.00" : totalICMS.toFixed(2)}</vICMS><vICMSDeson>0.00</vICMSDeson><vFCP>0.00</vFCP>
+      <vBC>${isSimples ? "0.00" : vProd.toFixed(2)}</vBC><vICMS>${isSimples ? "0.00" : totalICMS.toFixed(2)}</vICMS><vICMSDeson>0.00</vICMSDeson><vFCPUFDest>${totalVFCPUFDest.toFixed(2)}</vFCPUFDest><vICMSUFDest>${totalVICMSUFDest.toFixed(2)}</vICMSUFDest><vICMSUFRemet>${totalVICMSUFRemet.toFixed(2)}</vICMSUFRemet><vFCP>0.00</vFCP>
       <vBCST>0.00</vBCST><vST>0.00</vST><vFCPST>0.00</vFCPST><vFCPSTRet>0.00</vFCPSTRet>
       <vProd>${vProd.toFixed(2)}</vProd><vFrete>0.00</vFrete>
       <vSeg>0.00</vSeg><vDesc>0.00</vDesc><vII>0.00</vII><vIPI>0.00</vIPI><vIPIDevol>0.00</vIPIDevol>
