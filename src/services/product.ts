@@ -111,11 +111,12 @@ export async function getProductByHandle(handle: string) {
 }
 
 export async function listPublishedProducts(limit = 100) {
+  // Ordena por mais vendidos primeiro, depois por mais recentes
   const products = await db
     .select()
     .from(astroProduct)
     .where(eq(astroProduct.status, "published"))
-    .orderBy(desc(astroProduct.created_at))
+    .orderBy(desc(sql`COALESCE(sales_count, 0)`), desc(astroProduct.created_at))
     .limit(limit)
 
   if (products.length === 0) return []

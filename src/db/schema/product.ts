@@ -19,6 +19,7 @@ export const astroProduct = pgTable("astro_product", {
   thumbnail: text("thumbnail"),
   images: jsonb("images").default([]),
   metadata: jsonb("metadata"),
+  sales_count: integer("sales_count").default(0),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 })
