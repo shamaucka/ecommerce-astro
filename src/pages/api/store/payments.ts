@@ -140,10 +140,11 @@ export const POST: APIRoute = async ({ request }) => {
           const order = await orderService.markAsPaid(orderId, paymentId)
 
           if (order) {
-            const ip = request.headers.get("x-forwarded-for") || request.headers.get("cf-connecting-ip") || undefined
-            const userAgent = request.headers.get("user-agent") || undefined
-            const fbp = request.headers.get("x-fbp") || body.fbp || undefined
-            const fbc = request.headers.get("x-fbc") || body.fbc || undefined
+            const meta = (order.metadata || {}) as any
+            const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("cf-connecting-ip") || meta.client_ip || undefined
+            const userAgent = request.headers.get("user-agent") || meta.client_ua || undefined
+            const fbp = body.fbp || meta.fbp || undefined
+            const fbc = body.fbc || meta.fbc || undefined
             const ttclid = body.ttclid || undefined
             const contentIds = (Array.isArray(order.items) ? order.items : []).map((i: any) => i.product_id || i.sku || "")
 
