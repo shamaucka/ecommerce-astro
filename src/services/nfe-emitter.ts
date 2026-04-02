@@ -16,6 +16,16 @@ import { storeFiscalConfig } from "../db/schema/fiscal-br.js"
 import * as crypto from "crypto"
 import * as https from "https"
 
+// Sanitiza texto para XML da SEFAZ: remove acentos, caracteres especiais, trim
+function sanitizeXml(text: string): string {
+  if (!text) return ""
+  return text
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .replace(/&/g, "e").replace(/</g, "").replace(/>/g, "") // escape XML
+    .replace(/[^\x20-\x7E]/g, "") // remove non-ASCII
+    .trim()
+}
+
 // Config from env vars - read dynamically at RUNTIME (not build time)
 // Using indirect access to prevent Vite/Astro from inlining env vars
 const _env = process.env
@@ -380,9 +390,9 @@ export async function emitirNFe(orderData: {
     <dest>
       ${destDoc}<xNome>${getNFEConfig().ambiente === "homologacao" ? "NF-E EMITIDA EM AMBIENTE DE HOMOLOGACAO - SEM VALOR FISCAL" : orderData.cliente.nome}</xNome>
       <enderDest>
-        <xLgr>${orderData.cliente.endereco.logradouro}</xLgr><nro>${orderData.cliente.endereco.numero || "S/N"}</nro>
-        ${orderData.cliente.endereco.complemento ? `<xCpl>${orderData.cliente.endereco.complemento}</xCpl>` : ""}
-        <xBairro>${orderData.cliente.endereco.bairro || "Centro"}</xBairro>
+        <xLgr>${sanitizeXml(orderData.cliente.endereco.logradouro)}</xLgr><nro>${sanitizeXml(orderData.cliente.endereco.numero || "S/N")}</nro>
+        ${orderData.cliente.endereco.complemento?.trim() ? `<xCpl>${sanitizeXml(orderData.cliente.endereco.complemento)}</xCpl>` : ""}
+        <xBairro>${sanitizeXml(orderData.cliente.endereco.bairro || "Centro")}</xBairro>
         <cMun>${orderData.cliente.endereco.codigo_municipio || "0000000"}</cMun>
         <xMun>${orderData.cliente.endereco.cidade}</xMun><UF>${orderData.cliente.endereco.uf}</UF>
         <CEP>${(orderData.cliente.endereco.cep || "").replace(/\D/g, "")}</CEP>
