@@ -9,10 +9,10 @@ import { tiktokPurchase } from "@/services/tracking-tiktok"
 const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID || ""
 
 async function verifyPayPalSignature(request: Request, rawBody: string): Promise<boolean> {
-  // If no webhook ID configured, skip validation (log warning)
+  // Rejeita se WEBHOOK_ID não configurado — nunca aceitar sem verificação
   if (!PAYPAL_WEBHOOK_ID) {
-    console.warn("[PayPal Webhook] PAYPAL_WEBHOOK_ID not set — skipping signature verification")
-    return true
+    console.error("[SECURITY] PAYPAL_WEBHOOK_ID not set — rejecting webhook")
+    return false
   }
 
   const transmissionId = request.headers.get("paypal-transmission-id")

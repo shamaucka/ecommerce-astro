@@ -5,7 +5,11 @@ import { db } from "../db/index.js"
 import { astroAdminUser } from "../db/schema/product.js"
 
 function getJwtSecret() {
-  const secret = process.env.JWT_SECRET || "dev-local-secret-change-in-production-abc123xyz789"
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    console.error("[SECURITY] JWT_SECRET env var is not set! Authentication will fail.")
+    throw new Error("Server configuration error")
+  }
   return new TextEncoder().encode(secret)
 }
 

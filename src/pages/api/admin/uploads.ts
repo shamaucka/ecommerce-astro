@@ -8,10 +8,10 @@ const VIDEO_TYPES = new Set(["video/mp4", "video/webm", "video/quicktime"]);
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;   // 10MB
 const MAX_VIDEO_SIZE = 100 * 1024 * 1024;  // 100MB
 
-// Configure Cloudinary
+// Configure Cloudinary — credentials from env only
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "dcwjafvah",
-  api_key: process.env.CLOUDINARY_API_KEY || "113851671851966",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "",
+  api_key: process.env.CLOUDINARY_API_KEY || "",
   api_secret: process.env.CLOUDINARY_API_SECRET || "",
 });
 
