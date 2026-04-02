@@ -164,6 +164,96 @@ export async function emitirSaida(orderId: string) {
   }
 }
 
+// ========== EMIT SAIDA COM NUMERO (retry) ==========
+
+export async function emitirSaidaComNumero(orderId: string, numero: number, serie: number, registroId: string) {
+  const orders = await db.select().from(astroOrder).where(eq(astroOrder.id, orderId)).limit(1)
+  const order = orders[0]
+  if (!order) throw new Error("Pedido nao encontrado")
+
+  const configs = await db.select().from(storeFiscalConfig).limit(1)
+  const config = configs[0]
+  if (!config) throw new Error("Configuracao fiscal nao encontrada")
+
+  const items = (order.items as any[]) || []
+  const metadata = (order.metadata || {}) as any
+  const customerCpf = metadata.cpf || (order as any).customer_cpf || ""
+
+  // Busca codigo municipio IBGE pelo CEP via ViaCEP
+  let destCodMun = config.codigo_municipio || "4205902"
+  try {
+    const cep = (order.shipping_postal_code || "").replace(/\D/g, "")
+    if (cep.length === 8) {
+      const viaCepRes = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      const viaCepData = await viaCepRes.json() as any
+      if (viaCepData.ibge) destCodMun = viaCepData.ibge
+    }
+  } catch (e: any) {
+    console.warn("[NFe retry] ViaCEP lookup failed:", e.message)
+  }
+
+  const nfeData = {
+    numero,
+    serie,
+    cliente: {
+      nome: order.customer_name || "Consumidor",
+      cpf: customerCpf.replace(/\D/g, "") || undefined,
+      email: order.customer_email || undefined,
+      endereco: {
+        logradouro: order.shipping_address_line1 || "",
+        numero: "S/N",
+        complemento: order.shipping_address_line2 || "",
+        bairro: order.shipping_neighborhood || "Centro",
+        cidade: order.shipping_city || "",
+        uf: order.shipping_state || "",
+        cep: order.shipping_postal_code || "",
+        codigo_municipio: destCodMun,
+      },
+    },
+    itens: items.map((item: any) => ({
+      codigo: item.sku || item.product_id || "QUADRO",
+      descricao: item.title || "Quadro Decorativo",
+      ncm: (config.ncm_padrao || "97019100").replace(/\./g, ""),
+      cfop: order.shipping_state === config.uf
+        ? (config.cfop_dentro_estado || "5102")
+        : (config.cfop_fora_estado || "6102"),
+      unidade: config.unidade_comercial || "UN",
+      quantidade: item.quantity || 1,
+      valor_unitario: (item.unit_price || 9700) / 100,
+      valor_total: ((item.unit_price || 9700) * (item.quantity || 1)) / 100,
+    })),
+    frete: { modalidade: 0, valor: (order.shipping_cost || 0) / 100 },
+    pagamento: {
+      forma: order.payment_method === "pix" ? "17" : order.payment_method === "credit_card" ? "03" : "01",
+      valor: (order.total || 0) / 100,
+    },
+  }
+
+  try {
+    const resultado = await nfeEmitter.emitirNFe(nfeData)
+
+    await db.update(nfeRegistro).set({
+      status: resultado.success ? "autorizada" : "rejeitada",
+      chave_acesso: resultado.chave || null,
+      protocolo: resultado.protocolo || null,
+      xml: resultado.xml || null,
+      motivo_rejeicao: resultado.success ? null : (resultado.motivo || resultado.error || "Erro desconhecido"),
+      updated_at: new Date(),
+    }).where(eq(nfeRegistro.id, registroId))
+
+    console.log(`[NFe retry] Nota ${numero} serie ${serie}: ${resultado.success ? "AUTORIZADA" : "REJEITADA"} - ${resultado.motivo || resultado.error || "OK"}`)
+    return { id: registroId, numero, serie, ...resultado }
+  } catch (err: any) {
+    await db.update(nfeRegistro).set({
+      status: "rejeitada",
+      motivo_rejeicao: err.message || "Erro ao comunicar com SEFAZ",
+      updated_at: new Date(),
+    }).where(eq(nfeRegistro.id, registroId))
+
+    return { id: registroId, numero, serie, success: false, error: err.message }
+  }
+}
+
 // ========== EMIT ENTRADA ==========
 
 export async function emitirEntrada(data: { nfe_referenciada: string; motivo: string; itens: any[]; valor_total: number }) {
@@ -282,5 +372,14 @@ export async function retentar(id: string) {
   if (nota.status !== "rejeitada") throw new Error("Somente notas rejeitadas podem ser retentadas")
   if (!nota.order_id) throw new Error("Nota sem pedido associado")
 
-  return emitirSaida(nota.order_id)
+  // Reutiliza o mesmo numero da nota rejeitada (SEFAZ nao reserva numeros rejeitados)
+  // Marca a nota antiga como "retentando" e emite com o mesmo numero
+  await db.update(nfeRegistro).set({
+    status: "pendente",
+    motivo_rejeicao: null,
+    updated_at: new Date(),
+  }).where(eq(nfeRegistro.id, id))
+
+  // Emite nova tentativa reutilizando numero/serie
+  return emitirSaidaComNumero(nota.order_id, nota.numero!, nota.serie!, id)
 }
