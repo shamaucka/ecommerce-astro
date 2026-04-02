@@ -115,15 +115,37 @@ export async function updateOrderStatus(id: string, status: string) {
   if (status === "processing") {
     try {
       const order = result[0]
+      const { astroProduct } = await import("../db/schema/product.js")
+      const { astroProductVariant } = await import("../db/schema/product.js")
+
       const orderItems = (order.items as any[]) || []
-      const items = orderItems.map((item: any) => ({
-        product_id: item.product_id || item.sku || "",
-        variant_id: item.variant_id || undefined,
-        sku: item.sku || item.product_id || "",
-        product_title: item.title || item.name || "Quadro",
-        variant_title: item.variant_title || undefined,
-        quantity: item.quantity || 1,
-      }))
+      const items = []
+      for (const item of orderItems) {
+        let realSku = item.sku || item.product_id || ""
+        if (realSku.includes("-")) {
+          try {
+            const [prod] = await db.select({ id: astroProduct.id })
+              .from(astroProduct)
+              .where(eq(astroProduct.handle, realSku))
+              .limit(1)
+            if (prod) {
+              const [variant] = await db.select({ sku: astroProductVariant.sku })
+                .from(astroProductVariant)
+                .where(eq(astroProductVariant.product_id, prod.id))
+                .limit(1)
+              if (variant?.sku) realSku = variant.sku
+            }
+          } catch {}
+        }
+        items.push({
+          product_id: item.product_id || item.sku || "",
+          variant_id: item.variant_id || undefined,
+          sku: realSku,
+          product_title: item.title || item.name || "Quadro",
+          variant_title: item.variant_title || undefined,
+          quantity: item.quantity || 1,
+        })
+      }
       await fulfillmentOps.createFromOrder({
         order_id: order.id,
         display_id: order.display_id || undefined,
@@ -177,15 +199,39 @@ export async function markAsPaid(id: string, paymentId?: string) {
     const [order] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
     if (!order) return null
 
+    // Busca SKU real das variantes pelo handle/slug do produto
+    const { astroProduct } = await import("../db/schema/product.js")
+    const { astroProductVariant } = await import("../db/schema/product.js")
+
     const orderItems = (order.items as any[]) || []
-    const items = orderItems.map((item: any) => ({
-      product_id: item.product_id || item.sku || "",
-      variant_id: item.variant_id || undefined,
-      sku: item.sku || item.product_id || "",
-      product_title: item.title || item.name || "Quadro",
-      variant_title: item.variant_title || undefined,
-      quantity: item.quantity || 1,
-    }))
+    const items = []
+    for (const item of orderItems) {
+      let realSku = item.sku || item.product_id || ""
+      // Se o SKU parece slug (tem hifens), busca o SKU real da variante
+      if (realSku.includes("-")) {
+        try {
+          const [prod] = await db.select({ id: astroProduct.id })
+            .from(astroProduct)
+            .where(eq(astroProduct.handle, realSku))
+            .limit(1)
+          if (prod) {
+            const [variant] = await db.select({ sku: astroProductVariant.sku })
+              .from(astroProductVariant)
+              .where(eq(astroProductVariant.product_id, prod.id))
+              .limit(1)
+            if (variant?.sku) realSku = variant.sku
+          }
+        } catch {}
+      }
+      items.push({
+        product_id: item.product_id || item.sku || "",
+        variant_id: item.variant_id || undefined,
+        sku: realSku,
+        product_title: item.title || item.name || "Quadro",
+        variant_title: item.variant_title || undefined,
+        quantity: item.quantity || 1,
+      })
+    }
 
     await fulfillmentOps.createFromOrder({
       order_id: order.id,
