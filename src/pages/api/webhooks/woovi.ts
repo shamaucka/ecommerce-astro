@@ -48,6 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
             userAgent: meta.client_ua || undefined,
             fbp: meta.fbp || undefined,
             fbc: meta.fbc || undefined,
+            eventId: meta.purchase_event_id || undefined, // deduplicação com Pixel
             contentIds,
           }).catch(err => console.error("[CAPI Woovi webhook]", err))
 

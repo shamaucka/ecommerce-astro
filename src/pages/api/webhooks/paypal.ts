@@ -116,6 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
             userAgent: meta.client_ua || undefined,
             fbp: meta.fbp || undefined,
             fbc: meta.fbc || undefined,
+            eventId: meta.purchase_event_id || undefined,
             contentIds,
           }).catch(err => console.error("[CAPI PayPal webhook]", err))
 
@@ -169,6 +170,7 @@ export const POST: APIRoute = async ({ request }) => {
             userAgent: meta2.client_ua || undefined,
             fbp: meta2.fbp || undefined,
             fbc: meta2.fbc || undefined,
+            eventId: meta2.purchase_event_id || undefined,
             contentIds,
           }).catch(err => console.error("[CAPI PayPal Plus webhook]", err))
 

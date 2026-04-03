@@ -121,6 +121,7 @@ export const POST: APIRoute = async ({ request }) => {
             fbc: tracking_data?.fbc || undefined,
             client_ip: clientIp || undefined,
             client_ua: tracking_data?.user_agent || undefined,
+            purchase_event_id: tracking_data?.purchase_event_id || undefined,
           },
         });
 
