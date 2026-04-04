@@ -284,7 +284,10 @@ export async function getMetaAdsInsights(days = 30) {
   }
 
   try {
-    const since = new Date(Date.now() - days * 86400000).toISOString().split("T")[0]
+    // Dados da Tess Quadros começam em 01/04/2026 (conta usada por outra loja antes)
+    const MIN_DATE = "2026-04-01"
+    const calcSince = new Date(Date.now() - days * 86400000).toISOString().split("T")[0]
+    const since = calcSince < MIN_DATE ? MIN_DATE : calcSince
     const until = new Date().toISOString().split("T")[0]
 
     const url = `https://graph.facebook.com/v21.0/${adAccountId}/insights?fields=spend,impressions,clicks,ctr,cpc,cpm,actions,action_values,cost_per_action_type&time_range={"since":"${since}","until":"${until}"}&time_increment=1&access_token=${accessToken}`
