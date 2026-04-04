@@ -26,11 +26,13 @@ export const POST: APIRoute = async ({ request }) => {
           amount, customerName, customerEmail, customerCpf,
         })
 
-        // Update order with payment info
+        // Update order with payment info + total com desconto PIX
+        // amount vem em centavos do frontend (já com 5% off)
         await db.update(astroOrder).set({
           payment_method: "pix",
           payment_id: charge.chargeId,
           payment_status: "pending",
+          total: amount, // valor real que será cobrado no PIX (com 5% desconto)
           updated_at: new Date(),
         }).where(eq(astroOrder.id, orderId))
 
