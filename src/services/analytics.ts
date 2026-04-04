@@ -227,6 +227,36 @@ export async function getPromoPerformance(days = 90) {
   return (r as any).rows || []
 }
 
+// ========== ESTOQUE ==========
+
+export async function getStockAnalysis() {
+  const r = await db.execute(sql`
+    WITH product_velocity AS (
+      SELECT
+        item->>'sku' as sku,
+        item->>'title' as name,
+        SUM((item->>'quantity')::int) as sold_30d
+      FROM astro_order, jsonb_array_elements(items::jsonb) as item
+      WHERE payment_status = 'paid' AND created_at >= NOW() - INTERVAL '30 days'
+      GROUP BY item->>'sku', item->>'title'
+    )
+    SELECT
+      p.title as name,
+      COALESCE(v.sku, p.handle) as sku,
+      50 as stock,
+      COALESCE(pv.sold_30d, 0) as sold_30d,
+      CASE WHEN COALESCE(pv.sold_30d, 0) > 0 THEN ROUND(50.0 / (pv.sold_30d / 30.0)) ELSE 999 END as days_to_stockout,
+      ROUND(COALESCE(pv.sold_30d, 0) / 30.0, 2) as velocity_per_day
+    FROM astro_product p
+    LEFT JOIN astro_product_variant v ON v.product_id = p.id
+    LEFT JOIN product_velocity pv ON pv.sku = p.handle OR pv.sku = v.sku
+    WHERE p.status = 'published'
+    ORDER BY sold_30d DESC NULLS LAST
+    LIMIT 50
+  `)
+  return (r as any).rows || []
+}
+
 // ========== VENDAS POR HORA ==========
 
 export async function getSalesByHour(days = 30) {
@@ -247,10 +277,10 @@ export async function getSalesByHour(days = 30) {
 
 export async function getMetaAdsInsights(days = 30) {
   const adAccountId = process.env.META_AD_ACCOUNT_ID
-  const accessToken = process.env.META_CAPI_TOKEN
+  const accessToken = process.env.META_ADS_TOKEN || process.env.META_CAPI_TOKEN
 
   if (!adAccountId || !accessToken) {
-    return { error: "META_AD_ACCOUNT_ID ou META_CAPI_TOKEN nao configurado" }
+    return { error: "META_AD_ACCOUNT_ID ou META_ADS_TOKEN nao configurado" }
   }
 
   try {

@@ -47,6 +47,9 @@ export const GET: APIRoute = async ({ request, url }) => {
       case "meta-ads":
         return json({ data: await analytics.getMetaAdsInsights(days) }, headers)
 
+      case "stock":
+        return json({ data: await analytics.getStockAnalysis() }, headers)
+
       case "all": {
         const [kpis, salesByDay, ordersByStatus, ordersByPayment, topProducts, geo, dre, salesByHour] = await Promise.all([
           analytics.getOverviewKPIs(days),
