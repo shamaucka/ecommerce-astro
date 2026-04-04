@@ -99,6 +99,50 @@ export async function sendCAPIEvent(eventData: CAPIEventData): Promise<void> {
   }
 }
 
+// Convenience: generic CAPI event (AddToCart, ViewContent, InitiateCheckout)
+export async function capiEvent(params: {
+  event_name: string;
+  value?: number;
+  currency?: string;
+  contentIds?: string[];
+  contentName?: string;
+  numItems?: number;
+  eventId?: string;
+  sourceUrl?: string;
+  ip?: string;
+  userAgent?: string;
+  fbp?: string;
+  fbc?: string;
+  email?: string;
+  phone?: string;
+  externalId?: string;
+}) {
+  await sendCAPIEvent({
+    event_name: params.event_name,
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: params.eventId,
+    event_source_url: params.sourceUrl || "https://tessquadros.com.br",
+    action_source: "website",
+    user_data: {
+      em: params.email,
+      ph: params.phone,
+      external_id: params.externalId,
+      client_ip_address: params.ip,
+      client_user_agent: params.userAgent,
+      fbp: params.fbp,
+      fbc: params.fbc,
+    },
+    custom_data: {
+      value: params.value,
+      currency: params.currency || "BRL",
+      content_ids: params.contentIds || [],
+      content_type: "product",
+      content_name: params.contentName,
+      num_items: params.numItems,
+    },
+  });
+}
+
 // Convenience: Purchase event
 export async function capiPurchase(params: {
   orderId: string;
