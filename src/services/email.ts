@@ -100,7 +100,7 @@ export async function sendShippingNotification(order: {
   display_id: string; customer_name: string; customer_email: string;
   tracking_number: string; carrier?: string;
 }) {
-  const url = `https://www.imile.com/tracking?trackingNumber=${order.tracking_number}`
+  const url = `https://www.imile.com/BR-pt/track?waybillNo=${order.tracking_number}`
 
   const html = wrap(`
 <div class="box">
