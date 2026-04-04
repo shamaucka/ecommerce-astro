@@ -246,6 +246,36 @@ export async function markAsPaid(id: string, paymentId?: string) {
     console.warn("[markAsPaid] Fulfillment task skipped:", e.message)
   }
 
+  // Envia CAPI Purchase ao Meta (server-side tracking)
+  try {
+    const [orderForCapi] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
+    if (orderForCapi) {
+      const { capiPurchase } = await import("./tracking-meta.js")
+      const meta = (orderForCapi.metadata || {}) as any
+      const contentIds = ((orderForCapi.items as any[]) || []).map((i: any) => i.product_id || i.sku || "")
+
+      await capiPurchase({
+        orderId: orderForCapi.id,
+        value: orderForCapi.total ?? 0,
+        email: orderForCapi.customer_email || undefined,
+        phone: orderForCapi.customer_phone || undefined,
+        name: orderForCapi.customer_name || undefined,
+        zip: orderForCapi.shipping_postal_code || undefined,
+        city: orderForCapi.shipping_city || undefined,
+        state: orderForCapi.shipping_state || undefined,
+        ip: meta.client_ip || undefined,
+        userAgent: meta.client_ua || undefined,
+        fbp: meta.fbp || undefined,
+        fbc: meta.fbc || undefined,
+        eventId: meta.purchase_event_id || undefined,
+        contentIds,
+      })
+      console.log(`[markAsPaid] CAPI Purchase sent for order ${id}`)
+    }
+  } catch (e: any) {
+    console.warn("[markAsPaid] CAPI skipped:", e.message)
+  }
+
   // Envia email de confirmação
   const [updatedOrder] = await db.select().from(astroOrder).where(eq(astroOrder.id, id)).limit(1)
   if (updatedOrder?.customer_email) {
