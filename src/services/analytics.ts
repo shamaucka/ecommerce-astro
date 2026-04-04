@@ -75,12 +75,14 @@ export async function getTopProducts(limit = 20) {
   const r = await db.execute(sql`
     SELECT
       item->>'title' as name,
-      item->>'sku' as sku,
+      COALESCE(v.sku, item->>'sku') as sku,
       SUM((item->>'quantity')::int) as qty_sold,
       SUM((item->>'unit_price')::int * (item->>'quantity')::int) as revenue
-    FROM astro_order, jsonb_array_elements(items::jsonb) as item
-    WHERE payment_status = 'paid'
-    GROUP BY item->>'title', item->>'sku'
+    FROM astro_order o, jsonb_array_elements(o.items::jsonb) as item
+    LEFT JOIN astro_product p ON p.handle = item->>'sku'
+    LEFT JOIN astro_product_variant v ON v.product_id = p.id
+    WHERE o.payment_status = 'paid'
+    GROUP BY item->>'title', COALESCE(v.sku, item->>'sku')
     ORDER BY revenue DESC
     LIMIT ${limit}
   `)
@@ -184,6 +186,9 @@ export async function getCohortAnalysis() {
 // ========== DRE FINANCEIRO ==========
 
 export async function getDRE(days = 30) {
+  const CUSTO_PRODUTO = 1200  // R$12,00 por quadro (centavos)
+  const CUSTO_FRETE = 1200    // R$12,00 por pedido (centavos)
+
   const r = await db.execute(sql`
     SELECT
       COALESCE(SUM(total), 0) as receita_bruta,
@@ -193,11 +198,16 @@ export async function getDRE(days = 30) {
       COALESCE(SUM(CASE WHEN payment_method = 'credit_card' THEN ROUND(total * 0.045) ELSE 0 END), 0) as taxa_cartao,
       COALESCE(SUM(ROUND(total * 0.0365)), 0) as pis_cofins,
       COUNT(*) as total_pedidos,
-      COUNT(DISTINCT customer_id) as total_clientes
+      COUNT(DISTINCT customer_id) as total_clientes,
+      COALESCE(SUM(jsonb_array_length(items::jsonb)), 0) as total_itens
     FROM astro_order
     WHERE payment_status = 'paid' AND created_at >= NOW() - MAKE_INTERVAL(days => ${days})
   `)
-  return (r as any).rows?.[0] || {}
+  const row = (r as any).rows?.[0] || {}
+  // Adicionar custos calculados
+  row.custo_produto = Number(row.total_itens || 0) * CUSTO_PRODUTO
+  row.custo_frete_envio = Number(row.total_pedidos || 0) * CUSTO_FRETE
+  return row
 }
 
 // ========== PROMOCOES PERFORMANCE ==========
