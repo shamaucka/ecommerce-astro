@@ -1,9 +1,18 @@
 import { db } from "../db/index.js"
 import { sql } from "drizzle-orm"
 
+// Data minima: 02/04/2026 (dia 01 teve bug no site, antes era outra loja na conta de ads)
+const MIN_DATE = "2026-04-02"
+
+function dateRange(days: number) {
+  const since = new Date(Date.now() - days * 86400000).toISOString().split("T")[0]
+  return since < MIN_DATE ? MIN_DATE : since
+}
+
 // ========== OVERVIEW KPIs ==========
 
 export async function getOverviewKPIs(days = 30) {
+  const since = dateRange(days)
   const r = await db.execute(sql`
     SELECT
       COUNT(*) FILTER (WHERE payment_status = 'paid') as total_orders,
@@ -19,7 +28,7 @@ export async function getOverviewKPIs(days = 30) {
       )) as repeat_customers,
       COUNT(*) as total_orders_all
     FROM astro_order
-    WHERE created_at >= NOW() - MAKE_INTERVAL(days => ${days})
+    WHERE created_at >= ${since}::timestamp
   `)
   return (r as any).rows?.[0] || {}
 }
@@ -27,6 +36,7 @@ export async function getOverviewKPIs(days = 30) {
 // ========== VENDAS POR DIA ==========
 
 export async function getSalesByDay(days = 30) {
+  const since = dateRange(days)
   const r = await db.execute(sql`
     SELECT
       DATE(created_at) as date,
@@ -34,7 +44,7 @@ export async function getSalesByDay(days = 30) {
       COALESCE(SUM(total) FILTER (WHERE payment_status = 'paid'), 0) as revenue,
       COUNT(*) as total_created
     FROM astro_order
-    WHERE created_at >= NOW() - MAKE_INTERVAL(days => ${days})
+    WHERE created_at >= ${since}::timestamp
     GROUP BY DATE(created_at)
     ORDER BY date
   `)
@@ -62,7 +72,7 @@ export async function getOrdersByPaymentMethod(days = 30) {
       COUNT(*) as orders,
       COALESCE(SUM(total), 0) as revenue
     FROM astro_order
-    WHERE payment_status = 'paid' AND created_at >= NOW() - MAKE_INTERVAL(days => ${days})
+    WHERE payment_status = 'paid' AND created_at >= ${dateRange(days)}::timestamp
     GROUP BY payment_method
     ORDER BY revenue DESC
   `)
@@ -98,7 +108,7 @@ export async function getGeoDistribution(days = 90) {
       COUNT(*) as orders,
       COALESCE(SUM(total), 0) as revenue
     FROM astro_order
-    WHERE payment_status = 'paid' AND created_at >= NOW() - MAKE_INTERVAL(days => ${days})
+    WHERE payment_status = 'paid' AND created_at >= ${dateRange(days)}::timestamp
     GROUP BY shipping_state
     ORDER BY revenue DESC
   `)
@@ -185,28 +195,66 @@ export async function getCohortAnalysis() {
 
 // ========== DRE FINANCEIRO ==========
 
-export async function getDRE(days = 30) {
+export async function getDRE(days = 30, month?: string) {
   const CUSTO_PRODUTO = 1200  // R$12,00 por quadro (centavos)
   const CUSTO_FRETE = 1200    // R$12,00 por pedido (centavos)
+  const MAO_DE_OBRA_PCT = 0.04 // 4% do valor vendido
 
-  const r = await db.execute(sql`
-    SELECT
-      COALESCE(SUM(total), 0) as receita_bruta,
-      COALESCE(SUM(discount_amount), 0) as descontos,
-      COALESCE(SUM(shipping_cost), 0) as frete_cobrado,
-      COALESCE(SUM(CASE WHEN payment_method = 'pix' THEN ROUND(total * 0.01) ELSE 0 END), 0) as taxa_pix,
-      COALESCE(SUM(CASE WHEN payment_method = 'credit_card' THEN ROUND(total * 0.045) ELSE 0 END), 0) as taxa_cartao,
-      COALESCE(SUM(ROUND(total * 0.0365)), 0) as pis_cofins,
-      COUNT(*) as total_pedidos,
-      COUNT(DISTINCT customer_id) as total_clientes,
-      COALESCE(SUM(jsonb_array_length(items::jsonb)), 0) as total_itens
-    FROM astro_order
-    WHERE payment_status = 'paid' AND created_at >= NOW() - MAKE_INTERVAL(days => ${days})
-  `)
+  // Se month definido (ex: "2026-04"), filtra pelo mês inteiro
+  let dateFilter: string
+  let dateFilterEnd: string | null = null
+  if (month) {
+    dateFilter = `${month}-01`
+    const [y, m] = month.split("-").map(Number)
+    const nextMonth = m === 12 ? `${y + 1}-01-01` : `${y}-${String(m + 1).padStart(2, "0")}-01`
+    dateFilterEnd = nextMonth
+  } else {
+    dateFilter = dateRange(days)
+  }
+
+  const r = dateFilterEnd
+    ? await db.execute(sql`
+        SELECT
+          COALESCE(SUM(total), 0) as receita_bruta,
+          COALESCE(SUM(discount_amount), 0) as descontos,
+          COALESCE(SUM(shipping_cost), 0) as frete_cobrado,
+          COALESCE(SUM(CASE WHEN payment_method = 'pix' THEN ROUND(total * 0.01) ELSE 0 END), 0) as taxa_pix,
+          COALESCE(SUM(CASE WHEN payment_method = 'credit_card' THEN ROUND(total * 0.045) ELSE 0 END), 0) as taxa_cartao,
+          COALESCE(SUM(ROUND(total * 0.0365)), 0) as pis_cofins,
+          COUNT(*) as total_pedidos,
+          COUNT(DISTINCT customer_id) as total_clientes,
+          COALESCE(SUM(jsonb_array_length(items::jsonb)), 0) as total_itens
+        FROM astro_order
+        WHERE payment_status = 'paid' AND created_at >= ${dateFilter}::timestamp AND created_at < ${dateFilterEnd}::timestamp
+      `)
+    : await db.execute(sql`
+        SELECT
+          COALESCE(SUM(total), 0) as receita_bruta,
+          COALESCE(SUM(discount_amount), 0) as descontos,
+          COALESCE(SUM(shipping_cost), 0) as frete_cobrado,
+          COALESCE(SUM(CASE WHEN payment_method = 'pix' THEN ROUND(total * 0.01) ELSE 0 END), 0) as taxa_pix,
+          COALESCE(SUM(CASE WHEN payment_method = 'credit_card' THEN ROUND(total * 0.045) ELSE 0 END), 0) as taxa_cartao,
+          COALESCE(SUM(ROUND(total * 0.0365)), 0) as pis_cofins,
+          COUNT(*) as total_pedidos,
+          COUNT(DISTINCT customer_id) as total_clientes,
+          COALESCE(SUM(jsonb_array_length(items::jsonb)), 0) as total_itens
+        FROM astro_order
+        WHERE payment_status = 'paid' AND created_at >= ${dateFilter}::timestamp
+      `)
+
   const row = (r as any).rows?.[0] || {}
-  // Adicionar custos calculados
   row.custo_produto = Number(row.total_itens || 0) * CUSTO_PRODUTO
   row.custo_frete_envio = Number(row.total_pedidos || 0) * CUSTO_FRETE
+  row.mao_de_obra = Math.round(Number(row.receita_bruta || 0) * MAO_DE_OBRA_PCT)
+
+  // Puxar gasto de marketing do Meta Ads para o mesmo período
+  try {
+    const adsData = await getMetaAdsInsights(days)
+    if (adsData && !adsData.error && adsData.totals) {
+      row.gasto_marketing = Math.round(adsData.totals.spend * 100) // converter para centavos
+    }
+  } catch { row.gasto_marketing = 0 }
+
   return row
 }
 
@@ -220,7 +268,7 @@ export async function getPromoPerformance(days = 90) {
       COALESCE(SUM(total), 0) as revenue,
       COALESCE(SUM(discount_amount), 0) as discount_given
     FROM astro_order
-    WHERE payment_status = 'paid' AND created_at >= NOW() - MAKE_INTERVAL(days => ${days})
+    WHERE payment_status = 'paid' AND created_at >= ${dateRange(days)}::timestamp
     GROUP BY coupon_code
     ORDER BY orders DESC
   `)
@@ -266,7 +314,7 @@ export async function getSalesByHour(days = 30) {
       COUNT(*) as orders,
       COALESCE(SUM(total), 0) as revenue
     FROM astro_order
-    WHERE payment_status = 'paid' AND created_at >= NOW() - MAKE_INTERVAL(days => ${days})
+    WHERE payment_status = 'paid' AND created_at >= ${dateRange(days)}::timestamp
     GROUP BY hour
     ORDER BY hour
   `)
@@ -284,8 +332,6 @@ export async function getMetaAdsInsights(days = 30) {
   }
 
   try {
-    // Dados da Tess Quadros começam em 01/04/2026 (conta usada por outra loja antes)
-    const MIN_DATE = "2026-04-01"
     const calcSince = new Date(Date.now() - days * 86400000).toISOString().split("T")[0]
     const since = calcSince < MIN_DATE ? MIN_DATE : calcSince
     const until = new Date().toISOString().split("T")[0]

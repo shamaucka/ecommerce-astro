@@ -35,8 +35,10 @@ export const GET: APIRoute = async ({ request, url }) => {
       case "cohort":
         return json({ data: await analytics.getCohortAnalysis() }, headers)
 
-      case "dre":
-        return json({ data: await analytics.getDRE(days) }, headers)
+      case "dre": {
+        const month = url.searchParams.get("month") || undefined
+        return json({ data: await analytics.getDRE(days, month) }, headers)
+      }
 
       case "promos":
         return json({ data: await analytics.getPromoPerformance(days) }, headers)
