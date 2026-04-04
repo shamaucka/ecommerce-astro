@@ -282,11 +282,14 @@ export const POST: APIRoute = async ({ request }) => {
             carrier: "iMile",
             tracking_code: expressNo,
           });
+          // Seta tracking_number primeiro, depois chama updateOrderStatus
+          // que envia o email de despacho ao cliente
           await db.update(astroOrder).set({
             tracking_number: expressNo,
-            status: "shipped",
             updated_at: new Date(),
           }).where(eq(astroOrder.id, order.id));
+          const { updateOrderStatus } = await import("@/services/order");
+          await updateOrderStatus(order.id, "shipped");
         } catch (imileErr: any) {
           result.errors.push({ step: "imile", error: imileErr.message });
         }
