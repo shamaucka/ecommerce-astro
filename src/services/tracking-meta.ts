@@ -61,7 +61,7 @@ export async function sendCAPIEvent(eventData: CAPIEventData): Promise<void> {
     zp: ud.zp ? [hash(ud.zp.replace(/\D/g, ""))] : undefined,
     ct: ud.ct ? [hash(ud.ct)] : undefined,
     st: ud.st ? [hash(ud.st.toLowerCase())] : undefined,
-    country: ud.country ? [hash(ud.country)] : ["br"],
+    country: [hash(ud.country || "br")],
     external_id: ud.external_id ? [hash(ud.external_id)] : undefined,
     client_ip_address: ud.client_ip_address,
     client_user_agent: ud.client_user_agent,
